@@ -1,0 +1,2552 @@
+<!DOCTYPE html>
+<html lang="no">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Breizaas - Refined Design Direction Variations</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Trade+Winds&family=Montserrat:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --bg-primary: #0f0f1a;
+        --bg-card: #1f1f2e;
+        --bg-navy: #1a1a2e;
+        --text-white: #ffffff;
+        --text-light-gray: #e8e8e8;
+        --text-med-gray: #a0a0a0;
+        --neon-purple: #c77dff;
+        --neon-purple-vibrant: #e539ff;
+        --neon-pink: #ff006e;
+        --neon-pink-hot: #ff1493;
+        --gold-champagne: #d4af37;
+        --gold-light: #f4e4c1;
+        --spotify-green: #1db954;
+        --purple-playful: #d896ff;
+        --purple-liggi: #e0a3ff;
+        --gold-cream: #f5e6d3;
+        --gold-vintage: #d4a574;
+        --amber-warm: #ffb84d;
+        --bg-warm-dark: #2a1f1a;
+        --bg-warm-medium: #3d2f26;
+        --bg-warm-light: #4a3a2e;
+        --bg-cream: #f5e6d3;
+        --bg-cream-dark: #e8d4bc;
+        --bg-beige: #d4c4b0;
+        --bg-brown-soft: #5c4a3a;
+        --bg-amber-dark: #1a1410;
+        --text-dark-brown: #2a1f1a;
+        --bg-plum-dark: #2d1b2e;
+        --bg-plum-card: #3d2a3e;
+        --bg-twilight: #1a1f28;
+        --bg-twilight-card: #252a35;
+        --bg-twilight-navy: #1f2430;
+        --font-brand: "Trade Winds", cursive;
+        --font-headline: "Montserrat", sans-serif;
+        --font-body: "Inter", sans-serif;
+      }
+
+      body {
+        font-family: var(--font-body);
+        background-color: var(--bg-primary);
+        color: var(--text-white);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      .container {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      /* Direction Selector */
+      .direction-selector {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: rgba(15, 15, 26, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 16px;
+        z-index: 1000;
+        border-bottom: 1px solid rgba(199, 125, 255, 0.2);
+      }
+
+      .direction-selector h2 {
+        font-family: var(--font-headline);
+        font-size: 14px;
+        color: var(--text-light-gray);
+        margin-bottom: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .direction-buttons {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .direction-btn {
+        background: var(--bg-card);
+        border: 1px solid rgba(199, 125, 255, 0.3);
+        color: var(--text-light-gray);
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: var(--font-body);
+        font-size: 13px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .direction-btn:hover {
+        background: var(--bg-navy);
+        border-color: var(--neon-purple);
+        box-shadow: 0 0 20px rgba(199, 125, 255, 0.4);
+      }
+
+      .direction-btn.active {
+        background: var(--neon-purple);
+        color: var(--bg-primary);
+        border-color: var(--neon-purple);
+        box-shadow: 0 0 30px rgba(199, 125, 255, 0.6);
+      }
+
+      /* Mockup Container */
+      .mockup-container {
+        margin-top: 120px;
+        min-height: 100vh;
+      }
+
+      .mockup {
+        display: none;
+        animation: fadeIn 0.5s ease;
+      }
+
+      .mockup.active {
+        display: block;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Navigation */
+      .nav {
+        padding: 24px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .nav-brand {
+        font-family: var(--font-brand);
+        font-size: 28px;
+        letter-spacing: 2px;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 32px;
+        list-style: none;
+      }
+
+      .nav-link {
+        font-family: var(--font-body);
+        font-weight: 500;
+        font-size: 14px;
+        text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        padding: 8px 0;
+        position: relative;
+      }
+
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        transition: width 0.3s ease;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      /* Hero Section */
+      .hero {
+        text-align: center;
+        padding: 96px 0;
+      }
+
+      .hero-subtitle {
+        font-family: var(--font-headline);
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        margin-bottom: 24px;
+        font-weight: 600;
+      }
+
+      .hero-title {
+        font-family: var(--font-headline);
+        font-size: 96px;
+        font-weight: 900;
+        line-height: 1;
+        margin-bottom: 32px;
+        text-transform: uppercase;
+        letter-spacing: -2px;
+      }
+
+      .hero-description {
+        font-family: var(--font-body);
+        font-size: 18px;
+        line-height: 1.8;
+        max-width: 600px;
+        margin: 0 auto 48px;
+      }
+
+      .hero-cta {
+        display: inline-flex;
+        gap: 16px;
+      }
+
+      .btn {
+        padding: 16px 32px;
+        border-radius: 8px;
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        cursor: pointer;
+        border: 2px solid;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+      }
+
+      /* Tour Grid */
+      .tour-grid {
+        padding: 64px 0;
+      }
+
+      .tour-grid h2 {
+        font-family: var(--font-headline);
+        font-size: 48px;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 48px;
+        text-transform: uppercase;
+        letter-spacing: -1px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 24px;
+      }
+
+      .tour-card {
+        background: var(--bg-card);
+        border-radius: 16px;
+        padding: 32px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .tour-card:hover {
+        transform: translateY(-4px);
+      }
+
+      .tour-date {
+        font-family: var(--font-headline);
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 16px;
+      }
+
+      .tour-venue {
+        font-family: var(--font-headline);
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+
+      .tour-location {
+        font-family: var(--font-body);
+        font-size: 14px;
+        margin-bottom: 24px;
+      }
+
+      .tour-card .btn {
+        width: 100%;
+        text-align: center;
+      }
+
+      /* Info Panel */
+      .info-panel {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background: rgba(31, 31, 46, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(199, 125, 255, 0.3);
+        border-radius: 12px;
+        padding: 20px;
+        max-width: 320px;
+        z-index: 999;
+      }
+
+      .info-panel h3 {
+        font-family: var(--font-headline);
+        font-size: 14px;
+        color: var(--neon-purple);
+        margin-bottom: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .info-panel p {
+        font-size: 12px;
+        line-height: 1.6;
+        color: var(--text-med-gray);
+      }
+
+      /* Color Variations */
+
+      /* Variation 1: Pink Hero + Gold Accents */
+      .variation-1 .nav-brand {
+        color: var(--neon-pink);
+        text-shadow: 0 0 30px rgba(255, 0, 110, 0.6);
+      }
+
+      .variation-1 .nav-link {
+        color: var(--gold-light);
+      }
+
+      .variation-1 .nav-link:hover {
+        color: var(--neon-pink);
+      }
+
+      .variation-1 .nav-link::after {
+        background: var(--neon-pink);
+      }
+
+      .variation-1 .hero-subtitle {
+        color: var(--gold-champagne);
+      }
+
+      .variation-1 .hero-title {
+        color: var(--neon-pink);
+        text-shadow: 0 0 50px rgba(255, 0, 110, 0.5);
+      }
+
+      .variation-1 .hero-description {
+        color: var(--gold-light);
+      }
+
+      .variation-1 .btn-primary {
+        background: var(--neon-pink);
+        border-color: var(--neon-pink);
+        color: var(--bg-primary);
+      }
+
+      .variation-1 .btn-primary:hover {
+        box-shadow: 0 0 30px rgba(255, 0, 110, 0.6);
+      }
+
+      .variation-1 .btn-secondary {
+        background: transparent;
+        border-color: var(--gold-champagne);
+        color: var(--gold-champagne);
+      }
+
+      .variation-1 .btn-secondary:hover {
+        background: var(--gold-champagne);
+        color: var(--bg-primary);
+      }
+
+      .variation-1 .tour-grid h2 {
+        color: var(--neon-pink);
+      }
+
+      .variation-1 .tour-card {
+        border-color: rgba(255, 0, 110, 0.2);
+      }
+
+      .variation-1 .tour-card:hover {
+        border-color: var(--neon-pink);
+        box-shadow: 0 10px 40px rgba(255, 0, 110, 0.3);
+      }
+
+      .variation-1 .tour-date {
+        color: var(--gold-champagne);
+      }
+
+      .variation-1 .tour-venue {
+        color: var(--text-white);
+      }
+
+      .variation-1 .tour-location {
+        color: var(--text-med-gray);
+      }
+
+      .variation-1 .tour-card .btn {
+        background: var(--neon-pink);
+        border-color: var(--neon-pink);
+        color: var(--bg-primary);
+      }
+
+      .variation-1 .tour-card .btn:hover {
+        box-shadow: 0 0 25px rgba(255, 0, 110, 0.5);
+      }
+
+      /* Variation 2: Pink + Purple Gradient Hero */
+      .variation-2 .nav-brand {
+        background: linear-gradient(
+          135deg,
+          var(--neon-pink),
+          var(--neon-purple-vibrant)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .variation-2 .nav-link {
+        color: var(--text-light-gray);
+      }
+
+      .variation-2 .nav-link:hover {
+        color: var(--neon-pink);
+      }
+
+      .variation-2 .nav-link::after {
+        background: linear-gradient(
+          90deg,
+          var(--neon-pink),
+          var(--neon-purple)
+        );
+      }
+
+      .variation-2 .hero-subtitle {
+        color: var(--neon-purple);
+      }
+
+      .variation-2 .hero-title {
+        background: linear-gradient(
+          135deg,
+          var(--neon-pink),
+          var(--neon-purple-vibrant)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 30px rgba(255, 0, 110, 0.4));
+      }
+
+      .variation-2 .hero-description {
+        color: var(--gold-light);
+      }
+
+      .variation-2 .btn-primary {
+        background: linear-gradient(
+          135deg,
+          var(--neon-pink),
+          var(--neon-purple)
+        );
+        border-color: transparent;
+        color: var(--text-white);
+      }
+
+      .variation-2 .btn-primary:hover {
+        box-shadow: 0 0 40px rgba(255, 0, 110, 0.6);
+      }
+
+      .variation-2 .btn-secondary {
+        background: transparent;
+        border-color: var(--gold-champagne);
+        color: var(--gold-champagne);
+      }
+
+      .variation-2 .btn-secondary:hover {
+        background: var(--gold-champagne);
+        color: var(--bg-primary);
+      }
+
+      .variation-2 .tour-grid h2 {
+        color: var(--neon-pink);
+      }
+
+      .variation-2 .tour-card {
+        border-color: rgba(199, 125, 255, 0.2);
+      }
+
+      .variation-2 .tour-card:hover {
+        border-color: var(--neon-purple);
+        box-shadow: 0 10px 40px rgba(199, 125, 255, 0.3);
+      }
+
+      .variation-2 .tour-date {
+        color: var(--gold-champagne);
+      }
+
+      .variation-2 .tour-venue {
+        color: var(--neon-pink);
+      }
+
+      .variation-2 .tour-location {
+        color: var(--text-med-gray);
+      }
+
+      .variation-2 .tour-card .btn {
+        background: var(--neon-purple);
+        border-color: var(--neon-purple);
+        color: var(--text-white);
+      }
+
+      .variation-2 .tour-card .btn:hover {
+        box-shadow: 0 0 25px rgba(199, 125, 255, 0.6);
+      }
+
+      /* Variation 3: Hot Pink + Minimal Gold */
+      .variation-3 .nav-brand {
+        color: var(--neon-pink-hot);
+        text-shadow: 0 0 40px rgba(255, 20, 147, 0.7);
+      }
+
+      .variation-3 .nav-link {
+        color: var(--text-light-gray);
+      }
+
+      .variation-3 .nav-link:hover {
+        color: var(--neon-pink-hot);
+      }
+
+      .variation-3 .nav-link::after {
+        background: var(--neon-pink-hot);
+      }
+
+      .variation-3 .hero-subtitle {
+        color: var(--text-med-gray);
+      }
+
+      .variation-3 .hero-title {
+        color: var(--neon-pink-hot);
+        text-shadow: 0 0 60px rgba(255, 20, 147, 0.6);
+      }
+
+      .variation-3 .hero-description {
+        color: var(--gold-light);
+        font-size: 16px;
+      }
+
+      .variation-3 .btn-primary {
+        background: var(--neon-pink-hot);
+        border-color: var(--neon-pink-hot);
+        color: var(--bg-primary);
+      }
+
+      .variation-3 .btn-primary:hover {
+        box-shadow: 0 0 40px rgba(255, 20, 147, 0.7);
+      }
+
+      .variation-3 .btn-secondary {
+        background: transparent;
+        border-color: var(--text-med-gray);
+        color: var(--text-light-gray);
+      }
+
+      .variation-3 .btn-secondary:hover {
+        background: var(--text-light-gray);
+        color: var(--bg-primary);
+      }
+
+      .variation-3 .tour-grid h2 {
+        color: var(--text-white);
+      }
+
+      .variation-3 .tour-card {
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .variation-3 .tour-card:hover {
+        border-color: var(--neon-pink-hot);
+        box-shadow: 0 10px 40px rgba(255, 20, 147, 0.4);
+      }
+
+      .variation-3 .tour-date {
+        color: var(--gold-champagne);
+        font-size: 12px;
+      }
+
+      .variation-3 .tour-venue {
+        color: var(--text-white);
+      }
+
+      .variation-3 .tour-location {
+        color: var(--text-med-gray);
+      }
+
+      .variation-3 .tour-card .btn {
+        background: transparent;
+        border-color: var(--neon-pink-hot);
+        color: var(--neon-pink-hot);
+      }
+
+      .variation-3 .tour-card .btn:hover {
+        background: var(--neon-pink-hot);
+        color: var(--bg-primary);
+        box-shadow: 0 0 25px rgba(255, 20, 147, 0.5);
+      }
+
+      /* Variation 4: Pink Hero + Purple Accents + Gold Body */
+      .variation-4 .nav-brand {
+        color: var(--neon-pink);
+        text-shadow: 0 0 30px rgba(255, 0, 110, 0.6);
+      }
+
+      .variation-4 .nav-link {
+        color: var(--neon-purple);
+      }
+
+      .variation-4 .nav-link:hover {
+        color: var(--neon-pink);
+      }
+
+      .variation-4 .nav-link::after {
+        background: var(--neon-pink);
+      }
+
+      .variation-4 .hero-subtitle {
+        color: var(--neon-purple);
+      }
+
+      .variation-4 .hero-title {
+        color: var(--neon-pink);
+        text-shadow: 0 0 50px rgba(255, 0, 110, 0.5);
+      }
+
+      .variation-4 .hero-description {
+        color: var(--gold-light);
+        font-weight: 400;
+      }
+
+      .variation-4 .btn-primary {
+        background: var(--neon-pink);
+        border-color: var(--neon-pink);
+        color: var(--bg-primary);
+      }
+
+      .variation-4 .btn-primary:hover {
+        box-shadow: 0 0 30px rgba(255, 0, 110, 0.6);
+      }
+
+      .variation-4 .btn-secondary {
+        background: transparent;
+        border-color: var(--neon-purple);
+        color: var(--neon-purple);
+      }
+
+      .variation-4 .btn-secondary:hover {
+        background: var(--neon-purple);
+        color: var(--text-white);
+        box-shadow: 0 0 25px rgba(199, 125, 255, 0.5);
+      }
+
+      .variation-4 .tour-grid h2 {
+        color: var(--text-white);
+      }
+
+      .variation-4 .tour-card {
+        border-color: rgba(199, 125, 255, 0.2);
+      }
+
+      .variation-4 .tour-card:hover {
+        border-color: var(--neon-purple);
+        box-shadow: 0 10px 40px rgba(199, 125, 255, 0.3);
+      }
+
+      .variation-4 .tour-date {
+        color: var(--gold-champagne);
+      }
+
+      .variation-4 .tour-venue {
+        color: var(--neon-pink);
+      }
+
+      .variation-4 .tour-location {
+        color: var(--gold-light);
+      }
+
+      .variation-4 .tour-card .btn {
+        background: transparent;
+        border-color: var(--neon-purple);
+        color: var(--neon-purple);
+      }
+
+      .variation-4 .tour-card .btn:hover {
+        background: var(--neon-purple);
+        color: var(--text-white);
+        box-shadow: 0 0 25px rgba(199, 125, 255, 0.5);
+      }
+
+      /* Variation 5: Vibrant Pink + White + Gold Hints */
+      .variation-5 .nav-brand {
+        color: var(--neon-pink-hot);
+        text-shadow: 0 0 40px rgba(255, 20, 147, 0.7);
+      }
+
+      .variation-5 .nav-link {
+        color: var(--text-white);
+      }
+
+      .variation-5 .nav-link:hover {
+        color: var(--gold-champagne);
+      }
+
+      .variation-5 .nav-link::after {
+        background: var(--gold-champagne);
+      }
+
+      .variation-5 .hero-subtitle {
+        color: var(--gold-champagne);
+        font-size: 12px;
+      }
+
+      .variation-5 .hero-title {
+        color: var(--neon-pink-hot);
+        text-shadow: 0 0 60px rgba(255, 20, 147, 0.6);
+      }
+
+      .variation-5 .hero-description {
+        color: var(--text-white);
+      }
+
+      .variation-5 .btn-primary {
+        background: var(--neon-pink-hot);
+        border-color: var(--neon-pink-hot);
+        color: var(--text-white);
+      }
+
+      .variation-5 .btn-primary:hover {
+        box-shadow: 0 0 40px rgba(255, 20, 147, 0.7);
+      }
+
+      .variation-5 .btn-secondary {
+        background: transparent;
+        border-color: var(--gold-champagne);
+        color: var(--gold-champagne);
+      }
+
+      .variation-5 .btn-secondary:hover {
+        background: var(--gold-champagne);
+        color: var(--bg-primary);
+      }
+
+      .variation-5 .tour-grid h2 {
+        color: var(--text-white);
+      }
+
+      .variation-5 .tour-card {
+        border-color: rgba(255, 255, 255, 0.15);
+      }
+
+      .variation-5 .tour-card:hover {
+        border-color: var(--gold-champagne);
+        box-shadow: 0 10px 40px rgba(212, 175, 55, 0.3);
+      }
+
+      .variation-5 .tour-date {
+        color: var(--gold-champagne);
+        font-size: 12px;
+      }
+
+      .variation-5 .tour-venue {
+        color: var(--text-white);
+      }
+
+      .variation-5 .tour-location {
+        color: var(--text-med-gray);
+      }
+
+      .variation-5 .tour-card .btn {
+        background: transparent;
+        border-color: var(--text-white);
+        color: var(--text-white);
+      }
+
+      .variation-5 .tour-card .btn:hover {
+        background: var(--neon-pink-hot);
+        border-color: var(--neon-pink-hot);
+        color: var(--text-white);
+        box-shadow: 0 0 25px rgba(255, 20, 147, 0.5);
+      }
+
+      /* Variation 6: "Liggi" - Warm Vintage Gold + Playful Purple */
+      .variation-6 .nav-brand {
+        color: var(--gold-cream);
+        text-shadow: -1px -1px 0 var(--gold-vintage),
+          1px -1px 0 var(--gold-vintage), -1px 1px 0 var(--gold-vintage),
+          1px 1px 0 var(--gold-vintage), 0 0 30px rgba(212, 165, 116, 0.5);
+      }
+
+      .variation-6 .nav-link {
+        color: var(--gold-cream);
+      }
+
+      .variation-6 .nav-link:hover {
+        color: var(--purple-playful);
+      }
+
+      .variation-6 .nav-link::after {
+        background: var(--purple-liggi);
+      }
+
+      .variation-6 .hero-subtitle {
+        color: var(--amber-warm);
+        font-size: 12px;
+      }
+
+      .variation-6 .hero-title {
+        color: var(--gold-cream);
+        text-shadow: -2px -2px 0 var(--gold-vintage),
+          2px -2px 0 var(--gold-vintage), -2px 2px 0 var(--gold-vintage),
+          2px 2px 0 var(--gold-vintage), 0 0 40px rgba(212, 165, 116, 0.6);
+        font-weight: 900;
+      }
+
+      .variation-6 .hero-description {
+        color: var(--text-light-gray);
+      }
+
+      .variation-6 .btn-primary {
+        background: var(--purple-playful);
+        border-color: var(--purple-playful);
+        color: var(--bg-primary);
+        font-weight: 700;
+      }
+
+      .variation-6 .btn-primary:hover {
+        background: var(--purple-liggi);
+        box-shadow: 0 0 35px rgba(216, 150, 255, 0.7);
+      }
+
+      .variation-6 .btn-secondary {
+        background: transparent;
+        border-color: var(--gold-vintage);
+        color: var(--gold-cream);
+      }
+
+      .variation-6 .btn-secondary:hover {
+        background: var(--gold-vintage);
+        color: var(--bg-primary);
+      }
+
+      .variation-6 .tour-grid h2 {
+        color: var(--gold-cream);
+        text-shadow: 0 0 20px rgba(212, 165, 116, 0.4);
+      }
+
+      .variation-6 .tour-card {
+        border-color: rgba(212, 165, 116, 0.2);
+        background: linear-gradient(
+          135deg,
+          rgba(31, 31, 46, 0.8),
+          rgba(26, 26, 46, 0.9)
+        );
+      }
+
+      .variation-6 .tour-card:hover {
+        border-color: var(--purple-playful);
+        box-shadow: 0 10px 40px rgba(216, 150, 255, 0.3);
+      }
+
+      .variation-6 .tour-date {
+        color: var(--amber-warm);
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .variation-6 .tour-venue {
+        color: var(--purple-liggi);
+        text-shadow: 0 0 15px rgba(224, 163, 255, 0.4);
+      }
+
+      .variation-6 .tour-location {
+        color: var(--gold-cream);
+        opacity: 0.8;
+      }
+
+      .variation-6 .tour-card .btn {
+        background: transparent;
+        border-color: var(--purple-playful);
+        color: var(--purple-playful);
+        font-weight: 600;
+      }
+
+      .variation-6 .tour-card .btn:hover {
+        background: var(--purple-playful);
+        color: var(--bg-primary);
+        box-shadow: 0 0 25px rgba(216, 150, 255, 0.6);
+      }
+
+      /* Variation 7: Warm Brown Background + Cream Cards */
+      .variation-7 {
+        background-color: var(--bg-warm-dark);
+      }
+
+      .variation-7 .nav {
+        border-bottom-color: rgba(212, 165, 116, 0.2);
+      }
+
+      .variation-7 .nav-brand {
+        color: var(--gold-cream);
+        text-shadow: -1px -1px 0 var(--gold-vintage),
+          1px -1px 0 var(--gold-vintage), -1px 1px 0 var(--gold-vintage),
+          1px 1px 0 var(--gold-vintage), 0 0 30px rgba(212, 165, 116, 0.5);
+      }
+
+      .variation-7 .nav-link {
+        color: var(--gold-light);
+      }
+
+      .variation-7 .nav-link:hover {
+        color: var(--purple-liggi);
+      }
+
+      .variation-7 .nav-link::after {
+        background: var(--purple-playful);
+      }
+
+      .variation-7 .hero-subtitle {
+        color: var(--amber-warm);
+      }
+
+      .variation-7 .hero-title {
+        color: var(--gold-cream);
+        text-shadow: -2px -2px 0 var(--gold-vintage),
+          2px -2px 0 var(--gold-vintage), -2px 2px 0 var(--gold-vintage),
+          2px 2px 0 var(--gold-vintage), 0 0 50px rgba(212, 165, 116, 0.6);
+      }
+
+      .variation-7 .hero-description {
+        color: var(--bg-cream-dark);
+      }
+
+      .variation-7 .btn-primary {
+        background: var(--purple-playful);
+        border-color: var(--purple-playful);
+        color: var(--bg-warm-dark);
+        font-weight: 700;
+      }
+
+      .variation-7 .btn-primary:hover {
+        background: var(--purple-liggi);
+        box-shadow: 0 0 40px rgba(216, 150, 255, 0.7);
+      }
+
+      .variation-7 .btn-secondary {
+        background: transparent;
+        border-color: var(--gold-cream);
+        color: var(--gold-cream);
+      }
+
+      .variation-7 .btn-secondary:hover {
+        background: var(--gold-cream);
+        color: var(--bg-warm-dark);
+      }
+
+      .variation-7 .tour-grid h2 {
+        color: var(--gold-cream);
+      }
+
+      .variation-7 .tour-card {
+        background: var(--bg-cream);
+        border-color: var(--bg-cream-dark);
+        color: var(--text-dark-brown);
+      }
+
+      .variation-7 .tour-card:hover {
+        border-color: var(--purple-playful);
+        box-shadow: 0 10px 40px rgba(216, 150, 255, 0.4);
+        transform: translateY(-6px);
+      }
+
+      .variation-7 .tour-date {
+        color: var(--gold-vintage);
+        font-weight: 600;
+      }
+
+      .variation-7 .tour-venue {
+        color: var(--purple-playful);
+      }
+
+      .variation-7 .tour-location {
+        color: var(--text-dark-brown);
+        opacity: 0.7;
+      }
+
+      .variation-7 .tour-card .btn {
+        background: var(--purple-playful);
+        border-color: var(--purple-playful);
+        color: var(--bg-cream);
+        font-weight: 600;
+      }
+
+      .variation-7 .tour-card .btn:hover {
+        background: var(--purple-liggi);
+        box-shadow: 0 0 25px rgba(216, 150, 255, 0.6);
+      }
+
+      /* Variation 8: Amber Dark + Golden Hour Glow */
+      .variation-8 {
+        background: linear-gradient(
+          135deg,
+          var(--bg-amber-dark) 0%,
+          var(--bg-warm-dark) 100%
+        );
+      }
+
+      .variation-8 .nav {
+        border-bottom-color: rgba(255, 184, 77, 0.2);
+      }
+
+      .variation-8 .nav-brand {
+        color: var(--amber-warm);
+        text-shadow: 0 0 40px rgba(255, 184, 77, 0.8);
+      }
+
+      .variation-8 .nav-link {
+        color: var(--gold-light);
+      }
+
+      .variation-8 .nav-link:hover {
+        color: var(--amber-warm);
+      }
+
+      .variation-8 .nav-link::after {
+        background: var(--amber-warm);
+      }
+
+      .variation-8 .hero-subtitle {
+        color: var(--gold-vintage);
+      }
+
+      .variation-8 .hero-title {
+        color: var(--amber-warm);
+        text-shadow: 0 0 60px rgba(255, 184, 77, 0.8);
+      }
+
+      .variation-8 .hero-description {
+        color: var(--gold-light);
+      }
+
+      .variation-8 .btn-primary {
+        background: var(--purple-playful);
+        border-color: var(--purple-playful);
+        color: var(--bg-amber-dark);
+        font-weight: 700;
+      }
+
+      .variation-8 .btn-primary:hover {
+        box-shadow: 0 0 40px rgba(216, 150, 255, 0.8);
+      }
+
+      .variation-8 .btn-secondary {
+        background: transparent;
+        border-color: var(--amber-warm);
+        color: var(--amber-warm);
+      }
+
+      .variation-8 .btn-secondary:hover {
+        background: var(--amber-warm);
+        color: var(--bg-amber-dark);
+        box-shadow: 0 0 30px rgba(255, 184, 77, 0.6);
+      }
+
+      .variation-8 .tour-grid h2 {
+        color: var(--amber-warm);
+        text-shadow: 0 0 30px rgba(255, 184, 77, 0.5);
+      }
+
+      .variation-8 .tour-card {
+        background: var(--bg-warm-medium);
+        border-color: rgba(255, 184, 77, 0.3);
+      }
+
+      .variation-8 .tour-card:hover {
+        border-color: var(--amber-warm);
+        box-shadow: 0 10px 50px rgba(255, 184, 77, 0.4);
+      }
+
+      .variation-8 .tour-date {
+        color: var(--amber-warm);
+        font-weight: 600;
+      }
+
+      .variation-8 .tour-venue {
+        color: var(--purple-liggi);
+      }
+
+      .variation-8 .tour-location {
+        color: var(--gold-light);
+        opacity: 0.8;
+      }
+
+      .variation-8 .tour-card .btn {
+        background: transparent;
+        border-color: var(--purple-playful);
+        color: var(--purple-playful);
+        font-weight: 600;
+      }
+
+      .variation-8 .tour-card .btn:hover {
+        background: var(--purple-playful);
+        color: var(--bg-warm-medium);
+        box-shadow: 0 0 25px rgba(216, 150, 255, 0.7);
+      }
+
+      /* Variation 9: Light Cream Background + Purple Pop */
+      .variation-9 {
+        background-color: var(--bg-cream);
+      }
+
+      .variation-9 .nav {
+        border-bottom-color: var(--bg-beige);
+      }
+
+      .variation-9 .nav-brand {
+        color: var(--purple-playful);
+        text-shadow: 0 0 20px rgba(216, 150, 255, 0.4);
+      }
+
+      .variation-9 .nav-link {
+        color: var(--text-dark-brown);
+      }
+
+      .variation-9 .nav-link:hover {
+        color: var(--purple-playful);
+      }
+
+      .variation-9 .nav-link::after {
+        background: var(--purple-playful);
+      }
+
+      .variation-9 .hero-subtitle {
+        color: var(--gold-vintage);
+      }
+
+      .variation-9 .hero-title {
+        color: var(--purple-playful);
+        text-shadow: 0 0 40px rgba(216, 150, 255, 0.3);
+      }
+
+      .variation-9 .hero-description {
+        color: var(--text-dark-brown);
+      }
+
+      .variation-9 .btn-primary {
+        background: var(--purple-playful);
+        border-color: var(--purple-playful);
+        color: var(--bg-cream);
+        font-weight: 700;
+      }
+
+      .variation-9 .btn-primary:hover {
+        background: var(--purple-liggi);
+        box-shadow: 0 0 40px rgba(216, 150, 255, 0.6);
+      }
+
+      .variation-9 .btn-secondary {
+        background: transparent;
+        border-color: var(--gold-vintage);
+        color: var(--gold-vintage);
+      }
+
+      .variation-9 .btn-secondary:hover {
+        background: var(--gold-vintage);
+        color: var(--bg-cream);
+      }
+
+      .variation-9 .tour-grid h2 {
+        color: var(--text-dark-brown);
+      }
+
+      .variation-9 .tour-card {
+        background: var(--text-white);
+        border-color: var(--bg-beige);
+      }
+
+      .variation-9 .tour-card:hover {
+        border-color: var(--purple-playful);
+        box-shadow: 0 10px 40px rgba(216, 150, 255, 0.3);
+      }
+
+      .variation-9 .tour-date {
+        color: var(--gold-vintage);
+        font-weight: 600;
+      }
+
+      .variation-9 .tour-venue {
+        color: var(--purple-playful);
+      }
+
+      .variation-9 .tour-location {
+        color: var(--text-dark-brown);
+        opacity: 0.6;
+      }
+
+      .variation-9 .tour-card .btn {
+        background: var(--purple-playful);
+        border-color: var(--purple-playful);
+        color: var(--text-white);
+        font-weight: 600;
+      }
+
+      .variation-9 .tour-card .btn:hover {
+        background: var(--purple-liggi);
+        box-shadow: 0 0 25px rgba(216, 150, 255, 0.5);
+      }
+
+      /* Variation 10: Deep Brown + Amber Accent Lighting */
+      .variation-10 {
+        background-color: var(--bg-warm-dark);
+      }
+
+      .variation-10 .nav {
+        border-bottom-color: rgba(255, 184, 77, 0.3);
+      }
+
+      .variation-10 .nav-brand {
+        color: var(--amber-warm);
+        text-shadow: 0 0 50px rgba(255, 184, 77, 1);
+        font-size: 32px;
+      }
+
+      .variation-10 .nav-link {
+        color: var(--gold-cream);
+      }
+
+      .variation-10 .nav-link:hover {
+        color: var(--purple-liggi);
+      }
+
+      .variation-10 .nav-link::after {
+        background: linear-gradient(
+          90deg,
+          var(--amber-warm),
+          var(--purple-playful)
+        );
+      }
+
+      .variation-10 .hero-subtitle {
+        color: var(--purple-playful);
+      }
+
+      .variation-10 .hero-title {
+        background: linear-gradient(
+          135deg,
+          var(--amber-warm) 0%,
+          var(--gold-cream) 50%,
+          var(--purple-liggi) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 40px rgba(255, 184, 77, 0.6));
+      }
+
+      .variation-10 .hero-description {
+        color: var(--bg-cream-dark);
+      }
+
+      .variation-10 .btn-primary {
+        background: linear-gradient(
+          135deg,
+          var(--amber-warm),
+          var(--purple-playful)
+        );
+        border-color: transparent;
+        color: var(--bg-warm-dark);
+        font-weight: 700;
+      }
+
+      .variation-10 .btn-primary:hover {
+        box-shadow: 0 0 50px rgba(255, 184, 77, 0.8);
+      }
+
+      .variation-10 .btn-secondary {
+        background: transparent;
+        border-color: var(--gold-cream);
+        color: var(--gold-cream);
+      }
+
+      .variation-10 .btn-secondary:hover {
+        background: var(--gold-cream);
+        color: var(--bg-warm-dark);
+      }
+
+      .variation-10 .tour-grid h2 {
+        color: var(--amber-warm);
+        text-shadow: 0 0 40px rgba(255, 184, 77, 0.7);
+      }
+
+      .variation-10 .tour-card {
+        background: var(--bg-brown-soft);
+        border: 2px solid transparent;
+        background-image: linear-gradient(
+            var(--bg-brown-soft),
+            var(--bg-brown-soft)
+          ),
+          linear-gradient(
+            135deg,
+            var(--amber-warm) 0%,
+            var(--purple-playful) 100%
+          );
+        background-origin: border-box;
+        background-clip: padding-box, border-box;
+      }
+
+      .variation-10 .tour-card:hover {
+        box-shadow: 0 10px 50px rgba(255, 184, 77, 0.3),
+          0 0 30px rgba(216, 150, 255, 0.3);
+      }
+
+      .variation-10 .tour-date {
+        color: var(--amber-warm);
+        font-weight: 700;
+        text-shadow: 0 0 15px rgba(255, 184, 77, 0.5);
+      }
+
+      .variation-10 .tour-venue {
+        color: var(--purple-liggi);
+        text-shadow: 0 0 15px rgba(224, 163, 255, 0.4);
+      }
+
+      .variation-10 .tour-location {
+        color: var(--gold-light);
+      }
+
+      .variation-10 .tour-card .btn {
+        background: transparent;
+        border: 2px solid transparent;
+        background-image: linear-gradient(
+            var(--bg-brown-soft),
+            var(--bg-brown-soft)
+          ),
+          linear-gradient(
+            135deg,
+            var(--amber-warm) 0%,
+            var(--purple-playful) 100%
+          );
+        background-origin: border-box;
+        background-clip: padding-box, border-box;
+        color: var(--gold-cream);
+        font-weight: 700;
+      }
+
+      .variation-10 .tour-card .btn:hover {
+        background: linear-gradient(
+          135deg,
+          var(--amber-warm),
+          var(--purple-playful)
+        );
+        color: var(--bg-warm-dark);
+        box-shadow: 0 0 30px rgba(255, 184, 77, 0.7);
+      }
+
+      /* Variation 11: Warm Brown + Clean Vintage (V6+V10 Hybrid) */
+      .variation-11 {
+        background-color: var(--bg-warm-dark);
+      }
+
+      .variation-11 .nav {
+        border-bottom-color: rgba(212, 165, 116, 0.2);
+      }
+
+      .variation-11 .nav-brand {
+        color: var(--gold-cream);
+        text-shadow: -1px -1px 0 var(--gold-vintage),
+          1px -1px 0 var(--gold-vintage), -1px 1px 0 var(--gold-vintage),
+          1px 1px 0 var(--gold-vintage), 0 0 30px rgba(212, 165, 116, 0.5);
+      }
+
+      .variation-11 .nav-link {
+        color: var(--gold-cream);
+      }
+
+      .variation-11 .nav-link:hover {
+        color: var(--purple-playful);
+      }
+
+      .variation-11 .nav-link::after {
+        background: var(--purple-liggi);
+      }
+
+      .variation-11 .hero-subtitle {
+        color: var(--amber-warm);
+        font-size: 12px;
+      }
+
+      .variation-11 .hero-title {
+        color: var(--gold-cream);
+        text-shadow: -2px -2px 0 var(--gold-vintage),
+          2px -2px 0 var(--gold-vintage), -2px 2px 0 var(--gold-vintage),
+          2px 2px 0 var(--gold-vintage), 0 0 40px rgba(212, 165, 116, 0.6);
+        font-weight: 900;
+      }
+
+      .variation-11 .hero-description {
+        color: var(--text-light-gray);
+      }
+
+      .variation-11 .btn-primary {
+        background: var(--purple-playful);
+        border-color: var(--purple-playful);
+        color: var(--bg-warm-dark);
+        font-weight: 700;
+      }
+
+      .variation-11 .btn-primary:hover {
+        background: var(--purple-liggi);
+        box-shadow: 0 0 35px rgba(216, 150, 255, 0.7);
+      }
+
+      .variation-11 .btn-secondary {
+        background: transparent;
+        border-color: var(--gold-vintage);
+        color: var(--gold-cream);
+      }
+
+      .variation-11 .btn-secondary:hover {
+        background: var(--gold-vintage);
+        color: var(--bg-warm-dark);
+      }
+
+      .variation-11 .tour-grid h2 {
+        color: var(--gold-cream);
+        text-shadow: 0 0 20px rgba(212, 165, 116, 0.4);
+      }
+
+      .variation-11 .tour-card {
+        background: var(--bg-warm-medium);
+        border-color: rgba(212, 165, 116, 0.2);
+      }
+
+      .variation-11 .tour-card:hover {
+        border-color: var(--purple-playful);
+        box-shadow: 0 10px 40px rgba(216, 150, 255, 0.3);
+      }
+
+      .variation-11 .tour-date {
+        color: var(--amber-warm);
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .variation-11 .tour-venue {
+        color: var(--purple-liggi);
+        text-shadow: 0 0 15px rgba(224, 163, 255, 0.4);
+      }
+
+      .variation-11 .tour-location {
+        color: var(--gold-cream);
+        opacity: 0.8;
+      }
+
+      .variation-11 .tour-card .btn {
+        background: transparent;
+        border-color: var(--purple-playful);
+        color: var(--purple-playful);
+        font-weight: 600;
+      }
+
+      .variation-11 .tour-card .btn:hover {
+        background: var(--purple-playful);
+        color: var(--bg-warm-dark);
+        box-shadow: 0 0 25px rgba(216, 150, 255, 0.6);
+      }
+
+      /* Variation 12: Deep Plum - Velvet Nightclub Luxury */
+      .variation-12 {
+        background-color: var(--bg-plum-dark);
+      }
+
+      .variation-12 .nav {
+        border-bottom-color: rgba(224, 163, 255, 0.2);
+      }
+
+      .variation-12 .nav-brand {
+        color: var(--gold-cream);
+        text-shadow: -1px -1px 0 var(--gold-vintage),
+          1px -1px 0 var(--gold-vintage), -1px 1px 0 var(--gold-vintage),
+          1px 1px 0 var(--gold-vintage), 0 0 35px rgba(212, 165, 116, 0.6);
+      }
+
+      .variation-12 .nav-link {
+        color: var(--purple-liggi);
+      }
+
+      .variation-12 .nav-link:hover {
+        color: var(--gold-cream);
+      }
+
+      .variation-12 .nav-link::after {
+        background: var(--gold-champagne);
+      }
+
+      .variation-12 .hero-subtitle {
+        color: var(--purple-playful);
+        font-size: 12px;
+      }
+
+      .variation-12 .hero-title {
+        color: var(--gold-cream);
+        text-shadow: -2px -2px 0 var(--gold-vintage),
+          2px -2px 0 var(--gold-vintage), -2px 2px 0 var(--gold-vintage),
+          2px 2px 0 var(--gold-vintage), 0 0 45px rgba(212, 165, 116, 0.7);
+        font-weight: 900;
+      }
+
+      .variation-12 .hero-description {
+        color: var(--text-light-gray);
+      }
+
+      .variation-12 .btn-primary {
+        background: var(--purple-playful);
+        border-color: var(--purple-playful);
+        color: var(--bg-plum-dark);
+        font-weight: 700;
+      }
+
+      .variation-12 .btn-primary:hover {
+        background: var(--purple-liggi);
+        box-shadow: 0 0 40px rgba(216, 150, 255, 0.8);
+      }
+
+      .variation-12 .btn-secondary {
+        background: transparent;
+        border-color: var(--gold-champagne);
+        color: var(--gold-champagne);
+      }
+
+      .variation-12 .btn-secondary:hover {
+        background: var(--gold-champagne);
+        color: var(--bg-plum-dark);
+      }
+
+      .variation-12 .tour-grid h2 {
+        color: var(--purple-liggi);
+        text-shadow: 0 0 25px rgba(224, 163, 255, 0.5);
+      }
+
+      .variation-12 .tour-card {
+        background: var(--bg-plum-card);
+        border-color: rgba(224, 163, 255, 0.3);
+      }
+
+      .variation-12 .tour-card:hover {
+        border-color: var(--purple-playful);
+        box-shadow: 0 10px 40px rgba(216, 150, 255, 0.4);
+      }
+
+      .variation-12 .tour-date {
+        color: var(--gold-champagne);
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .variation-12 .tour-venue {
+        color: var(--purple-liggi);
+        text-shadow: 0 0 15px rgba(224, 163, 255, 0.4);
+      }
+
+      .variation-12 .tour-location {
+        color: var(--gold-light);
+        opacity: 0.8;
+      }
+
+      .variation-12 .tour-card .btn {
+        background: transparent;
+        border-color: var(--purple-playful);
+        color: var(--purple-playful);
+        font-weight: 600;
+      }
+
+      .variation-12 .tour-card .btn:hover {
+        background: var(--purple-playful);
+        color: var(--bg-plum-dark);
+        box-shadow: 0 0 25px rgba(216, 150, 255, 0.7);
+      }
+
+      /* Variation 13: Winter Twilight - Norwegian Midnight Sky */
+      .variation-13 {
+        background-color: var(--bg-twilight);
+      }
+
+      .variation-13 .nav {
+        border-bottom-color: rgba(216, 150, 255, 0.15);
+      }
+
+      .variation-13 .nav-brand {
+        color: var(--gold-cream);
+        text-shadow: -1px -1px 0 var(--gold-vintage),
+          1px -1px 0 var(--gold-vintage), -1px 1px 0 var(--gold-vintage),
+          1px 1px 0 var(--gold-vintage), 0 0 30px rgba(212, 165, 116, 0.5);
+      }
+
+      .variation-13 .nav-link {
+        color: var(--gold-light);
+      }
+
+      .variation-13 .nav-link:hover {
+        color: var(--purple-liggi);
+      }
+
+      .variation-13 .nav-link::after {
+        background: var(--purple-playful);
+      }
+
+      .variation-13 .hero-subtitle {
+        color: var(--purple-playful);
+        font-size: 12px;
+      }
+
+      .variation-13 .hero-title {
+        color: var(--gold-cream);
+        text-shadow: -2px -2px 0 var(--gold-vintage),
+          2px -2px 0 var(--gold-vintage), -2px 2px 0 var(--gold-vintage),
+          2px 2px 0 var(--gold-vintage), 0 0 40px rgba(212, 165, 116, 0.6);
+        font-weight: 900;
+      }
+
+      .variation-13 .hero-description {
+        color: var(--text-light-gray);
+      }
+
+      .variation-13 .btn-primary {
+        background: var(--purple-playful);
+        border-color: var(--purple-playful);
+        color: var(--bg-twilight);
+        font-weight: 700;
+      }
+
+      .variation-13 .btn-primary:hover {
+        background: var(--purple-liggi);
+        box-shadow: 0 0 35px rgba(216, 150, 255, 0.7);
+      }
+
+      .variation-13 .btn-secondary {
+        background: transparent;
+        border-color: var(--gold-vintage);
+        color: var(--gold-cream);
+      }
+
+      .variation-13 .btn-secondary:hover {
+        background: var(--gold-vintage);
+        color: var(--bg-twilight);
+      }
+
+      .variation-13 .tour-grid h2 {
+        color: var(--gold-cream);
+        text-shadow: 0 0 20px rgba(212, 165, 116, 0.4);
+      }
+
+      .variation-13 .tour-card {
+        background: var(--bg-twilight-card);
+        border-color: rgba(216, 150, 255, 0.2);
+      }
+
+      .variation-13 .tour-card:hover {
+        border-color: var(--purple-playful);
+        box-shadow: 0 10px 40px rgba(216, 150, 255, 0.3);
+      }
+
+      .variation-13 .tour-date {
+        color: var(--amber-warm);
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .variation-13 .tour-venue {
+        color: var(--purple-liggi);
+        text-shadow: 0 0 15px rgba(224, 163, 255, 0.4);
+      }
+
+      .variation-13 .tour-location {
+        color: var(--gold-light);
+        opacity: 0.8;
+      }
+
+      .variation-13 .tour-card .btn {
+        background: transparent;
+        border-color: var(--purple-playful);
+        color: var(--purple-playful);
+        font-weight: 600;
+      }
+
+      .variation-13 .tour-card .btn:hover {
+        background: var(--purple-playful);
+        color: var(--bg-twilight);
+        box-shadow: 0 0 25px rgba(216, 150, 255, 0.6);
+      }
+
+      @media (max-width: 768px) {
+        .hero-title {
+          font-size: 56px;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .info-panel {
+          display: none;
+        }
+
+        .direction-buttons {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Direction Selector -->
+    <div class="direction-selector">
+      <h2>Refined Direction 1 - Color Variations</h2>
+      <div class="direction-buttons">
+        <button class="direction-btn active" data-direction="1">
+          V1: Pink Hero + Gold Accents
+        </button>
+        <button class="direction-btn" data-direction="2">
+          V2: Pink/Purple Gradient Hero
+        </button>
+        <button class="direction-btn" data-direction="3">
+          V3: Hot Pink + Minimal Gold
+        </button>
+        <button class="direction-btn" data-direction="4">
+          V4: Pink + Purple + Gold Body
+        </button>
+        <button class="direction-btn" data-direction="5">
+          V5: Vibrant Pink + White + Gold Hints
+        </button>
+        <button class="direction-btn" data-direction="6">
+          V6: "Liggi" - Warm Vintage Gold + Playful Purple
+        </button>
+        <button class="direction-btn" data-direction="7">
+          V7: Warm Brown Background + Cream Cards
+        </button>
+        <button class="direction-btn" data-direction="8">
+          V8: Amber Dark + Golden Hour Glow
+        </button>
+        <button class="direction-btn" data-direction="9">
+          V9: Light Cream Background + Purple Pop
+        </button>
+        <button class="direction-btn" data-direction="10">
+          V10: Deep Brown + Amber Accent Lighting
+        </button>
+        <button class="direction-btn" data-direction="11">
+          V11: Warm Brown + Clean Vintage (V6+V10 Hybrid)
+        </button>
+        <button class="direction-btn" data-direction="12">
+          V12: Deep Plum - Velvet Nightclub Luxury
+        </button>
+        <button class="direction-btn" data-direction="13">
+          V13: Winter Twilight - Norwegian Midnight Sky
+        </button>
+      </div>
+    </div>
+
+    <!-- Mockup Container -->
+    <div class="mockup-container">
+      <!-- Variation 1: Pink Hero + Gold Accents -->
+      <div class="mockup variation-1 active" id="mockup-1">
+        <div class="container">
+          <nav class="nav">
+            <div class="nav-brand">BREIZAAS</div>
+            <ul class="nav-links">
+              <li><a href="#" class="nav-link">Hjem</a></li>
+              <li><a href="#" class="nav-link">Konserter</a></li>
+              <li><a href="#" class="nav-link">Musikk</a></li>
+              <li><a href="#" class="nav-link">Arrangor</a></li>
+            </ul>
+          </nav>
+
+          <section class="hero">
+            <div class="hero-subtitle">Norsk Bygdemusikk</div>
+            <h1 class="hero-title">BREIZAAS</h1>
+            <p class="hero-description">
+              125,000 lyttere på Spotify. Moderne norsk party musikk som får
+              hele Norge til å danse. Ekte bygdemusikk for den nye generasjonen.
+            </p>
+            <div class="hero-cta">
+              <a href="#" class="btn btn-primary">Se Konserter</a>
+              <a href="#" class="btn btn-secondary">Lytt på Spotify</a>
+            </div>
+          </section>
+
+          <section class="tour-grid">
+            <h2>Kommende Konserter</h2>
+            <div class="grid">
+              <div class="tour-card">
+                <div class="tour-date">15. Januar 2025</div>
+                <h3 class="tour-venue">Rockefeller Music Hall</h3>
+                <p class="tour-location">Oslo, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+              <div class="tour-card">
+                <div class="tour-date">22. Januar 2025</div>
+                <h3 class="tour-venue">USF Verftet</h3>
+                <p class="tour-location">Bergen, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+              <div class="tour-card">
+                <div class="tour-date">5. Februar 2025</div>
+                <h3 class="tour-venue">Folken</h3>
+                <p class="tour-location">Stavanger, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Variation 2: Pink/Purple Gradient Hero -->
+      <div class="mockup variation-2" id="mockup-2">
+        <div class="container">
+          <nav class="nav">
+            <div class="nav-brand">BREIZAAS</div>
+            <ul class="nav-links">
+              <li><a href="#" class="nav-link">Hjem</a></li>
+              <li><a href="#" class="nav-link">Konserter</a></li>
+              <li><a href="#" class="nav-link">Musikk</a></li>
+              <li><a href="#" class="nav-link">Arrangor</a></li>
+            </ul>
+          </nav>
+
+          <section class="hero">
+            <div class="hero-subtitle">Norsk Bygdemusikk</div>
+            <h1 class="hero-title">BREIZAAS</h1>
+            <p class="hero-description">
+              125,000 lyttere på Spotify. Moderne norsk party musikk som får
+              hele Norge til å danse. Ekte bygdemusikk for den nye generasjonen.
+            </p>
+            <div class="hero-cta">
+              <a href="#" class="btn btn-primary">Se Konserter</a>
+              <a href="#" class="btn btn-secondary">Lytt på Spotify</a>
+            </div>
+          </section>
+
+          <section class="tour-grid">
+            <h2>Kommende Konserter</h2>
+            <div class="grid">
+              <div class="tour-card">
+                <div class="tour-date">15. Januar 2025</div>
+                <h3 class="tour-venue">Rockefeller Music Hall</h3>
+                <p class="tour-location">Oslo, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+              <div class="tour-card">
+                <div class="tour-date">22. Januar 2025</div>
+                <h3 class="tour-venue">USF Verftet</h3>
+                <p class="tour-location">Bergen, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+              <div class="tour-card">
+                <div class="tour-date">5. Februar 2025</div>
+                <h3 class="tour-venue">Folken</h3>
+                <p class="tour-location">Stavanger, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Variation 3: Hot Pink + Minimal Gold -->
+      <div class="mockup variation-3" id="mockup-3">
+        <div class="container">
+          <nav class="nav">
+            <div class="nav-brand">BREIZAAS</div>
+            <ul class="nav-links">
+              <li><a href="#" class="nav-link">Hjem</a></li>
+              <li><a href="#" class="nav-link">Konserter</a></li>
+              <li><a href="#" class="nav-link">Musikk</a></li>
+              <li><a href="#" class="nav-link">Arrangor</a></li>
+            </ul>
+          </nav>
+
+          <section class="hero">
+            <div class="hero-subtitle">Norsk Bygdemusikk</div>
+            <h1 class="hero-title">BREIZAAS</h1>
+            <p class="hero-description">
+              125,000 lyttere på Spotify. Moderne norsk party musikk som får
+              hele Norge til å danse. Ekte bygdemusikk for den nye generasjonen.
+            </p>
+            <div class="hero-cta">
+              <a href="#" class="btn btn-primary">Se Konserter</a>
+              <a href="#" class="btn btn-secondary">Lytt på Spotify</a>
+            </div>
+          </section>
+
+          <section class="tour-grid">
+            <h2>Kommende Konserter</h2>
+            <div class="grid">
+              <div class="tour-card">
+                <div class="tour-date">15. Januar 2025</div>
+                <h3 class="tour-venue">Rockefeller Music Hall</h3>
+                <p class="tour-location">Oslo, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+              <div class="tour-card">
+                <div class="tour-date">22. Januar 2025</div>
+                <h3 class="tour-venue">USF Verftet</h3>
+                <p class="tour-location">Bergen, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+              <div class="tour-card">
+                <div class="tour-date">5. Februar 2025</div>
+                <h3 class="tour-venue">Folken</h3>
+                <p class="tour-location">Stavanger, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Variation 4: Pink + Purple + Gold Body -->
+      <div class="mockup variation-4" id="mockup-4">
+        <div class="container">
+          <nav class="nav">
+            <div class="nav-brand">BREIZAAS</div>
+            <ul class="nav-links">
+              <li><a href="#" class="nav-link">Hjem</a></li>
+              <li><a href="#" class="nav-link">Konserter</a></li>
+              <li><a href="#" class="nav-link">Musikk</a></li>
+              <li><a href="#" class="nav-link">Arrangor</a></li>
+            </ul>
+          </nav>
+
+          <section class="hero">
+            <div class="hero-subtitle">Norsk Bygdemusikk</div>
+            <h1 class="hero-title">BREIZAAS</h1>
+            <p class="hero-description">
+              125,000 lyttere på Spotify. Moderne norsk party musikk som får
+              hele Norge til å danse. Ekte bygdemusikk for den nye generasjonen.
+            </p>
+            <div class="hero-cta">
+              <a href="#" class="btn btn-primary">Se Konserter</a>
+              <a href="#" class="btn btn-secondary">Lytt på Spotify</a>
+            </div>
+          </section>
+
+          <section class="tour-grid">
+            <h2>Kommende Konserter</h2>
+            <div class="grid">
+              <div class="tour-card">
+                <div class="tour-date">15. Januar 2025</div>
+                <h3 class="tour-venue">Rockefeller Music Hall</h3>
+                <p class="tour-location">Oslo, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+              <div class="tour-card">
+                <div class="tour-date">22. Januar 2025</div>
+                <h3 class="tour-venue">USF Verftet</h3>
+                <p class="tour-location">Bergen, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+              <div class="tour-card">
+                <div class="tour-date">5. Februar 2025</div>
+                <h3 class="tour-venue">Folken</h3>
+                <p class="tour-location">Stavanger, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Variation 5: Vibrant Pink + White + Gold Hints -->
+      <div class="mockup variation-5" id="mockup-5">
+        <div class="container">
+          <nav class="nav">
+            <div class="nav-brand">BREIZAAS</div>
+            <ul class="nav-links">
+              <li><a href="#" class="nav-link">Hjem</a></li>
+              <li><a href="#" class="nav-link">Konserter</a></li>
+              <li><a href="#" class="nav-link">Musikk</a></li>
+              <li><a href="#" class="nav-link">Arrangor</a></li>
+            </ul>
+          </nav>
+
+          <section class="hero">
+            <div class="hero-subtitle">Norsk Bygdemusikk</div>
+            <h1 class="hero-title">BREIZAAS</h1>
+            <p class="hero-description">
+              125,000 lyttere på Spotify. Moderne norsk party musikk som får
+              hele Norge til å danse. Ekte bygdemusikk for den nye generasjonen.
+            </p>
+            <div class="hero-cta">
+              <a href="#" class="btn btn-primary">Se Konserter</a>
+              <a href="#" class="btn btn-secondary">Lytt på Spotify</a>
+            </div>
+          </section>
+
+          <section class="tour-grid">
+            <h2>Kommende Konserter</h2>
+            <div class="grid">
+              <div class="tour-card">
+                <div class="tour-date">15. Januar 2025</div>
+                <h3 class="tour-venue">Rockefeller Music Hall</h3>
+                <p class="tour-location">Oslo, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+              <div class="tour-card">
+                <div class="tour-date">22. Januar 2025</div>
+                <h3 class="tour-venue">USF Verftet</h3>
+                <p class="tour-location">Bergen, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+              <div class="tour-card">
+                <div class="tour-date">5. Februar 2025</div>
+                <h3 class="tour-venue">Folken</h3>
+                <p class="tour-location">Stavanger, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Variation 6: "Liggi" - Warm Vintage Gold + Playful Purple -->
+      <div class="mockup variation-6" id="mockup-6">
+        <div class="container">
+          <nav class="nav">
+            <div class="nav-brand">BREIZAAS</div>
+            <ul class="nav-links">
+              <li><a href="#" class="nav-link">Hjem</a></li>
+              <li><a href="#" class="nav-link">Konserter</a></li>
+              <li><a href="#" class="nav-link">Musikk</a></li>
+              <li><a href="#" class="nav-link">Arrangor</a></li>
+            </ul>
+          </nav>
+
+          <section class="hero">
+            <div class="hero-subtitle">Norsk Bygdemusikk</div>
+            <h1 class="hero-title">BREIZAAS</h1>
+            <p class="hero-description">
+              125,000 lyttere på Spotify. Moderne norsk party musikk som får
+              hele Norge til å danse. Ekte bygdemusikk for den nye generasjonen.
+            </p>
+            <div class="hero-cta">
+              <a href="#" class="btn btn-primary">Se Konserter</a>
+              <a href="#" class="btn btn-secondary">Lytt på Spotify</a>
+            </div>
+          </section>
+
+          <section class="tour-grid">
+            <h2>Kommende Konserter</h2>
+            <div class="grid">
+              <div class="tour-card">
+                <div class="tour-date">15. Januar 2025</div>
+                <h3 class="tour-venue">Rockefeller Music Hall</h3>
+                <p class="tour-location">Oslo, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+              <div class="tour-card">
+                <div class="tour-date">22. Januar 2025</div>
+                <h3 class="tour-venue">USF Verftet</h3>
+                <p class="tour-location">Bergen, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+              <div class="tour-card">
+                <div class="tour-date">5. Februar 2025</div>
+                <h3 class="tour-venue">Folken</h3>
+                <p class="tour-location">Stavanger, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Variation 7: Warm Brown Background + Cream Cards -->
+      <div class="mockup variation-7" id="mockup-7">
+        <div class="container">
+          <nav class="nav">
+            <div class="nav-brand">BREIZAAS</div>
+            <ul class="nav-links">
+              <li><a href="#" class="nav-link">Hjem</a></li>
+              <li><a href="#" class="nav-link">Konserter</a></li>
+              <li><a href="#" class="nav-link">Musikk</a></li>
+              <li><a href="#" class="nav-link">Arrangor</a></li>
+            </ul>
+          </nav>
+
+          <section class="hero">
+            <div class="hero-subtitle">Norsk Bygdemusikk</div>
+            <h1 class="hero-title">BREIZAAS</h1>
+            <p class="hero-description">
+              125,000 lyttere på Spotify. Moderne norsk party musikk som får
+              hele Norge til å danse. Ekte bygdemusikk for den nye generasjonen.
+            </p>
+            <div class="hero-cta">
+              <a href="#" class="btn btn-primary">Se Konserter</a>
+              <a href="#" class="btn btn-secondary">Lytt på Spotify</a>
+            </div>
+          </section>
+
+          <section class="tour-grid">
+            <h2>Kommende Konserter</h2>
+            <div class="grid">
+              <div class="tour-card">
+                <div class="tour-date">15. Januar 2025</div>
+                <h3 class="tour-venue">Rockefeller Music Hall</h3>
+                <p class="tour-location">Oslo, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+              <div class="tour-card">
+                <div class="tour-date">22. Januar 2025</div>
+                <h3 class="tour-venue">USF Verftet</h3>
+                <p class="tour-location">Bergen, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+              <div class="tour-card">
+                <div class="tour-date">5. Februar 2025</div>
+                <h3 class="tour-venue">Folken</h3>
+                <p class="tour-location">Stavanger, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Variation 8: Amber Dark + Golden Hour Glow -->
+      <div class="mockup variation-8" id="mockup-8">
+        <div class="container">
+          <nav class="nav">
+            <div class="nav-brand">BREIZAAS</div>
+            <ul class="nav-links">
+              <li><a href="#" class="nav-link">Hjem</a></li>
+              <li><a href="#" class="nav-link">Konserter</a></li>
+              <li><a href="#" class="nav-link">Musikk</a></li>
+              <li><a href="#" class="nav-link">Arrangor</a></li>
+            </ul>
+          </nav>
+
+          <section class="hero">
+            <div class="hero-subtitle">Norsk Bygdemusikk</div>
+            <h1 class="hero-title">BREIZAAS</h1>
+            <p class="hero-description">
+              125,000 lyttere på Spotify. Moderne norsk party musikk som får
+              hele Norge til å danse. Ekte bygdemusikk for den nye generasjonen.
+            </p>
+            <div class="hero-cta">
+              <a href="#" class="btn btn-primary">Se Konserter</a>
+              <a href="#" class="btn btn-secondary">Lytt på Spotify</a>
+            </div>
+          </section>
+
+          <section class="tour-grid">
+            <h2>Kommende Konserter</h2>
+            <div class="grid">
+              <div class="tour-card">
+                <div class="tour-date">15. Januar 2025</div>
+                <h3 class="tour-venue">Rockefeller Music Hall</h3>
+                <p class="tour-location">Oslo, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+              <div class="tour-card">
+                <div class="tour-date">22. Januar 2025</div>
+                <h3 class="tour-venue">USF Verftet</h3>
+                <p class="tour-location">Bergen, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+              <div class="tour-card">
+                <div class="tour-date">5. Februar 2025</div>
+                <h3 class="tour-venue">Folken</h3>
+                <p class="tour-location">Stavanger, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Variation 9: Light Cream Background + Purple Pop -->
+      <div class="mockup variation-9" id="mockup-9">
+        <div class="container">
+          <nav class="nav">
+            <div class="nav-brand">BREIZAAS</div>
+            <ul class="nav-links">
+              <li><a href="#" class="nav-link">Hjem</a></li>
+              <li><a href="#" class="nav-link">Konserter</a></li>
+              <li><a href="#" class="nav-link">Musikk</a></li>
+              <li><a href="#" class="nav-link">Arrangor</a></li>
+            </ul>
+          </nav>
+
+          <section class="hero">
+            <div class="hero-subtitle">Norsk Bygdemusikk</div>
+            <h1 class="hero-title">BREIZAAS</h1>
+            <p class="hero-description">
+              125,000 lyttere på Spotify. Moderne norsk party musikk som får
+              hele Norge til å danse. Ekte bygdemusikk for den nye generasjonen.
+            </p>
+            <div class="hero-cta">
+              <a href="#" class="btn btn-primary">Se Konserter</a>
+              <a href="#" class="btn btn-secondary">Lytt på Spotify</a>
+            </div>
+          </section>
+
+          <section class="tour-grid">
+            <h2>Kommende Konserter</h2>
+            <div class="grid">
+              <div class="tour-card">
+                <div class="tour-date">15. Januar 2025</div>
+                <h3 class="tour-venue">Rockefeller Music Hall</h3>
+                <p class="tour-location">Oslo, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+              <div class="tour-card">
+                <div class="tour-date">22. Januar 2025</div>
+                <h3 class="tour-venue">USF Verftet</h3>
+                <p class="tour-location">Bergen, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+              <div class="tour-card">
+                <div class="tour-date">5. Februar 2025</div>
+                <h3 class="tour-venue">Folken</h3>
+                <p class="tour-location">Stavanger, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Variation 10: Deep Brown + Amber Accent Lighting -->
+      <div class="mockup variation-10" id="mockup-10">
+        <div class="container">
+          <nav class="nav">
+            <div class="nav-brand">BREIZAAS</div>
+            <ul class="nav-links">
+              <li><a href="#" class="nav-link">Hjem</a></li>
+              <li><a href="#" class="nav-link">Konserter</a></li>
+              <li><a href="#" class="nav-link">Musikk</a></li>
+              <li><a href="#" class="nav-link">Arrangor</a></li>
+            </ul>
+          </nav>
+
+          <section class="hero">
+            <div class="hero-subtitle">Norsk Bygdemusikk</div>
+            <h1 class="hero-title">BREIZAAS</h1>
+            <p class="hero-description">
+              125,000 lyttere på Spotify. Moderne norsk party musikk som får
+              hele Norge til å danse. Ekte bygdemusikk for den nye generasjonen.
+            </p>
+            <div class="hero-cta">
+              <a href="#" class="btn btn-primary">Se Konserter</a>
+              <a href="#" class="btn btn-secondary">Lytt på Spotify</a>
+            </div>
+          </section>
+
+          <section class="tour-grid">
+            <h2>Kommende Konserter</h2>
+            <div class="grid">
+              <div class="tour-card">
+                <div class="tour-date">15. Januar 2025</div>
+                <h3 class="tour-venue">Rockefeller Music Hall</h3>
+                <p class="tour-location">Oslo, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+              <div class="tour-card">
+                <div class="tour-date">22. Januar 2025</div>
+                <h3 class="tour-venue">USF Verftet</h3>
+                <p class="tour-location">Bergen, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+              <div class="tour-card">
+                <div class="tour-date">5. Februar 2025</div>
+                <h3 class="tour-venue">Folken</h3>
+                <p class="tour-location">Stavanger, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Variation 11: Warm Brown + Clean Vintage (V6+V10 Hybrid) -->
+      <div class="mockup variation-11" id="mockup-11">
+        <div class="container">
+          <nav class="nav">
+            <div class="nav-brand">BREIZAAS</div>
+            <ul class="nav-links">
+              <li><a href="#" class="nav-link">Hjem</a></li>
+              <li><a href="#" class="nav-link">Konserter</a></li>
+              <li><a href="#" class="nav-link">Musikk</a></li>
+              <li><a href="#" class="nav-link">Arrangor</a></li>
+            </ul>
+          </nav>
+
+          <section class="hero">
+            <div class="hero-subtitle">Norsk Bygdemusikk</div>
+            <h1 class="hero-title">BREIZAAS</h1>
+            <p class="hero-description">
+              125,000 lyttere på Spotify. Moderne norsk party musikk som får
+              hele Norge til å danse. Ekte bygdemusikk for den nye generasjonen.
+            </p>
+            <div class="hero-cta">
+              <a href="#" class="btn btn-primary">Se Konserter</a>
+              <a href="#" class="btn btn-secondary">Lytt på Spotify</a>
+            </div>
+          </section>
+
+          <section class="tour-grid">
+            <h2>Kommende Konserter</h2>
+            <div class="grid">
+              <div class="tour-card">
+                <div class="tour-date">15. Januar 2025</div>
+                <h3 class="tour-venue">Rockefeller Music Hall</h3>
+                <p class="tour-location">Oslo, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+              <div class="tour-card">
+                <div class="tour-date">22. Januar 2025</div>
+                <h3 class="tour-venue">USF Verftet</h3>
+                <p class="tour-location">Bergen, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+              <div class="tour-card">
+                <div class="tour-date">5. Februar 2025</div>
+                <h3 class="tour-venue">Folken</h3>
+                <p class="tour-location">Stavanger, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Variation 12: Deep Plum - Velvet Nightclub Luxury -->
+      <div class="mockup variation-12" id="mockup-12">
+        <div class="container">
+          <nav class="nav">
+            <div class="nav-brand">BREIZAAS</div>
+            <ul class="nav-links">
+              <li><a href="#" class="nav-link">Hjem</a></li>
+              <li><a href="#" class="nav-link">Konserter</a></li>
+              <li><a href="#" class="nav-link">Musikk</a></li>
+              <li><a href="#" class="nav-link">Arrangor</a></li>
+            </ul>
+          </nav>
+
+          <section class="hero">
+            <div class="hero-subtitle">Norsk Bygdemusikk</div>
+            <h1 class="hero-title">BREIZAAS</h1>
+            <p class="hero-description">
+              125,000 lyttere på Spotify. Moderne norsk party musikk som får
+              hele Norge til å danse. Ekte bygdemusikk for den nye generasjonen.
+            </p>
+            <div class="hero-cta">
+              <a href="#" class="btn btn-primary">Se Konserter</a>
+              <a href="#" class="btn btn-secondary">Lytt på Spotify</a>
+            </div>
+          </section>
+
+          <section class="tour-grid">
+            <h2>Kommende Konserter</h2>
+            <div class="grid">
+              <div class="tour-card">
+                <div class="tour-date">15. Januar 2025</div>
+                <h3 class="tour-venue">Rockefeller Music Hall</h3>
+                <p class="tour-location">Oslo, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+              <div class="tour-card">
+                <div class="tour-date">22. Januar 2025</div>
+                <h3 class="tour-venue">USF Verftet</h3>
+                <p class="tour-location">Bergen, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+              <div class="tour-card">
+                <div class="tour-date">5. Februar 2025</div>
+                <h3 class="tour-venue">Folken</h3>
+                <p class="tour-location">Stavanger, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Variation 13: Winter Twilight - Norwegian Midnight Sky -->
+      <div class="mockup variation-13" id="mockup-13">
+        <div class="container">
+          <nav class="nav">
+            <div class="nav-brand">BREIZAAS</div>
+            <ul class="nav-links">
+              <li><a href="#" class="nav-link">Hjem</a></li>
+              <li><a href="#" class="nav-link">Konserter</a></li>
+              <li><a href="#" class="nav-link">Musikk</a></li>
+              <li><a href="#" class="nav-link">Arrangor</a></li>
+            </ul>
+          </nav>
+
+          <section class="hero">
+            <div class="hero-subtitle">Norsk Bygdemusikk</div>
+            <h1 class="hero-title">BREIZAAS</h1>
+            <p class="hero-description">
+              125,000 lyttere på Spotify. Moderne norsk party musikk som får
+              hele Norge til å danse. Ekte bygdemusikk for den nye generasjonen.
+            </p>
+            <div class="hero-cta">
+              <a href="#" class="btn btn-primary">Se Konserter</a>
+              <a href="#" class="btn btn-secondary">Lytt på Spotify</a>
+            </div>
+          </section>
+
+          <section class="tour-grid">
+            <h2>Kommende Konserter</h2>
+            <div class="grid">
+              <div class="tour-card">
+                <div class="tour-date">15. Januar 2025</div>
+                <h3 class="tour-venue">Rockefeller Music Hall</h3>
+                <p class="tour-location">Oslo, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+              <div class="tour-card">
+                <div class="tour-date">22. Januar 2025</div>
+                <h3 class="tour-venue">USF Verftet</h3>
+                <p class="tour-location">Bergen, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+              <div class="tour-card">
+                <div class="tour-date">5. Februar 2025</div>
+                <h3 class="tour-venue">Folken</h3>
+                <p class="tour-location">Stavanger, Norge</p>
+                <a href="#" class="btn">Kjøp Billetter</a>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info Panel -->
+    <div class="info-panel">
+      <h3>Exploring Color Variations</h3>
+      <p>
+        <strong>V1-V5:</strong> Pink hero colors with various gold accent
+        strategies on dark backgrounds.
+      </p>
+      <p style="margin-top: 8px">
+        <strong>V6 "Liggi":</strong> Directly inspired by the successful song
+        cover - warm vintage gold with playful purple.
+      </p>
+      <p style="margin-top: 8px">
+        <strong>V7-V10:</strong> Exploring different background colors inspired
+        by the Liggi cover's warm bedroom aesthetic:
+      </p>
+      <ul
+        style="
+          margin-top: 6px;
+          padding-left: 20px;
+          font-size: 11px;
+          line-height: 1.4;
+        "
+      >
+        <li>
+          <strong>V7:</strong> Warm brown background + cream cards (bedroom
+          shadow tones)
+        </li>
+        <li>
+          <strong>V8:</strong> Amber-tinted dark + golden hour glow (lamp
+          lighting)
+        </li>
+        <li>
+          <strong>V9:</strong> Light cream background (inverted light mode)
+        </li>
+        <li>
+          <strong>V10:</strong> Deep brown + amber/purple gradient accents
+          (dramatic lighting)
+        </li>
+      </ul>
+      <p style="margin-top: 8px">
+        <strong>V11 - RECOMMENDED HYBRID:</strong> Combines V10's warm brown
+        background with V6's clean vintage styling.
+        <strong>No gradients, no fancy effects</strong> - just clean,
+        sophisticated warmth.
+      </p>
+      <p style="margin-top: 8px">
+        <strong>V12 - DEEP PLUM:</strong> Rich velvet nightclub luxury (#2d1b2e)
+        - purple-tinted dark background that amplifies the playful purple
+        accents. Bold and dramatic.
+      </p>
+      <p style="margin-top: 8px">
+        <strong>V13 - WINTER TWILIGHT:</strong> Norwegian midnight sky blue
+        (#1a1f28) - cool twilight tones that evoke winter nights. Sophisticated
+        and atmospheric.
+      </p>
+      <p style="margin-top: 8px">
+        Click the buttons above to compare different atmospheres!
+      </p>
+    </div>
+
+    <script>
+      // Direction switching
+      const directionBtns = document.querySelectorAll(".direction-btn");
+      const mockups = document.querySelectorAll(".mockup");
+
+      directionBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const direction = btn.getAttribute("data-direction");
+
+          // Update active button
+          directionBtns.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+
+          // Update active mockup
+          mockups.forEach((m) => m.classList.remove("active"));
+          document
+            .getElementById(`mockup-${direction}`)
+            .classList.add("active");
+        });
+      });
+    </script>
+  </body>
+</html>
