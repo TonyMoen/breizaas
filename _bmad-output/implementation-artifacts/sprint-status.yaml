@@ -48,11 +48,11 @@ development_status:
   1-5-about-bio-page-with-artist-information: review
   1-6-seo-foundation-and-structured-data: review
   1-7-accessibility-compliance-wcag-2-1-aa: review
-  1-8-performance-optimization-and-core-web-vitals: backlog
+  1-8-performance-optimization-and-core-web-vitals: review
   epic-1-retrospective: optional
 
-  epic-2: backlog
-  2-1-spotify-widget-integration-and-embedded-player: backlog
+  epic-2: in-progress
+  2-1-spotify-widget-integration-and-embedded-player: review
   2-2-discography-display-with-album-information: backlog
   2-3-youtube-video-embeds-with-lazy-loading: backlog
   2-4-music-page-layout-and-lytt-pa-spotify-cta: backlog
