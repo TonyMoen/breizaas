@@ -53,9 +53,9 @@ development_status:
 
   epic-2: in-progress
   2-1-spotify-widget-integration-and-embedded-player: review
-  2-2-discography-display-with-album-information: backlog
-  2-3-youtube-video-embeds-with-lazy-loading: backlog
-  2-4-music-page-layout-and-lytt-pa-spotify-cta: backlog
+  2-2-discography-display-with-album-information: review
+  2-3-youtube-video-embeds-with-lazy-loading: review
+  2-4-music-page-layout-and-lytt-pa-spotify-cta: review
   epic-2-retrospective: optional
 
   epic-3: backlog

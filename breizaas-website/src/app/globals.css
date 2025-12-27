@@ -27,6 +27,8 @@
   --color-purple-vibrant: #c77dff;
   --color-purple-bright: #e539ff;
   --color-purple-soft: #b794f6;
+  --color-purple-playful: #b589d6;
+  --color-purple-playful-hover: #c699e0;
 
   /* V11 Amber Lighting */
   --color-amber-glow: #ffb347;
@@ -37,6 +39,8 @@
   --color-text-primary: #fef9f0;
   --color-text-secondary: #e8dcc8;
   --color-text-muted: #bfb29a;
+  --color-white-warm: #f5f1ec;
+  --color-gray-light-warm: #d0c4b8;
 
   /* External Brand Colors */
   --color-spotify-green: #1db954;
@@ -204,8 +208,16 @@
     box-shadow: 0 0 20px rgba(255, 179, 71, 0.3);
   }
 
+  .shadow-gold {
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+  }
+
   .purple-glow {
     box-shadow: 0 0 15px rgba(199, 125, 255, 0.25);
+  }
+
+  .shadow-spotify-glow {
+    box-shadow: 0 4px 14px 0 rgba(29, 185, 84, 0.4);
   }
 
   /* Mobile menu slide-in animation */
