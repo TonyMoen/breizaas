@@ -48,4 +48,18 @@ export const MESSAGES = {
     /** Native share button label */
     shareNative: 'Del',
   },
+  /**
+   * Merch page related messages
+   * Used for merchandise/shop functionality
+   */
+  merch: {
+    /** Buy now button text */
+    buyNow: 'Kjøp nå',
+    /** Out of stock label */
+    outOfStock: 'Utsolgt',
+    /** Empty state when no products available */
+    noProducts: 'Ingen produkter tilgjengelig for øyeblikket',
+    /** Follow us message for empty state */
+    followUs: 'Følg oss på sosiale medier:',
+  },
 } as const;
