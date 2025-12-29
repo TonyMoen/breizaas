@@ -218,4 +218,14 @@ export const MESSAGES = {
     networkError: 'Nettverksfeil. Sjekk tilkoblingen din.',
     rateLimitError: 'For mange forsøk. Vennligst prøv igjen om en time.',
   },
+  /**
+   * Security related messages
+   * Used for CSRF protection, rate limiting, and security errors
+   */
+  security: {
+    csrfError: 'Sikkerhetsfeil. Vennligst last inn siden på nytt.',
+    rateLimitError: 'For mange forsøk. Vennligst prøv igjen om en time.',
+    invalidRequest: 'Ugyldig forespørsel. Vennligst prøv igjen.',
+    tokenFetchError: 'Kunne ikke laste sikkerhetsinformasjon. Vennligst last inn siden på nytt.',
+  },
 } as const;

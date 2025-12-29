@@ -28,8 +28,8 @@ export async function POST(request: NextRequest) {
 
     const validatedData = validationResult.data;
 
-    // TODO (Story 5.5): Validate CSRF token
-    // TODO (Story 5.5): Check rate limiting
+    // Note: CSRF token validation and rate limiting are handled in middleware
+    // See src/middleware.ts for security implementation
 
     // Sanitize text inputs
     const sanitizedData = {

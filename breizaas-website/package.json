@@ -27,6 +27,7 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-hook-form": "^7.69.0",
+    "resend": "^6.6.0",
     "sanity": "^5.1.0",
     "styled-components": "^6.1.19",
     "tailwind-merge": "^3.4.0",

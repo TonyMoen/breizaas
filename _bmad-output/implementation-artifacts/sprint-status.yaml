@@ -78,8 +78,8 @@ development_status:
   5-1-press-kit-page-arrangor-with-high-res-photo-downloads: review
   5-2-event-organizer-booking-inquiry-form: review
   5-3-general-contact-form: review
-  5-4-technical-rider-and-event-information: backlog
-  5-5-form-security-csrf-protection-and-rate-limiting: backlog
+  5-4-technical-rider-and-event-information: done  # Already implemented in Story 5.1 (TechnicalRider + HospitalityRider components)
+  5-5-form-security-csrf-protection-and-rate-limiting: review
   epic-5-retrospective: optional
 
   epic-6: backlog

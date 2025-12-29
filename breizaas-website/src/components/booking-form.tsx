@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AlertCircle, Check } from 'lucide-react';
@@ -14,6 +14,7 @@ interface BookingFormProps {
 export function BookingForm({ className = '' }: BookingFormProps) {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [csrfToken, setCSRFToken] = useState<string>('');
 
   const {
     register,
@@ -28,6 +29,22 @@ export function BookingForm({ className = '' }: BookingFormProps) {
     },
   });
 
+  // Fetch CSRF token on component mount (Story 5.5)
+  useEffect(() => {
+    async function fetchCSRFToken() {
+      try {
+        const response = await fetch('/api/csrf');
+        const data = await response.json();
+        setCSRFToken(data.token);
+      } catch (error) {
+        console.error('Failed to fetch CSRF token:', error);
+        setErrorMessage(MESSAGES.security.tokenFetchError);
+        setSubmitStatus('error');
+      }
+    }
+    fetchCSRFToken();
+  }, []);
+
   const onSubmit = async (data: BookingFormData) => {
     setSubmitStatus('submitting');
     setErrorMessage('');
@@ -37,14 +54,22 @@ export function BookingForm({ className = '' }: BookingFormProps) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken, // Include CSRF token (Story 5.5)
         },
         body: JSON.stringify(data),
       });
 
       if (!response.ok) {
         // Handle different error types
-        if (response.status === 429) {
-          setErrorMessage(MESSAGES.booking.rateLimitError);
+        if (response.status === 403) {
+          // CSRF error - refresh token and show error
+          setErrorMessage(MESSAGES.security.csrfError);
+          // Refresh CSRF token for next attempt
+          const tokenResponse = await fetch('/api/csrf');
+          const tokenData = await tokenResponse.json();
+          setCSRFToken(tokenData.token);
+        } else if (response.status === 429) {
+          setErrorMessage(MESSAGES.security.rateLimitError);
         } else if (response.status === 400) {
           setErrorMessage(MESSAGES.booking.validationError);
         } else {
