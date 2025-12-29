@@ -62,4 +62,53 @@ export const MESSAGES = {
     /** Follow us message for empty state */
     followUs: 'Følg oss på sosiale medier:',
   },
+  /**
+   * Press kit page messages
+   * Used for /arrangor press kit functionality
+   */
+  pressKit: {
+    // Hero
+    heroHeadline: 'FOR ARRANGØRER',
+    heroSubtitle: 'Pressepakke og rider informasjon',
+
+    // Technical Rider
+    technicalRiderHeading: 'TEKNISK RIDER',
+    downloadTechnicalRider: 'Last ned teknisk rider (PDF)',
+
+    // Hospitality Rider
+    hospitalityRiderHeading: 'HOSPITALITY RIDER',
+
+    // Press Kit
+    pressKitHeading: 'PRESSEPAKKE',
+    openPressKit: 'Åpne pressepakke i Google Drive',
+
+    // Bio
+    bioHeading: 'Om Breizaas',
+    shortBioLabel: 'KORT BIO',
+    fullBioLabel: 'FULL BIO',
+
+    // Practical Info
+    practicalInfoHeading: 'PRAKTISK INFO',
+    location: 'Sted:',
+    doorsOpen: 'Dørene åpner:',
+    concertStart: 'Konsertstart:',
+    ageLimit: 'Aldersgrense:',
+    tickets: 'Billetter:',
+    spotifyPlaylist: 'Vors med Breizaas? Sjekk ut spillelista her:',
+
+    // Press Photos
+    pressPhotosHeading: 'Pressebilder',
+    pressPhotosDescription: 'Høyoppløselige bilder for presse og markedsføring. Klikk for å laste ned.',
+    downloadPhoto: 'Last ned',
+
+    // Logo Files
+    logoFilesHeading: 'Logofiler',
+    logoFilesDescription: 'Bandlogo i ulike formater for bruk i trykk og digital markedsføring.',
+
+    // Contact
+    bookingContactHeading: 'KONTAKT FOR BOOKING',
+
+    // Errors
+    failedToLoadPressKit: 'Kunne ikke laste pressepakke. Prøv igjen senere.',
+  },
 } as const;

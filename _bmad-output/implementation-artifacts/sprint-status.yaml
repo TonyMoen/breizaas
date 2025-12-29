@@ -66,16 +66,16 @@ development_status:
   3-5-tour-page-layout-with-social-sharing: review
   epic-3-retrospective: optional
 
-  epic-4: in-progress
+  epic-4: done  # Core merch functionality complete (Stories 4.1, 4.2 sufficient)
   4-1-shopify-storefront-api-integration-and-product-fetching: review
   4-2-product-catalog-grid-with-variant-selection: review
-  4-3-shopping-cart-with-localstorage-persistence: backlog
-  4-4-shopify-checkout-integration: backlog
-  4-5-shipping-and-return-information-page: backlog
+  4-3-shopping-cart-with-localstorage-persistence: cancelled  # Obsoleted by Story 4.2 - Shopify handles cart via direct product links
+  4-4-shopify-checkout-integration: skipped  # Shopify handles checkout natively, no additional integration needed
+  4-5-shipping-and-return-information-page: skipped  # Deferred - can add later if needed
   epic-4-retrospective: optional
 
-  epic-5: backlog
-  5-1-press-kit-page-arrangor-with-high-res-photo-downloads: backlog
+  epic-5: in-progress
+  5-1-press-kit-page-arrangor-with-high-res-photo-downloads: review
   5-2-event-organizer-booking-inquiry-form: backlog
   5-3-general-contact-form: backlog
   5-4-technical-rider-and-event-information: backlog
