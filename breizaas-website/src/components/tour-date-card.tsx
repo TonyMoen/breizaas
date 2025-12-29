@@ -23,6 +23,8 @@ interface TourDateCardProps {
   event: BandsinownEvent;
   /** If true, hides interactive buttons and applies 0.7 opacity (for past events) */
   isPastEvent?: boolean;
+  /** If true, applies featured styling with purple border accent */
+  featured?: boolean;
 }
 
 /**
@@ -57,8 +59,9 @@ function formatNorwegianDate(datetime: string): { day: string; month: string } {
  *
  * @param event - Bandsintown event object from API
  * @param isPastEvent - If true, displays as past event (no buttons, reduced opacity)
+ * @param featured - If true, displays with featured styling (purple border accent)
  */
-export function TourDateCard({ event, isPastEvent = false }: TourDateCardProps) {
+export function TourDateCard({ event, isPastEvent = false, featured = false }: TourDateCardProps) {
   // Format date in Norwegian
   const { day, month } = formatNorwegianDate(event.datetime);
 
@@ -72,7 +75,7 @@ export function TourDateCard({ event, isPastEvent = false }: TourDateCardProps) 
 
   return (
     <div
-      className={`relative bg-brown-dark border-2 border-transparent hover:border-gold-vintage rounded-2xl p-6 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(255,159,69,0.3)]${isPastEvent ? ' opacity-70' : ''}`}
+      className={`relative bg-brown-dark border-2 ${featured ? 'border-purple-neon' : 'border-transparent hover:border-gold-vintage'} rounded-2xl p-6 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(255,159,69,0.3)]${isPastEvent ? ' opacity-70' : ''}`}
       aria-label={`Konsert ${event.venue.name} ${day}. ${month}`}
     >
       {/* Sold-out badge */}

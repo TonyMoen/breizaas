@@ -63,11 +63,11 @@ development_status:
   3-2-tourdatecard-component-with-grid-layout: review
   3-3-calendar-export-ics-and-ticket-purchase-links: review
   3-4-past-tour-history-display: review
-  3-5-tour-page-layout-with-social-sharing: ready-for-dev
+  3-5-tour-page-layout-with-social-sharing: review
   epic-3-retrospective: optional
 
-  epic-4: backlog
-  4-1-shopify-storefront-api-integration-and-product-fetching: backlog
+  epic-4: in-progress
+  4-1-shopify-storefront-api-integration-and-product-fetching: ready-for-dev
   4-2-product-catalog-grid-with-variant-selection: backlog
   4-3-shopping-cart-with-localstorage-persistence: backlog
   4-4-shopify-checkout-integration: backlog
