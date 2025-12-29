@@ -228,4 +228,25 @@ export const MESSAGES = {
     invalidRequest: 'Ugyldig forespørsel. Vennligst prøv igjen.',
     tokenFetchError: 'Kunne ikke laste sikkerhetsinformasjon. Vennligst last inn siden på nytt.',
   },
+  /**
+   * Sanity CMS related messages
+   * Used for content fetching and CMS errors
+   */
+  sanity: {
+    /** Generic content fetch error */
+    noContent: 'Kunne ikke laste innhold fra CMS',
+    /** Timeout error (5+ seconds) */
+    timeout: 'CMS-forespørsel tok for lang tid. Prøv igjen senere.',
+    /** General fetch error */
+    fetchError: 'Feil ved henting av innhold',
+  },
+  /**
+   * Generic error messages
+   * Used across the application for common error scenarios
+   */
+  errors: {
+    noContent: 'Kunne ikke laste innhold',
+    apiTimeout: 'Kunne ikke laste data. Prøv igjen senere.',
+    networkError: 'Nettverksfeil. Sjekk tilkoblingen din.',
+  },
 } as const;

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Hero } from '@/components/hero'
+import { getHeroSection, getArtistInfo } from '@/lib/sanity'
 
 export const metadata: Metadata = {
   title: 'Breizaas - AI møter norsk bygdemusikk | 125k+ lyttere',
@@ -35,13 +36,27 @@ const structuredData = {
   ],
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  // Fetch hero section and artist info from Sanity CMS
+  const heroData = await getHeroSection('home')
+  const artistInfo = await getArtistInfo()
+
+  // Fallback values if Sanity data not yet available
+  const brandName = artistInfo?.artistName || 'BREIZAAS'
+  const headline = heroData?.headline || 'AI Møter Bygdemusikk'
+  const subtitle = heroData?.subtitle
+  const monthlyListeners = artistInfo?.monthlyListeners
+    ? `${artistInfo.monthlyListeners.toLocaleString('nb-NO')} månedlige lyttere på Spotify`
+    : undefined
+
   return (
     <main id="main-content">
       <Hero
-        brandName="BREIZAAS"
-        headline="AI Møter Bygdemusikk"
-        stat="125 000 månedlige lyttere på Spotify"
+        brandName={brandName}
+        headline={headline}
+        subtitle={subtitle}
+        stat={monthlyListeners}
+        backgroundImage={heroData?.heroImage}
       />
 
       {/* Structured Data for SEO */}

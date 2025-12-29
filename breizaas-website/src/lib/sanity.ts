@@ -1,18 +1,46 @@
-import { createClient } from 'next-sanity';
+import { createClient, type QueryParams } from 'next-sanity';
 import { createImageUrlBuilder } from '@sanity/image-url';
 import type { SanityImageSource } from '@sanity/image-url';
 import type { Album } from '@/types/Album.types';
 import type { Video } from '@/types/Video.types';
+import type { HeroSection, ArtistInfo } from '@/types/Sanity.types';
+import { HeroSectionSchema, ArtistInfoSchema } from '@/types/Sanity.types';
+import { z } from 'zod';
+import { apiVersion, dataset, projectId } from '../sanity/env';
+import { MESSAGES } from './messages';
 
 /**
- * Sanity client for fetching CMS content
- * Configured with project ID and dataset from environment variables
+ * ApiError type from architecture requirements
+ * All API clients must return this type for consistent error handling
+ */
+export type ApiError = {
+  message: string; // Norwegian user-facing message
+  code: string; // Error code for logging (e.g., 'SANITY_TIMEOUT')
+  fallback?: unknown; // Cached data if available
+  timestamp: string; // ISO 8601 timestamp
+};
+
+/**
+ * Read client for public data fetching
+ * Uses fresh data (useCdn: false) for webhook-triggered ISR
  */
 export const client = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET!,
-  apiVersion: '2025-01-01',
-  useCdn: false, // Set to true for production caching
+  projectId,
+  dataset,
+  apiVersion,
+  useCdn: false, // Use fresh data (webhook-triggered ISR handles caching)
+});
+
+/**
+ * Write client for server-side mutations
+ * Requires SANITY_API_TOKEN environment variable
+ */
+export const writeClient = createClient({
+  projectId,
+  dataset,
+  apiVersion,
+  useCdn: false,
+  token: process.env.SANITY_API_TOKEN, // Server-only token
 });
 
 /**
@@ -104,5 +132,195 @@ export async function getVideos(): Promise<Video[]> {
   } catch (error) {
     console.error('Failed to fetch videos from Sanity:', error);
     return []; // Graceful degradation - return empty array if Sanity unavailable
+  }
+}
+
+/**
+ * Fetch data from Sanity with timeout, error handling, and validation
+ * Architecture-compliant implementation with 5s timeout per NFR-P3
+ *
+ * @param query GROQ query string
+ * @param params Query parameters
+ * @param schema Zod schema for validation
+ * @returns Validated data or ApiError
+ *
+ * @example
+ * ```ts
+ * const result = await fetchSanity(
+ *   '*[_type == "artistInfo"][0]',
+ *   {},
+ *   ArtistInfoSchema
+ * );
+ * if ('code' in result) {
+ *   // Handle error
+ *   console.error(result.message);
+ * } else {
+ *   // Use validated data
+ *   console.log(result.artistName);
+ * }
+ * ```
+ */
+export async function fetchSanity<T>(
+  query: string,
+  params: QueryParams = {},
+  schema: z.ZodSchema<T>
+): Promise<T | ApiError> {
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout per NFR-P3
+
+    const data = await client.fetch(query, params, {
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    // Validate with Zod
+    const validated = schema.parse(data);
+    return validated;
+  } catch (error) {
+    if (error instanceof Error) {
+      if (error.name === 'AbortError') {
+        return {
+          message: MESSAGES.errors.apiTimeout,
+          code: 'SANITY_TIMEOUT',
+          fallback: undefined,
+          timestamp: new Date().toISOString(),
+        };
+      }
+
+      if (error instanceof z.ZodError) {
+        return {
+          message: MESSAGES.sanity.fetchError,
+          code: 'SANITY_VALIDATION_ERROR',
+          fallback: undefined,
+          timestamp: new Date().toISOString(),
+        };
+      }
+
+      return {
+        message: MESSAGES.sanity.noContent,
+        code: 'SANITY_FETCH_ERROR',
+        fallback: undefined,
+        timestamp: new Date().toISOString(),
+      };
+    }
+
+    return {
+      message: MESSAGES.sanity.noContent,
+      code: 'SANITY_UNKNOWN_ERROR',
+      fallback: undefined,
+      timestamp: new Date().toISOString(),
+    };
+  }
+}
+
+/**
+ * GROQ utility: Get all documents of a type
+ */
+export function getAllQuery(type: string): string {
+  return `*[_type == "${type}"]`;
+}
+
+/**
+ * GROQ utility: Get single document by ID
+ */
+export function getByIdQuery(type: string, id: string): string {
+  return `*[_type == "${type}" && _id == "${id}"][0]`;
+}
+
+/**
+ * GROQ utility: Get singleton document (e.g., artistInfo, bookingInfo)
+ */
+export function getSingletonQuery(type: string): string {
+  return `*[_type == "${type}"][0]`;
+}
+
+/**
+ * GROQ utility: Get document by field value
+ */
+export function getByFieldQuery(
+  type: string,
+  field: string,
+  value: string
+): string {
+  return `*[_type == "${type}" && ${field} == "${value}"][0]`;
+}
+
+/**
+ * Fetch hero section by page name
+ * Returns hero content for specific page (home, musikk, om-oss, etc.)
+ *
+ * @param pageName - Page identifier (e.g., 'home', 'musikk')
+ * @returns Promise resolving to HeroSection or null if not found
+ *
+ * @example
+ * ```ts
+ * const hero = await getHeroSection('home');
+ * if (hero) {
+ *   console.log(hero.headline);
+ * }
+ * ```
+ */
+export async function getHeroSection(
+  pageName: string
+): Promise<HeroSection | null> {
+  try {
+    const query = `*[_type == "heroSection" && pageName == $pageName][0] {
+      _id,
+      _type,
+      pageName,
+      heroImage {
+        asset,
+        alt
+      },
+      headline,
+      subtitle
+    }`;
+
+    const hero = await client.fetch<HeroSection | null>(query, { pageName });
+    return hero;
+  } catch (error) {
+    console.error(`Failed to fetch hero section for ${pageName}:`, error);
+    return null;
+  }
+}
+
+/**
+ * Fetch artist information (singleton document)
+ * Returns core artist data including stats and social links
+ *
+ * @returns Promise resolving to ArtistInfo or null if not found
+ *
+ * @example
+ * ```ts
+ * const artist = await getArtistInfo();
+ * if (artist) {
+ *   console.log(`${artist.monthlyListeners} monthly listeners`);
+ * }
+ * ```
+ */
+export async function getArtistInfo(): Promise<ArtistInfo | null> {
+  try {
+    const query = `*[_type == "artistInfo"][0] {
+      _id,
+      _type,
+      artistName,
+      tagline,
+      biography,
+      shortBio,
+      monthlyListeners,
+      totalStreams,
+      numberOfReleases,
+      notableAchievements,
+      genreTags,
+      socialMediaLinks
+    }`;
+
+    const artist = await client.fetch<ArtistInfo | null>(query);
+    return artist;
+  } catch (error) {
+    console.error('Failed to fetch artist info:', error);
+    return null;
   }
 }
