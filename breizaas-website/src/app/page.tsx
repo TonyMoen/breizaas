@@ -146,7 +146,7 @@ export default async function HomePage() {
       <section className="py-12 md:py-16 bg-brown-warm">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-gold-champagne mb-8 text-center">
-            BYGDEROCK FRA DE BESTE BYGDENE
+            SPELL HØGT, SPELL BREIZAAS
           </h2>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
@@ -189,7 +189,7 @@ export default async function HomePage() {
         <section className="py-12 md:py-16 bg-brown-dark">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl md:text-4xl font-bold text-gold-champagne mb-8 text-center">
-              STØTT BANDET - OFFISIELL MERCH
+              OFFISIELL BREIZAAS MERCH
             </h2>
 
             {/* 4-column grid on desktop, 2-column on mobile */}
@@ -216,7 +216,7 @@ export default async function HomePage() {
         <section className="py-12 md:py-16 bg-brown-warm">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl md:text-4xl font-bold text-gold-champagne mb-8 text-center">
-              VÅR NYESTE MUSIKKVIDEO
+              MUSIKKVIDEO
             </h2>
 
             <div className="max-w-4xl mx-auto">
