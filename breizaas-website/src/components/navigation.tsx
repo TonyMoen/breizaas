@@ -3,10 +3,23 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
+import { Music, Instagram, Facebook, Youtube } from 'lucide-react'
 
 interface NavigationLink {
   href: string
   label: string
+}
+
+interface SocialMediaLinks {
+  spotify?: string | null
+  instagram?: string | null
+  tiktok?: string | null
+  facebook?: string | null
+  youtube?: string | null
+}
+
+interface NavigationProps {
+  socialLinks?: SocialMediaLinks
 }
 
 const navigationLinks: NavigationLink[] = [
@@ -18,7 +31,19 @@ const navigationLinks: NavigationLink[] = [
   { href: '/kontakt', label: 'Kontakt' },
 ]
 
-export function Navigation() {
+// TikTok custom icon
+const TikTokIcon = () => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    className="w-5 h-5"
+    aria-hidden="true"
+  >
+    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
+  </svg>
+)
+
+export function Navigation({ socialLinks }: NavigationProps) {
   const pathname = usePathname()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false)
 
@@ -103,62 +128,134 @@ export function Navigation() {
         className="sticky top-0 z-50 bg-brown-dark/95 backdrop-blur-md border-b border-brown-base/20"
         aria-label="Hovednavigasjon"
       >
-        <div className="container mx-auto flex items-center justify-between px-6 py-4">
-          {/* Logo */}
-          <Link
-            href="/"
-            className="font-tradewind text-2xl text-gold-champagne transition-opacity hover:opacity-80 focus:outline focus:outline-2 focus:outline-offset-4 focus:outline-gold-champagne focus:rounded"
-          >
-            BREIZAAS
-          </Link>
+        <div className="container mx-auto px-6 py-4">
+          {/* Desktop: Three-column layout */}
+          <div className="hidden lg:grid lg:grid-cols-3 lg:items-center lg:gap-8">
+            {/* Left: Brand Name */}
+            <div className="flex justify-start">
+              <Link
+                href="/"
+                className="font-tradewind text-2xl text-gold-champagne transition-opacity hover:opacity-80 focus:outline focus:outline-2 focus:outline-offset-4 focus:outline-gold-champagne focus:rounded"
+              >
+                BREIZAAS
+              </Link>
+            </div>
 
-          {/* Desktop Navigation Links */}
-          <ul className="hidden lg:flex items-center gap-8">
-            {navigationLinks.map((link) => {
-              const isActive = pathname === link.href
-              return (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className={`font-inter text-base font-medium transition-colors duration-300 focus:outline focus:outline-2 focus:outline-offset-4 focus:outline-gold-champagne focus:rounded ${
-                      isActive
-                        ? 'text-gold-champagne border-b-2 border-gold-champagne pb-1'
-                        : 'text-text-primary hover:text-gold-champagne'
-                    }`}
-                    aria-current={isActive ? 'page' : undefined}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              )
-            })}
-          </ul>
+            {/* Center: Navigation Links */}
+            <ul className="flex items-center justify-center gap-6">
+              {navigationLinks.map((link) => {
+                const isActive = pathname === link.href
+                return (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className={`font-inter text-base font-medium transition-colors duration-300 focus:outline focus:outline-2 focus:outline-offset-4 focus:outline-gold-champagne focus:rounded ${
+                        isActive
+                          ? 'text-gold-champagne'
+                          : 'text-text-primary hover:text-gold-champagne'
+                      }`}
+                      aria-current={isActive ? 'page' : undefined}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                )
+              })}
+            </ul>
 
-          {/* Mobile menu button */}
-          <button
-            onClick={() => setIsMobileMenuOpen(true)}
-            className="lg:hidden flex items-center justify-center w-11 h-11 text-gold-champagne hover:opacity-80 transition-opacity focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-gold-champagne rounded"
-            aria-label="Åpne navigasjonsmeny"
-            aria-expanded={isMobileMenuOpen}
-            aria-controls="mobile-navigation-menu"
-          >
-            {/* Hamburger icon - three horizontal lines */}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              className="w-6 h-6"
-              aria-hidden="true"
+            {/* Right: Social Media Icons */}
+            <div className="flex items-center justify-end gap-4">
+              {socialLinks?.spotify && (
+                <a
+                  href={socialLinks.spotify}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-text-primary hover:text-gold-champagne transition-colors"
+                  aria-label="Lytt på Spotify (åpnes i ny fane)"
+                >
+                  <Music className="w-5 h-5" />
+                </a>
+              )}
+              {socialLinks?.youtube && (
+                <a
+                  href={socialLinks.youtube}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-text-primary hover:text-gold-champagne transition-colors"
+                  aria-label="Se videoer på YouTube (åpnes i ny fane)"
+                >
+                  <Youtube className="w-5 h-5" />
+                </a>
+              )}
+              {socialLinks?.instagram && (
+                <a
+                  href={socialLinks.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-text-primary hover:text-gold-champagne transition-colors"
+                  aria-label="Følg på Instagram (åpnes i ny fane)"
+                >
+                  <Instagram className="w-5 h-5" />
+                </a>
+              )}
+              {socialLinks?.facebook && (
+                <a
+                  href={socialLinks.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-text-primary hover:text-gold-champagne transition-colors"
+                  aria-label="Besøk Facebook (åpnes i ny fane)"
+                >
+                  <Facebook className="w-5 h-5" />
+                </a>
+              )}
+              {socialLinks?.tiktok && (
+                <a
+                  href={socialLinks.tiktok}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-text-primary hover:text-gold-champagne transition-colors"
+                  aria-label="Se på TikTok (åpnes i ny fane)"
+                >
+                  <TikTokIcon />
+                </a>
+              )}
+            </div>
+          </div>
+
+          {/* Mobile: Logo and hamburger */}
+          <div className="flex lg:hidden items-center justify-between">
+            <Link
+              href="/"
+              className="font-tradewind text-2xl text-gold-champagne transition-opacity hover:opacity-80 focus:outline focus:outline-2 focus:outline-offset-4 focus:outline-gold-champagne focus:rounded"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-              />
-            </svg>
-          </button>
+              BREIZAAS
+            </Link>
+
+            <button
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="flex items-center justify-center w-11 h-11 text-gold-champagne hover:opacity-80 transition-opacity focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-gold-champagne rounded"
+              aria-label="Åpne navigasjonsmeny"
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-navigation-menu"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
+                className="w-6 h-6"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -238,6 +335,67 @@ export function Navigation() {
                   )
                 })}
               </nav>
+
+              {/* Social Media Links */}
+              {socialLinks && (
+                <div className="flex items-center gap-6 pt-8 border-t border-brown-base/20">
+                  {socialLinks.spotify && (
+                    <a
+                      href={socialLinks.spotify}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-text-primary hover:text-gold-champagne transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                      aria-label="Lytt på Spotify (åpnes i ny fane)"
+                    >
+                      <Music className="w-6 h-6" />
+                    </a>
+                  )}
+                  {socialLinks.youtube && (
+                    <a
+                      href={socialLinks.youtube}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-text-primary hover:text-gold-champagne transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                      aria-label="Se videoer på YouTube (åpnes i ny fane)"
+                    >
+                      <Youtube className="w-6 h-6" />
+                    </a>
+                  )}
+                  {socialLinks.instagram && (
+                    <a
+                      href={socialLinks.instagram}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-text-primary hover:text-gold-champagne transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                      aria-label="Følg på Instagram (åpnes i ny fane)"
+                    >
+                      <Instagram className="w-6 h-6" />
+                    </a>
+                  )}
+                  {socialLinks.facebook && (
+                    <a
+                      href={socialLinks.facebook}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-text-primary hover:text-gold-champagne transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                      aria-label="Besøk Facebook (åpnes i ny fane)"
+                    >
+                      <Facebook className="w-6 h-6" />
+                    </a>
+                  )}
+                  {socialLinks.tiktok && (
+                    <a
+                      href={socialLinks.tiktok}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-text-primary hover:text-gold-champagne transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                      aria-label="Se på TikTok (åpnes i ny fane)"
+                    >
+                      <TikTokIcon />
+                    </a>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </>

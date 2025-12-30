@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Trade_Winds, Montserrat } from "next/font/google";
 import { Navigation } from "@/components/navigation";
+import { getArtistSocialLinks } from "@/lib/queries/artistInfo";
 import "./globals.css";
 
 const inter = Inter({
@@ -78,17 +79,21 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Fetch social media links for navigation
+  const socialLinksResult = await getArtistSocialLinks();
+  const socialLinks = 'code' in socialLinksResult ? undefined : socialLinksResult.socialMediaLinks;
+
   return (
     <html lang="nb-NO">
       <body
         className={`${inter.variable} ${tradewind.variable} ${montserrat.variable} bg-brown-dark text-text-primary antialiased`}
       >
-        <Navigation />
+        <Navigation socialLinks={socialLinks} />
         {children}
       </body>
     </html>
