@@ -250,7 +250,7 @@ export default async function OmOssPage() {
               Følg {artistInfo.artistName}
             </h2>
 
-            <div className="flex flex-row items-center justify-center gap-4 md:gap-6">
+            <div className="flex flex-row items-center justify-center gap-2">
               {socialLinksConfig.map((link) => {
                 const Icon = link.icon
                 return (
@@ -259,17 +259,7 @@ export default async function OmOssPage() {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`
-                      inline-flex items-center justify-center
-                      w-11 h-11 rounded-full
-                      transition-all duration-300
-                      hover:scale-110
-                      ${
-                        link.color === 'spotify'
-                          ? 'bg-[#1db954] text-white hover:bg-[#1ed760] hover:shadow-[0_0_20px_rgba(29,185,84,0.4)]'
-                          : 'bg-purple-playful text-brown-dark hover:bg-purple-bright hover:shadow-[0_0_20px_rgba(216,150,255,0.6)]'
-                      }
-                    `}
+                    className="inline-flex items-center justify-center p-2 text-text-muted hover:text-white-warm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-text-muted"
                     aria-label={`${link.label} (åpnes i ny fane)`}
                   >
                     {link.name === 'TikTok' ? (

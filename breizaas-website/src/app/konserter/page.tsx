@@ -16,12 +16,12 @@
 
 import type { Metadata } from 'next';
 import { getBandsinownEvents, getPastBandsinownEvents } from '@/lib/bandsintown';
+import { getHeroSection } from '@/lib/sanity';
 import { MESSAGES } from '@/lib/messages';
-import { TourPageHero } from '@/components/tour-page-hero';
+import { PageHero } from '@/components/page-hero';
 import { FeaturedTourDates } from '@/components/featured-tour-dates';
 import { TourDateCard } from '@/components/tour-date-card';
 import { PastTourHistory } from '@/components/past-tour-history';
-import { SocialShareButtons } from '@/components/social-share-buttons';
 
 /**
  * Metadata for SEO and social sharing
@@ -77,10 +77,11 @@ export const metadata: Metadata = {
  * - Social sharing with Open Graph data
  */
 export default async function KonserterPage() {
-  // Fetch upcoming and past events in parallel
-  const [upcomingEventsResult, pastEventsResult] = await Promise.all([
+  // Fetch upcoming events, past events, and hero data in parallel
+  const [upcomingEventsResult, pastEventsResult, heroData] = await Promise.all([
     getBandsinownEvents(),
     getPastBandsinownEvents(),
+    getHeroSection('konserter'),
   ]);
 
   // Handle API errors for upcoming events
@@ -90,15 +91,18 @@ export default async function KonserterPage() {
   // Handle API errors for past events
   const pastEvents = 'code' in pastEventsResult ? [] : pastEventsResult;
 
-  // Page URL for social sharing
-  const pageUrl = 'https://breizaas.com/konserter';
-  const shareTitle = 'Se Breizaas sine konserter!';
-  const shareDescription = 'Se alle kommende Breizaas konserter og tidligere show.';
+  // Bandsintown request show URL
+  const artistName = process.env.NEXT_PUBLIC_BANDSINTOWN_ARTIST_NAME || 'Breizaas';
+  const requestShowUrl = `https://www.bandsintown.com/a/${encodeURIComponent(artistName)}?came_from=257&request_show=true`;
 
   return (
     <div className="min-h-screen bg-brown-medium">
-      {/* Tour Page Hero */}
-      <TourPageHero title={MESSAGES.tour.pageTitle} />
+      {/* Tour Page Hero with Background Image */}
+      <PageHero
+        headline={heroData?.headline || MESSAGES.tour.pageTitle}
+        subtitle={heroData?.subtitle}
+        backgroundImage={heroData?.heroImage}
+      />
 
       {/* Error message if API failed */}
       {hasUpcomingError && (
@@ -182,20 +186,36 @@ export default async function KonserterPage() {
         showLessText={MESSAGES.tour.showLessPast}
       />
 
-      {/* Social Share Section */}
-      <section className="py-12 md:py-16">
+      {/* Request Show Section */}
+      <section className="py-12 md:py-16 bg-brown-dark">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-gold-champagne mb-8">
-            {MESSAGES.tour.shareHeading}
-          </h2>
-          <SocialShareButtons
-            url={pageUrl}
-            title={shareTitle}
-            description={shareDescription}
-            facebookLabel={MESSAGES.tour.shareOnFacebook}
-            twitterLabel={MESSAGES.tour.shareOnTwitter}
-            nativeLabel={MESSAGES.tour.shareNative}
-          />
+          <div className="max-w-4xl mx-auto border-2 border-gold-champagne/30 rounded-xl p-8 md:p-12">
+            <div className="grid grid-cols-1 md:grid-cols-[1fr,auto] gap-8 items-center">
+              {/* Left side: Text content */}
+              <div>
+                <h2 className="text-2xl md:text-3xl font-bold text-white-warm mb-4">
+                  Ønsker du at vi skal komme til en bygd nær deg?
+                </h2>
+                <p className="text-text-secondary text-base md:text-lg leading-relaxed">
+                  Om du kunne tenke deg at vi har en konsert i nærheten av deg, kan du sende oss en
+                  forespørsel ved å trykke på linken. Om der er mange nok som forespør i et området
+                  vil vi vurdere det.
+                </p>
+              </div>
+
+              {/* Right side: Button */}
+              <div className="flex justify-center md:justify-end">
+                <a
+                  href={requestShowUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block bg-brown-base hover:bg-brown-light text-white-warm font-semibold px-8 py-4 rounded-lg border-2 border-gold-champagne/30 hover:border-gold-champagne transition-all duration-300 text-center whitespace-nowrap"
+                >
+                  REQUEST A SHOW NEAR YOU
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </div>

@@ -173,7 +173,7 @@ export function Navigation({ socialLinks }: NavigationProps) {
                   href={socialLinks.spotify}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gold-champagne hover:text-purple-playful transition-colors focus:outline-none focus:text-purple-playful"
+                  className="inline-flex items-center justify-center p-2 text-text-muted hover:text-white-warm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-text-muted"
                   aria-label="Lytt på Spotify (åpnes i ny fane)"
                 >
                   <Music className="w-5 h-5" />
@@ -184,7 +184,7 @@ export function Navigation({ socialLinks }: NavigationProps) {
                   href={socialLinks.youtube}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gold-champagne hover:text-purple-playful transition-colors focus:outline-none focus:text-purple-playful"
+                  className="inline-flex items-center justify-center p-2 text-text-muted hover:text-white-warm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-text-muted"
                   aria-label="Se videoer på YouTube (åpnes i ny fane)"
                 >
                   <Youtube className="w-5 h-5" />
@@ -195,7 +195,7 @@ export function Navigation({ socialLinks }: NavigationProps) {
                   href={socialLinks.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gold-champagne hover:text-purple-playful transition-colors focus:outline-none focus:text-purple-playful"
+                  className="inline-flex items-center justify-center p-2 text-text-muted hover:text-white-warm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-text-muted"
                   aria-label="Følg på Instagram (åpnes i ny fane)"
                 >
                   <Instagram className="w-5 h-5" />
@@ -206,7 +206,7 @@ export function Navigation({ socialLinks }: NavigationProps) {
                   href={socialLinks.facebook}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gold-champagne hover:text-purple-playful transition-colors focus:outline-none focus:text-purple-playful"
+                  className="inline-flex items-center justify-center p-2 text-text-muted hover:text-white-warm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-text-muted"
                   aria-label="Besøk Facebook (åpnes i ny fane)"
                 >
                   <Facebook className="w-5 h-5" />
@@ -217,7 +217,7 @@ export function Navigation({ socialLinks }: NavigationProps) {
                   href={socialLinks.tiktok}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gold-champagne hover:text-purple-playful transition-colors focus:outline-none focus:text-purple-playful"
+                  className="inline-flex items-center justify-center p-2 text-text-muted hover:text-white-warm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-text-muted"
                   aria-label="Se på TikTok (åpnes i ny fane)"
                 >
                   <TikTokIcon />
@@ -353,7 +353,7 @@ export function Navigation({ socialLinks }: NavigationProps) {
                       href={socialLinks.spotify}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-gold-champagne hover:text-purple-playful transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus:text-purple-playful"
+                      className="inline-flex items-center justify-center p-3 text-text-muted hover:text-white-warm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-text-muted min-h-[44px] min-w-[44px]"
                       aria-label="Lytt på Spotify (åpnes i ny fane)"
                     >
                       <Music className="w-6 h-6" />
@@ -364,7 +364,7 @@ export function Navigation({ socialLinks }: NavigationProps) {
                       href={socialLinks.youtube}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-gold-champagne hover:text-purple-playful transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus:text-purple-playful"
+                      className="inline-flex items-center justify-center p-3 text-text-muted hover:text-white-warm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-text-muted min-h-[44px] min-w-[44px]"
                       aria-label="Se videoer på YouTube (åpnes i ny fane)"
                     >
                       <Youtube className="w-6 h-6" />
@@ -375,7 +375,7 @@ export function Navigation({ socialLinks }: NavigationProps) {
                       href={socialLinks.instagram}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-gold-champagne hover:text-purple-playful transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus:text-purple-playful"
+                      className="inline-flex items-center justify-center p-3 text-text-muted hover:text-white-warm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-text-muted min-h-[44px] min-w-[44px]"
                       aria-label="Følg på Instagram (åpnes i ny fane)"
                     >
                       <Instagram className="w-6 h-6" />
@@ -386,7 +386,7 @@ export function Navigation({ socialLinks }: NavigationProps) {
                       href={socialLinks.facebook}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-gold-champagne hover:text-purple-playful transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus:text-purple-playful"
+                      className="inline-flex items-center justify-center p-3 text-text-muted hover:text-white-warm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-text-muted min-h-[44px] min-w-[44px]"
                       aria-label="Besøk Facebook (åpnes i ny fane)"
                     >
                       <Facebook className="w-6 h-6" />
@@ -397,7 +397,7 @@ export function Navigation({ socialLinks }: NavigationProps) {
                       href={socialLinks.tiktok}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-gold-champagne hover:text-purple-playful transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus:text-purple-playful"
+                      className="inline-flex items-center justify-center p-3 text-text-muted hover:text-white-warm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-text-muted min-h-[44px] min-w-[44px]"
                       aria-label="Se på TikTok (åpnes i ny fane)"
                     >
                       <TikTokIcon />

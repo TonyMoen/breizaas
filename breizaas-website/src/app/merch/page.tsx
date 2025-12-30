@@ -1,7 +1,9 @@
 import { Metadata } from 'next';
 import { getProducts } from '@/lib/shopify';
+import { getHeroSection } from '@/lib/sanity';
 import { ProductCard } from '@/components/product-card';
 import { ProductGridSkeleton } from '@/components/product-skeleton';
+import { PageHero } from '@/components/page-hero';
 import { MESSAGES } from '@/lib/messages';
 import { Suspense } from 'react';
 
@@ -90,22 +92,22 @@ async function ProductGrid() {
 /**
  * Merch Page - Server Component
  */
-export default function MerchPage() {
+export default async function MerchPage() {
+  const heroData = await getHeroSection('merch');
+
   return (
     <main
       id="main-content"
-      className="min-h-screen bg-brown-dark py-24 px-6"
+      className="min-h-screen bg-brown-dark"
     >
-      <div className="max-w-7xl mx-auto">
-        {/* Hero Section */}
-        <div className="text-center mb-16">
-          <h1 className="text-5xl md:text-6xl font-bold text-white-warm mb-4">
-            Merch
-          </h1>
-          <p className="text-white-warm text-xl">
-            Støtt Breizaas med offisiell merchandise
-          </p>
-        </div>
+      {/* Hero Section with Background Image */}
+      <PageHero
+        headline={heroData?.headline || 'Merch'}
+        subtitle={heroData?.subtitle || 'Støtt Breizaas med offisiell merchandise'}
+        backgroundImage={heroData?.heroImage}
+      />
+
+      <div className="max-w-7xl mx-auto px-6 py-24">
 
         {/* Product grid with loading state */}
         <Suspense fallback={<ProductGridSkeleton />}>
