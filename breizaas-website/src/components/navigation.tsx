@@ -27,7 +27,7 @@ const navigationLinks: NavigationLink[] = [
   { href: '/musikk', label: 'Musikk' },
   { href: '/konserter', label: 'Konserter' },
   { href: '/merch', label: 'Merch' },
-  { href: '/om-oss', label: 'Om oss' },
+  { href: '/om-oss', label: 'Om' },
   { href: '/kontakt', label: 'Kontakt' },
 ]
 
