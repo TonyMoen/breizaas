@@ -19,7 +19,9 @@ export const bookingSchema = z.object({
     'Privat arrangement',
     'Bedriftsarrangement',
     'Annet'
-  ]),
+  ], {
+    errorMap: () => ({ message: 'Vennligst velg type arrangement' })
+  }),
   date: z.string()
     .min(1, 'Dato er påkrevd')
     .refine((date) => new Date(date) > new Date(), {

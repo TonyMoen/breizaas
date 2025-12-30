@@ -2,22 +2,15 @@
  * TourDateCard Component
  * Displays a single tour date event card with venue, date, and ticket information
  *
- * Story: 3.2 - TourDateCard Component with Grid Layout
- * Story: 3.3 - Calendar Export & Ticket Purchase Links (added CalendarButton and TicketButton)
- * Story: 3.4 - Past Tour History Display (added isPastEvent prop)
- * Component Type: Server Component with Client Component buttons for interactivity
- *
- * Architecture Compliance:
- * - V11 Color System: Uses semantic color names from globals.css
- * - Server Component First: No "use client" directive (only buttons are client components)
- * - WCAG 2.1 AA: Keyboard navigation, focus indicators, ARIA labels
- * - Norwegian Localization: All text in Norwegian (nb-NO)
- * - Touch Targets: 44x44px minimum for all interactive elements
+ * Simplified design matching PARKBIOGRAFEN style:
+ * - Venue name and city as heading
+ * - Date with calendar icon
+ * - Buy tickets button
+ * - Border and clean layout
  */
 
 import type { BandsinownEvent } from '@/types/Bandsintown.types';
-import { CalendarButton } from '@/components/calendar-button';
-import { TicketButton } from '@/components/ticket-button';
+import { Calendar } from 'lucide-react';
 
 interface TourDateCardProps {
   event: BandsinownEvent;
@@ -28,82 +21,109 @@ interface TourDateCardProps {
 }
 
 /**
- * Format datetime string to Norwegian date format
- * Returns day number and abbreviated month in uppercase
- * Example: "15. FEB"
+ * Format datetime string to Norwegian full date format
+ * Example: "27. Mars 2026"
  *
  * @param datetime - ISO 8601 datetime string
- * @returns Object with day and month strings
+ * @returns Formatted date string
  */
-function formatNorwegianDate(datetime: string): { day: string; month: string } {
+function formatNorwegianFullDate(datetime: string): string {
   const date = new Date(datetime);
   const day = date.toLocaleDateString('nb-NO', { day: 'numeric' });
-  const month = date
-    .toLocaleDateString('nb-NO', { month: 'short' })
-    .slice(0, 3)
-    .toUpperCase();
-  return { day, month };
+  const month = date.toLocaleDateString('nb-NO', { month: 'long' });
+  const year = date.toLocaleDateString('nb-NO', { year: 'numeric' });
+
+  // Capitalize first letter of month
+  const monthCapitalized = month.charAt(0).toUpperCase() + month.slice(1);
+
+  return `${day}. ${monthCapitalized} ${year}`;
 }
 
-/**
- * TourDateCard Component
- * Displays tour date information in a V11-styled card with hover effects
- *
- * Features:
- * - Norwegian date formatting ("15. FEB")
- * - Responsive card design with hover effects
- * - Sold-out badge and disabled button state
- * - Past event mode: hides buttons and applies 0.7 opacity
- * - Accessibility: WCAG 2.1 AA compliant
- * - Touch-optimized: 44x44px minimum touch targets
- *
- * @param event - Bandsintown event object from API
- * @param isPastEvent - If true, displays as past event (no buttons, reduced opacity)
- * @param featured - If true, displays with featured styling (purple border accent)
- */
 export function TourDateCard({ event, isPastEvent = false, featured = false }: TourDateCardProps) {
-  // Format date in Norwegian
-  const { day, month } = formatNorwegianDate(event.datetime);
+  // Format date in Norwegian full format
+  const formattedDate = formatNorwegianFullDate(event.datetime);
 
   // Check if event is sold out (all offers must be sold out)
   const isSoldOut = event.offers.every((offer) => offer.status === 'sold out');
 
-  // Format location with fallback for missing city/country
-  const location =
-    [event.venue.city, event.venue.country].filter(Boolean).join(', ') ||
-    'Ukjent sted';
+  // Get ticket URL
+  const ticketUrl = event.offers.find((offer) => offer.url)?.url;
+
+  // Use Bandsintown URL as fallback if no ticket URL
+  const hasTickets = !!ticketUrl;
+  const fallbackUrl = event.url;
+
+  // Format venue and city
+  const venueName = event.venue.name.toUpperCase();
+  const city = event.venue.city?.toUpperCase() || '';
+  const venueCity = city ? `${venueName} – ${city}` : venueName;
 
   return (
     <div
-      className={`relative bg-brown-dark border-2 ${featured ? 'border-purple-neon' : 'border-transparent hover:border-gold-vintage'} rounded-2xl p-6 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(255,159,69,0.3)]${isPastEvent ? ' opacity-70' : ''}`}
-      aria-label={`Konsert ${event.venue.name} ${day}. ${month}`}
+      className={`bg-brown-dark border-2 border-gold-vintage/20 rounded-xl p-6 transition-all duration-300 hover:border-purple-playful hover:shadow-[0_10px_40px_rgba(216,150,255,0.3)]${isPastEvent ? ' opacity-70' : ''}`}
+      style={{
+        background: 'linear-gradient(135deg, rgba(31, 31, 46, 0.8), rgba(26, 26, 46, 0.9))'
+      }}
+      aria-label={`Konsert ${event.venue.name} ${formattedDate}`}
     >
-      {/* Sold-out badge */}
-      {isSoldOut && (
-        <div className="absolute top-4 right-4 bg-purple-playful text-white text-sm font-semibold px-3 py-1 rounded-full">
-          Utsolgt
-        </div>
+      {/* Venue and City - clickable if no tickets available */}
+      {!hasTickets && !isPastEvent ? (
+        <a
+          href={fallbackUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block mb-3 hover:text-purple-playful transition-colors"
+        >
+          <h3
+            className="text-purple-bright text-2xl font-bold"
+            style={{
+              textShadow: '0 0 15px rgba(224, 163, 255, 0.4)'
+            }}
+          >
+            {venueCity}
+          </h3>
+        </a>
+      ) : (
+        <h3
+          className="text-purple-bright text-2xl font-bold mb-3"
+          style={{
+            textShadow: '0 0 15px rgba(224, 163, 255, 0.4)'
+          }}
+        >
+          {venueCity}
+        </h3>
       )}
 
-      {/* Date - Playful purple, 32px bold */}
-      <div className="text-purple-playful text-[32px] font-bold leading-none mb-4">
-        {day}. {month}
+      {/* Separator line */}
+      <div className="border-b border-purple-playful/20 mb-4" />
+
+      {/* Date and Button Row */}
+      <div className="flex items-center justify-between gap-4">
+        {/* Date with icon */}
+        <div className="flex items-center gap-2">
+          <Calendar className="w-5 h-5 text-amber-warm" />
+          <span className="text-lg text-amber-warm font-semibold">{formattedDate}</span>
+        </div>
+
+        {/* Buy tickets button - only show for upcoming events */}
+        {!isPastEvent && ticketUrl && (
+          <a
+            href={ticketUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`px-6 py-3 rounded-lg font-semibold transition-all ${
+              isSoldOut
+                ? 'bg-gray-600 text-gray-300 cursor-not-allowed'
+                : 'border-2 border-purple-playful text-purple-playful bg-transparent hover:bg-purple-playful hover:text-brown-dark hover:shadow-[0_0_25px_rgba(216,150,255,0.6)]'
+            }`}
+            aria-label={isSoldOut ? 'Utsolgt' : `Kjøp billettar for ${event.venue.name}`}
+            aria-disabled={isSoldOut}
+            onClick={isSoldOut ? (e) => e.preventDefault() : undefined}
+          >
+            {isSoldOut ? 'Utsolgt' : 'Kjøp billettar'}
+          </a>
+        )}
       </div>
-
-      {/* Venue name with calendar button */}
-      <div className="flex items-start justify-between gap-2 mb-2">
-        <h3 className="text-white-warm text-xl font-semibold flex-1">
-          {event.venue.name}
-        </h3>
-        {/* Only show calendar button for upcoming events */}
-        {!isPastEvent && <CalendarButton event={event} />}
-      </div>
-
-      {/* Location - Warm gray, 14px */}
-      <p className="text-gray-light-warm text-sm mb-4">{location}</p>
-
-      {/* Only show ticket button for upcoming events */}
-      {!isPastEvent && <TicketButton event={event} isSoldOut={isSoldOut} />}
     </div>
   );
 }

@@ -10,7 +10,9 @@ export const contactSchema = z.object({
     'press',
     'general',
     'other'
-  ]),
+  ], {
+    errorMap: () => ({ message: 'Vennligst velg et emne' })
+  }),
   message: z.string()
     .min(10, 'Meldingen må være minst 10 tegn'),
 });

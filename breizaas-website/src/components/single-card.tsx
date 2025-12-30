@@ -44,7 +44,7 @@ export function SingleCard({ single, className }: SingleCardProps) {
   return (
     <div
       className={`bg-brown-dark rounded-2xl overflow-hidden transition-all duration-300
-                  hover:border-2 hover:border-gold-vintage hover:shadow-gold
+                  hover:border-2 hover:border-purple-playful hover:shadow-[0_0_20px_rgba(216,150,255,0.5)]
                   ${className || ''}`}
     >
       {/* Cover Image */}
@@ -62,7 +62,7 @@ export function SingleCard({ single, className }: SingleCardProps) {
       {/* Content Section */}
       <div className="p-6">
         {/* Title */}
-        <h3 className="text-gold-vintage font-montserrat font-bold text-xl mb-2">
+        <h3 className="text-purple-bright font-montserrat font-bold text-xl mb-2">
           {single.title}
         </h3>
 

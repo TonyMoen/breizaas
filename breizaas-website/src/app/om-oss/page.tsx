@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Music, Instagram, Facebook, Youtube } from 'lucide-react'
 import { getArtistInfo } from '@/lib/queries/artistInfo'
+import { getHeroSection } from '@/lib/sanity'
+import { PageHero } from '@/components/page-hero'
 import { PortableText } from '@/components/PortableText'
 
 /**
@@ -64,7 +66,10 @@ const TikTokIcon = () => (
 )
 
 export default async function OmOssPage() {
-  const artistInfoResult = await getArtistInfo()
+  const [artistInfoResult, heroData] = await Promise.all([
+    getArtistInfo(),
+    getHeroSection('om-oss'),
+  ])
 
   // Handle error state gracefully
   if ('code' in artistInfoResult) {
@@ -129,41 +134,39 @@ export default async function OmOssPage() {
   }> // Only show links that exist
 
   return (
-    <main id="main-content" className="min-h-screen bg-brown-dark py-16 md:py-24">
-      <div className="container mx-auto max-w-4xl px-6 md:px-8">
-        {/* Hero Section */}
-        <section className="mb-16 md:mb-24 text-center">
-          <h1 className="font-montserrat font-bold text-4xl md:text-5xl lg:text-6xl text-text-primary mb-6">
-            Om {artistInfo.artistName}
-          </h1>
-          <p className="text-xl md:text-2xl text-gold-champagne font-semibold">
-            {artistInfo.tagline}
-          </p>
-        </section>
+    <main id="main-content" className="min-h-screen bg-brown-dark">
+      {/* Hero Section with Background Image */}
+      <PageHero
+        headline={heroData?.headline || `Om ${artistInfo.artistName}`}
+        subtitle={heroData?.subtitle || artistInfo.tagline}
+        backgroundImage={heroData?.heroImage}
+      />
+
+      <div className="container mx-auto max-w-4xl px-6 md:px-8 py-16 md:py-24">
 
         {/* Stats Panel */}
         <section className="mb-16 md:mb-24">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-brown-base p-8 rounded-lg border border-gold-champagne/20">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-brown-base p-8 rounded-lg border-2 border-purple-playful/30">
             <div className="text-center">
-              <p className="text-4xl md:text-5xl font-bold text-gold-champagne mb-2 font-montserrat">
+              <p className="text-4xl md:text-5xl font-bold text-amber-warm mb-2 font-montserrat">
                 {artistInfo.monthlyListeners.toLocaleString('nb-NO')}+
               </p>
-              <p className="text-text-secondary text-sm md:text-base">Månedlige lyttere</p>
+              <p className="text-white-warm text-sm md:text-base">Månedlige lyttere</p>
             </div>
             {artistInfo.totalStreams && (
               <div className="text-center">
-                <p className="text-4xl md:text-5xl font-bold text-gold-champagne mb-2 font-montserrat">
+                <p className="text-4xl md:text-5xl font-bold text-amber-warm mb-2 font-montserrat">
                   {artistInfo.totalStreams.toLocaleString('nb-NO')}+
                 </p>
-                <p className="text-text-secondary text-sm md:text-base">Totale avspillinger</p>
+                <p className="text-white-warm text-sm md:text-base">Totale avspillinger</p>
               </div>
             )}
             {artistInfo.numberOfReleases && (
               <div className="text-center">
-                <p className="text-4xl md:text-5xl font-bold text-gold-champagne mb-2 font-montserrat">
+                <p className="text-4xl md:text-5xl font-bold text-amber-warm mb-2 font-montserrat">
                   {artistInfo.numberOfReleases}
                 </p>
-                <p className="text-text-secondary text-sm md:text-base">Utgivelser</p>
+                <p className="text-white-warm text-sm md:text-base">Utgivelser</p>
               </div>
             )}
           </div>
@@ -180,14 +183,14 @@ export default async function OmOssPage() {
         {/* Achievements Section */}
         {artistInfo.notableAchievements && artistInfo.notableAchievements.length > 0 && (
           <section className="mb-16 md:mb-24">
-            <h2 className="font-montserrat font-bold text-3xl md:text-4xl text-gold-champagne mb-8">
+            <h2 className="font-montserrat font-bold text-3xl md:text-4xl text-amber-warm mb-8">
               Prestasjoner
             </h2>
             <ul className="space-y-4">
               {artistInfo.notableAchievements.map((achievement, index) => (
                 <li key={index} className="flex items-start gap-4">
-                  <span className="text-gold-champagne text-2xl mt-1 flex-shrink-0">✓</span>
-                  <span className="text-text-secondary text-lg leading-relaxed">{achievement}</span>
+                  <span className="text-purple-playful text-2xl mt-1 flex-shrink-0">✓</span>
+                  <span className="text-white-warm text-lg leading-relaxed">{achievement}</span>
                 </li>
               ))}
             </ul>
@@ -196,14 +199,14 @@ export default async function OmOssPage() {
 
         {/* Genre Tags Section */}
         <section className="mb-16 md:mb-24">
-          <h2 className="font-montserrat font-bold text-3xl md:text-4xl text-gold-champagne mb-8">
+          <h2 className="font-montserrat font-bold text-3xl md:text-4xl text-amber-warm mb-8">
             Sjanger
           </h2>
           <div className="flex flex-wrap gap-3">
             {artistInfo.genreTags.map((tag, index) => (
               <span
                 key={index}
-                className="bg-gold-champagne text-brown-dark px-5 py-2 rounded-full text-sm md:text-base font-medium font-inter"
+                className="bg-purple-playful text-brown-dark px-5 py-2 rounded-full text-sm md:text-base font-medium font-inter hover:bg-purple-bright transition-colors"
               >
                 {tag}
               </span>
@@ -212,27 +215,27 @@ export default async function OmOssPage() {
         </section>
 
         {/* Booking CTA */}
-        <section className="mb-16 md:mb-24 bg-brown-base p-8 md:p-12 rounded-lg border border-gold-champagne/20">
-          <h2 className="font-montserrat font-bold text-3xl md:text-4xl text-gold-champagne mb-6">
+        <section className="mb-16 md:mb-24 bg-brown-base p-8 md:p-12 rounded-lg border-2 border-purple-playful/30">
+          <h2 className="font-montserrat font-bold text-3xl md:text-4xl text-amber-warm mb-6">
             For arrangører
           </h2>
-          <p className="text-lg md:text-xl text-text-secondary leading-relaxed mb-6">
+          <p className="text-lg md:text-xl text-white-warm leading-relaxed mb-6">
             {artistInfo.artistName} er tilgjengelig for festivaler, konserter, bedriftsarrangementer
             og private fester. Musikken vår passer perfekt til norske arrangementer der gjestene
             ønsker ekte festmusikk med et moderne twist.
           </p>
-          <p className="text-lg md:text-xl text-text-secondary leading-relaxed">
+          <p className="text-lg md:text-xl text-white-warm leading-relaxed">
             Interessert i booking? Besøk vår{' '}
             <Link
               href="/arrangor"
-              className="text-gold-champagne hover:opacity-80 transition-opacity underline decoration-2 underline-offset-4"
+              className="text-purple-playful hover:text-purple-bright transition-colors underline decoration-2 underline-offset-4"
             >
               pressekit-side for arrangører
             </Link>
             , eller ta{' '}
             <Link
               href="/kontakt"
-              className="text-gold-champagne hover:opacity-80 transition-opacity underline decoration-2 underline-offset-4"
+              className="text-purple-playful hover:text-purple-bright transition-colors underline decoration-2 underline-offset-4"
             >
               kontakt direkte
             </Link>
@@ -243,7 +246,7 @@ export default async function OmOssPage() {
         {/* Social Links Section */}
         {socialLinksConfig.length > 0 && (
           <section className="mb-16 md:mb-24">
-            <h2 className="font-montserrat font-bold text-3xl md:text-4xl text-gold-champagne text-center mb-8">
+            <h2 className="font-montserrat font-bold text-3xl md:text-4xl text-amber-warm text-center mb-8">
               Følg {artistInfo.artistName}
             </h2>
 
@@ -260,11 +263,11 @@ export default async function OmOssPage() {
                       inline-flex items-center justify-center
                       w-11 h-11 rounded-full
                       transition-all duration-300
-                      hover:scale-110 hover:shadow-lg
+                      hover:scale-110
                       ${
                         link.color === 'spotify'
-                          ? 'bg-[#1db954] text-white hover:bg-[#1ed760]'
-                          : 'bg-gold-champagne text-brown-dark hover:bg-[#f4e4c1]'
+                          ? 'bg-[#1db954] text-white hover:bg-[#1ed760] hover:shadow-[0_0_20px_rgba(29,185,84,0.4)]'
+                          : 'bg-purple-playful text-brown-dark hover:bg-purple-bright hover:shadow-[0_0_20px_rgba(216,150,255,0.6)]'
                       }
                     `}
                     aria-label={`${link.label} (åpnes i ny fane)`}
@@ -281,28 +284,29 @@ export default async function OmOssPage() {
           </section>
         )}
 
-        {/* Structured Data for SEO */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'Person',
-              name: artistInfo.artistName,
-              description: artistInfo.shortBio,
-              url: 'https://breizaas.no',
-              genre: artistInfo.genreTags,
-              sameAs: Object.values(artistInfo.socialMediaLinks).filter(Boolean),
-              aggregateRating: artistInfo.monthlyListeners
-                ? {
-                    '@type': 'AggregateRating',
-                    ratingCount: artistInfo.monthlyListeners,
-                  }
-                : undefined,
-            }),
-          }}
-        />
       </div>
+
+      {/* Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Person',
+            name: artistInfo.artistName,
+            description: artistInfo.shortBio,
+            url: 'https://breizaas.no',
+            genre: artistInfo.genreTags,
+            sameAs: Object.values(artistInfo.socialMediaLinks).filter(Boolean),
+            aggregateRating: artistInfo.monthlyListeners
+              ? {
+                  '@type': 'AggregateRating',
+                  ratingCount: artistInfo.monthlyListeners,
+                }
+              : undefined,
+          }),
+        }}
+      />
     </main>
   )
 }

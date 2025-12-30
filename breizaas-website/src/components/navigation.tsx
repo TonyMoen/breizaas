@@ -136,6 +136,9 @@ export function Navigation({ socialLinks }: NavigationProps) {
               <Link
                 href="/"
                 className="font-tradewind text-2xl text-gold-champagne transition-opacity hover:opacity-80 focus:outline focus:outline-2 focus:outline-offset-4 focus:outline-gold-champagne focus:rounded"
+                style={{
+                  textShadow: '-1px -1px 0 #d4a574, 1px -1px 0 #d4a574, -1px 1px 0 #d4a574, 1px 1px 0 #d4a574, 0 0 30px rgba(212, 165, 116, 0.5)'
+                }}
               >
                 BREIZAAS
               </Link>
@@ -149,10 +152,10 @@ export function Navigation({ socialLinks }: NavigationProps) {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className={`font-inter text-base font-medium transition-colors duration-300 focus:outline focus:outline-2 focus:outline-offset-4 focus:outline-gold-champagne focus:rounded ${
+                      className={`font-inter text-base font-medium transition-colors duration-300 pb-1 border-b-2 ${
                         isActive
-                          ? 'text-gold-champagne'
-                          : 'text-text-primary hover:text-gold-champagne'
+                          ? 'text-purple-playful border-purple-playful'
+                          : 'text-gold-champagne hover:text-purple-playful border-transparent'
                       }`}
                       aria-current={isActive ? 'page' : undefined}
                     >
@@ -170,7 +173,7 @@ export function Navigation({ socialLinks }: NavigationProps) {
                   href={socialLinks.spotify}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-text-primary hover:text-gold-champagne transition-colors focus:outline-none focus:text-gold-champagne"
+                  className="text-gold-champagne hover:text-purple-playful transition-colors focus:outline-none focus:text-purple-playful"
                   aria-label="Lytt på Spotify (åpnes i ny fane)"
                 >
                   <Music className="w-5 h-5" />
@@ -181,7 +184,7 @@ export function Navigation({ socialLinks }: NavigationProps) {
                   href={socialLinks.youtube}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-text-primary hover:text-gold-champagne transition-colors focus:outline-none focus:text-gold-champagne"
+                  className="text-gold-champagne hover:text-purple-playful transition-colors focus:outline-none focus:text-purple-playful"
                   aria-label="Se videoer på YouTube (åpnes i ny fane)"
                 >
                   <Youtube className="w-5 h-5" />
@@ -192,7 +195,7 @@ export function Navigation({ socialLinks }: NavigationProps) {
                   href={socialLinks.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-text-primary hover:text-gold-champagne transition-colors focus:outline-none focus:text-gold-champagne"
+                  className="text-gold-champagne hover:text-purple-playful transition-colors focus:outline-none focus:text-purple-playful"
                   aria-label="Følg på Instagram (åpnes i ny fane)"
                 >
                   <Instagram className="w-5 h-5" />
@@ -203,7 +206,7 @@ export function Navigation({ socialLinks }: NavigationProps) {
                   href={socialLinks.facebook}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-text-primary hover:text-gold-champagne transition-colors focus:outline-none focus:text-gold-champagne"
+                  className="text-gold-champagne hover:text-purple-playful transition-colors focus:outline-none focus:text-purple-playful"
                   aria-label="Besøk Facebook (åpnes i ny fane)"
                 >
                   <Facebook className="w-5 h-5" />
@@ -214,7 +217,7 @@ export function Navigation({ socialLinks }: NavigationProps) {
                   href={socialLinks.tiktok}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-text-primary hover:text-gold-champagne transition-colors focus:outline-none focus:text-gold-champagne"
+                  className="text-gold-champagne hover:text-purple-playful transition-colors focus:outline-none focus:text-purple-playful"
                   aria-label="Se på TikTok (åpnes i ny fane)"
                 >
                   <TikTokIcon />
@@ -228,6 +231,9 @@ export function Navigation({ socialLinks }: NavigationProps) {
             <Link
               href="/"
               className="font-tradewind text-2xl text-gold-champagne transition-opacity hover:opacity-80 focus:outline focus:outline-2 focus:outline-offset-4 focus:outline-gold-champagne focus:rounded"
+              style={{
+                textShadow: '-1px -1px 0 #d4a574, 1px -1px 0 #d4a574, -1px 1px 0 #d4a574, 1px 1px 0 #d4a574, 0 0 30px rgba(212, 165, 116, 0.5)'
+              }}
             >
               BREIZAAS
             </Link>
@@ -310,6 +316,9 @@ export function Navigation({ socialLinks }: NavigationProps) {
                 href="/"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="font-tradewind text-3xl text-gold-champagne transition-opacity hover:opacity-80 focus:outline focus:outline-2 focus:outline-offset-4 focus:outline-gold-champagne rounded"
+                style={{
+                  textShadow: '-1px -1px 0 #d4a574, 1px -1px 0 #d4a574, -1px 1px 0 #d4a574, 1px 1px 0 #d4a574, 0 0 30px rgba(212, 165, 116, 0.5)'
+                }}
               >
                 BREIZAAS
               </Link>
@@ -323,10 +332,10 @@ export function Navigation({ socialLinks }: NavigationProps) {
                       key={link.href}
                       href={link.href}
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className={`font-inter text-lg font-medium transition-colors duration-300 focus:outline focus:outline-2 focus:outline-offset-4 focus:outline-gold-champagne rounded min-h-[44px] flex items-center ${
+                      className={`font-inter text-lg font-medium transition-colors duration-300 min-h-[44px] flex items-center ${
                         isActive
-                          ? 'text-gold-champagne border-b-2 border-gold-champagne pb-1'
-                          : 'text-text-primary hover:text-gold-champagne'
+                          ? 'text-purple-playful border-b-2 border-purple-playful pb-1'
+                          : 'text-gold-champagne hover:text-purple-playful'
                       }`}
                       aria-current={isActive ? 'page' : undefined}
                     >
@@ -344,7 +353,7 @@ export function Navigation({ socialLinks }: NavigationProps) {
                       href={socialLinks.spotify}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-text-primary hover:text-gold-champagne transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus:text-gold-champagne"
+                      className="text-gold-champagne hover:text-purple-playful transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus:text-purple-playful"
                       aria-label="Lytt på Spotify (åpnes i ny fane)"
                     >
                       <Music className="w-6 h-6" />
@@ -355,7 +364,7 @@ export function Navigation({ socialLinks }: NavigationProps) {
                       href={socialLinks.youtube}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-text-primary hover:text-gold-champagne transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus:text-gold-champagne"
+                      className="text-gold-champagne hover:text-purple-playful transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus:text-purple-playful"
                       aria-label="Se videoer på YouTube (åpnes i ny fane)"
                     >
                       <Youtube className="w-6 h-6" />
@@ -366,7 +375,7 @@ export function Navigation({ socialLinks }: NavigationProps) {
                       href={socialLinks.instagram}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-text-primary hover:text-gold-champagne transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus:text-gold-champagne"
+                      className="text-gold-champagne hover:text-purple-playful transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus:text-purple-playful"
                       aria-label="Følg på Instagram (åpnes i ny fane)"
                     >
                       <Instagram className="w-6 h-6" />
@@ -377,7 +386,7 @@ export function Navigation({ socialLinks }: NavigationProps) {
                       href={socialLinks.facebook}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-text-primary hover:text-gold-champagne transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus:text-gold-champagne"
+                      className="text-gold-champagne hover:text-purple-playful transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus:text-purple-playful"
                       aria-label="Besøk Facebook (åpnes i ny fane)"
                     >
                       <Facebook className="w-6 h-6" />
@@ -388,7 +397,7 @@ export function Navigation({ socialLinks }: NavigationProps) {
                       href={socialLinks.tiktok}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-text-primary hover:text-gold-champagne transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus:text-gold-champagne"
+                      className="text-gold-champagne hover:text-purple-playful transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus:text-purple-playful"
                       aria-label="Se på TikTok (åpnes i ny fane)"
                     >
                       <TikTokIcon />

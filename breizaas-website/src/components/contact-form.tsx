@@ -121,7 +121,7 @@ export function ContactForm({ className = '' }: ContactFormProps) {
             className={`
               w-full h-12 bg-brown-medium text-white-warm border-2
               ${errors.name ? 'border-amber' : 'border-brown-light'}
-              focus:border-gold-champagne focus:ring-2 focus:ring-gold-champagne/20
+              focus:border-purple-playful focus:ring-2 focus:ring-purple-playful/20
               text-base px-4 rounded-md outline-none transition-colors
             `}
             aria-invalid={errors.name ? 'true' : 'false'}
@@ -149,7 +149,7 @@ export function ContactForm({ className = '' }: ContactFormProps) {
             className={`
               w-full h-12 bg-brown-medium text-white-warm border-2
               ${errors.email ? 'border-amber' : 'border-brown-light'}
-              focus:border-gold-champagne focus:ring-2 focus:ring-gold-champagne/20
+              focus:border-purple-playful focus:ring-2 focus:ring-purple-playful/20
               text-base px-4 rounded-md outline-none transition-colors
             `}
             aria-invalid={errors.email ? 'true' : 'false'}
@@ -175,8 +175,9 @@ export function ContactForm({ className = '' }: ContactFormProps) {
             className={`
               w-full h-12 bg-brown-medium text-white-warm border-2
               ${errors.subject ? 'border-amber' : 'border-brown-light'}
-              focus:border-gold-champagne focus:ring-2 focus:ring-gold-champagne/20
+              focus:border-purple-playful focus:ring-2 focus:ring-purple-playful/20
               text-base px-4 rounded-md outline-none transition-colors
+              [&>option]:bg-brown-dark [&>option]:text-white-warm
             `}
             aria-invalid={errors.subject ? 'true' : 'false'}
             aria-describedby={errors.subject ? 'subject-error' : undefined}
@@ -209,7 +210,7 @@ export function ContactForm({ className = '' }: ContactFormProps) {
             className={`
               w-full bg-brown-medium text-white-warm border-2
               ${errors.message ? 'border-amber' : 'border-brown-light'}
-              focus:border-gold-champagne focus:ring-2 focus:ring-gold-champagne/20
+              focus:border-purple-playful focus:ring-2 focus:ring-purple-playful/20
               text-base px-4 py-3 rounded-md outline-none transition-colors resize-y
             `}
             aria-invalid={errors.message ? 'true' : 'false'}

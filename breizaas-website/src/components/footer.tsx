@@ -45,6 +45,9 @@ export function Footer({ socialLinks }: FooterProps) {
             <Link
               href="/"
               className="font-tradewind text-2xl text-gold-champagne hover:opacity-80 transition-opacity"
+              style={{
+                textShadow: '-1px -1px 0 #d4a574, 1px -1px 0 #d4a574, -1px 1px 0 #d4a574, 1px 1px 0 #d4a574, 0 0 30px rgba(212, 165, 116, 0.5)'
+              }}
             >
               BREIZAAS
             </Link>
@@ -56,7 +59,7 @@ export function Footer({ socialLinks }: FooterProps) {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-text-secondary hover:text-gold-champagne transition-colors text-sm font-inter"
+                className="text-gold-champagne hover:text-purple-playful transition-colors text-sm font-inter"
               >
                 {link.label}
               </Link>
@@ -67,7 +70,7 @@ export function Footer({ socialLinks }: FooterProps) {
           <div className="flex justify-center md:justify-end">
             <Link
               href="/kontakt"
-              className="bg-purple-playful hover:bg-purple-playful-hover text-white-warm font-bold px-6 py-3 rounded-md transition-colors text-sm"
+              className="border-2 border-purple-playful text-purple-playful bg-transparent hover:bg-purple-playful hover:text-brown-dark font-bold px-6 py-3 rounded-md transition-all text-sm"
             >
               Kontakt oss
             </Link>
@@ -82,7 +85,7 @@ export function Footer({ socialLinks }: FooterProps) {
                 href={socialLinks.spotify}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-text-secondary hover:text-gold-champagne transition-colors"
+                className="text-gold-champagne hover:text-purple-playful transition-colors"
                 aria-label="Lytt på Spotify (åpnes i ny fane)"
               >
                 <Music className="w-5 h-5" />
@@ -93,7 +96,7 @@ export function Footer({ socialLinks }: FooterProps) {
                 href={socialLinks.youtube}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-text-secondary hover:text-gold-champagne transition-colors"
+                className="text-gold-champagne hover:text-purple-playful transition-colors"
                 aria-label="Se videoer på YouTube (åpnes i ny fane)"
               >
                 <Youtube className="w-5 h-5" />
@@ -104,7 +107,7 @@ export function Footer({ socialLinks }: FooterProps) {
                 href={socialLinks.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-text-secondary hover:text-gold-champagne transition-colors"
+                className="text-gold-champagne hover:text-purple-playful transition-colors"
                 aria-label="Følg på Instagram (åpnes i ny fane)"
               >
                 <Instagram className="w-5 h-5" />
@@ -115,7 +118,7 @@ export function Footer({ socialLinks }: FooterProps) {
                 href={socialLinks.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-text-secondary hover:text-gold-champagne transition-colors"
+                className="text-gold-champagne hover:text-purple-playful transition-colors"
                 aria-label="Besøk Facebook (åpnes i ny fane)"
               >
                 <Facebook className="w-5 h-5" />
@@ -126,7 +129,7 @@ export function Footer({ socialLinks }: FooterProps) {
                 href={socialLinks.tiktok}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-text-secondary hover:text-gold-champagne transition-colors"
+                className="text-gold-champagne hover:text-purple-playful transition-colors"
                 aria-label="Se på TikTok (åpnes i ny fane)"
               >
                 <TikTokIcon />

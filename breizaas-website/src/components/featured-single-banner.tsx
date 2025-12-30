@@ -59,17 +59,22 @@ export function FeaturedSingleBanner({ single, backgroundImage }: FeaturedSingle
         <div className="absolute inset-0 bg-gradient-to-b from-black via-brown-dark to-black" />
       )}
 
-      {/* Amber radial gradient overlay */}
+      {/* Pink radial gradient overlay */}
       <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,179,71,0.1)_0%,transparent_70%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,0,110,0.1)_0%,transparent_70%)]"
         aria-hidden="true"
       />
 
       {/* Content container */}
       <div className="relative z-10 container mx-auto px-6 py-16 flex flex-col items-center text-center">
         {/* Title announcement */}
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-montserrat font-bold uppercase mb-8 tracking-wide text-white">
-          {single.title} - <span className="text-gold-vintage">UTE NÅ!</span>
+        <h1
+          className="text-3xl md:text-4xl lg:text-5xl font-montserrat font-bold uppercase mb-8 tracking-wide text-gold-champagne"
+          style={{
+            textShadow: '-2px -2px 0 #d4a574, 2px -2px 0 #d4a574, -2px 2px 0 #d4a574, 2px 2px 0 #d4a574, 0 0 40px rgba(212, 165, 116, 0.6)'
+          }}
+        >
+          {single.title} - <span className="text-amber-warm">UTE NÅ!</span>
         </h1>
 
         {/* Cover image */}
@@ -90,9 +95,9 @@ export function FeaturedSingleBanner({ single, backgroundImage }: FeaturedSingle
             href={listenUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-8 bg-[#8B4513] hover:bg-[#A0522D] text-white font-bold text-lg md:text-xl
-                      py-4 px-8 rounded-lg transition-colors duration-300
-                      flex items-center gap-3 shadow-lg"
+            className="mt-8 border-2 border-purple-playful text-purple-playful bg-transparent hover:bg-purple-playful hover:text-brown-dark font-bold text-lg md:text-xl
+                      py-4 px-8 rounded-lg transition-all duration-300
+                      flex items-center gap-3 shadow-lg hover:shadow-[0_0_30px_rgba(216,150,255,0.6)]"
             aria-label={`Lytt til ${single.title} nå`}
           >
             <svg
