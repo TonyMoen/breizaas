@@ -72,11 +72,11 @@ export function SpotifyEmbed({
   return (
     <div
       ref={containerRef}
-      className={`max-w-lg mx-auto ${className}`}
+      className={`w-full ${className}`}
       style={{ minHeight: height }}
     >
       <div
-        className="bg-brown-warm border-2 border-gold-vintage rounded-2xl p-4"
+        className="bg-brown-warm border-2 border-gold-vintage/20 rounded-2xl p-4"
         style={{ minHeight: height }}
       >
         {!shouldLoad && (
