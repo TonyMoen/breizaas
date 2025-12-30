@@ -125,7 +125,7 @@ export function Navigation({ socialLinks }: NavigationProps) {
 
       {/* Sticky navigation header */}
       <nav
-        className="sticky top-0 z-50 bg-brown-dark/95 backdrop-blur-md border-b border-brown-base/20"
+        className="sticky top-0 z-50 bg-brown-dark/95 backdrop-blur-md border-b-2 border-gold-champagne/20"
         aria-label="Hovednavigasjon"
       >
         <div className="container mx-auto px-6 py-4">
