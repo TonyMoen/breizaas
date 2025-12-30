@@ -45,11 +45,12 @@ export default async function MusikkPage() {
         </p>
 
         {/* Spotify Embed (Story 2.1) */}
-        <div className="mt-12">
+        <div className="mt-12 max-w-[70%] mx-auto">
           <SpotifyEmbed
             artistId="3sMoefLp287FEWJF6Ue7oc"
             theme="dark"
             lazyLoad={false}
+            height={458}
           />
         </div>
 
