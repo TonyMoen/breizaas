@@ -82,9 +82,9 @@ development_status:
   5-5-form-security-csrf-protection-and-rate-limiting: review
   epic-5-retrospective: optional
 
-  epic-6: backlog
-  6-1-sanity-cms-setup-and-schema-definition: backlog
-  6-2-artist-info-and-statistics-content-type: backlog
+  epic-6: in-progress
+  6-1-sanity-cms-setup-and-schema-definition: review
+  6-2-artist-info-and-statistics-content-type: in-progress
   6-3-press-kit-and-media-management: backlog
   6-4-youtube-video-management: backlog
   6-5-news-and-announcements-content-type: backlog
