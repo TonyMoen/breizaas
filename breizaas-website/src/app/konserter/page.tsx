@@ -189,7 +189,8 @@ export default async function KonserterPage() {
       {/* Request Show Section */}
       <section className="py-12 md:py-16 bg-brown-dark">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto border-2 border-gold-champagne/30 rounded-xl p-8 md:p-12">
+          <div className="max-w-4xl mx-auto border-2 border-transparent rounded-xl p-8 md:p-12 transition-all duration-300
+                        hover:border-purple-playful hover:shadow-[0_0_20px_rgba(216,150,255,0.5)]">
             <div className="grid grid-cols-1 md:grid-cols-[1fr,auto] gap-8 items-center">
               {/* Left side: Text content */}
               <div>
@@ -209,7 +210,7 @@ export default async function KonserterPage() {
                   href={requestShowUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block bg-brown-base hover:bg-brown-light text-white-warm font-semibold px-8 py-4 rounded-lg border-2 border-gold-champagne/30 hover:border-gold-champagne transition-all duration-300 text-center whitespace-nowrap"
+                  className="inline-block bg-brown-base hover:bg-brown-light text-white-warm font-semibold px-8 py-4 rounded-lg border-2 border-transparent hover:border-purple-playful transition-all duration-300 text-center whitespace-nowrap"
                 >
                   REQUEST A SHOW NEAR YOU
                 </a>

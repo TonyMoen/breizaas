@@ -60,7 +60,7 @@ export function TourDateCard({ event, isPastEvent = false, featured = false }: T
 
   return (
     <div
-      className={`bg-brown-dark border-2 border-gold-vintage/20 rounded-xl p-6 transition-all duration-300 hover:border-purple-playful hover:shadow-[0_10px_40px_rgba(216,150,255,0.3)]${isPastEvent ? ' opacity-70' : ''}`}
+      className={`bg-brown-dark border-2 border-transparent rounded-xl p-6 transition-all duration-300 hover:border-purple-playful hover:shadow-[0_0_20px_rgba(216,150,255,0.5)]${isPastEvent ? ' opacity-70' : ''}`}
       style={{
         background: 'linear-gradient(135deg, rgba(31, 31, 46, 0.8), rgba(26, 26, 46, 0.9))'
       }}

@@ -78,7 +78,9 @@ export function FeaturedSingleBanner({ single, backgroundImage }: FeaturedSingle
         </h1>
 
         {/* Cover image */}
-        <div className="shadow-2xl transform hover:scale-105 transition-transform duration-300 max-w-md w-full">
+        <div className="shadow-2xl transform hover:scale-105 transition-all duration-300 max-w-md w-full
+                        border-2 border-transparent rounded-lg
+                        hover:border-purple-playful hover:shadow-[0_0_20px_rgba(216,150,255,0.5)]">
           <Image
             src={imageUrl}
             alt={single.coverImage.alt}

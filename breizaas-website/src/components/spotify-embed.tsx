@@ -76,7 +76,8 @@ export function SpotifyEmbed({
       style={{ minHeight: height }}
     >
       <div
-        className="bg-brown-warm border-2 border-gold-vintage/20 rounded-2xl p-4"
+        className="bg-brown-warm border-2 border-transparent rounded-2xl p-4 transition-all duration-300
+                    hover:border-purple-playful hover:shadow-[0_0_20px_rgba(216,150,255,0.5)]"
         style={{ minHeight: height }}
       >
         {!shouldLoad && (

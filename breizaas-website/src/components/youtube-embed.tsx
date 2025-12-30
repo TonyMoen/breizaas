@@ -58,8 +58,9 @@ export function YouTubeEmbed({ videoId, title, className = '' }: YouTubeEmbedPro
   return (
     <div
       ref={containerRef}
-      className={`aspect-video bg-brown-dark rounded-2xl border-2 border-gold-vintage
-                  overflow-hidden transition-all duration-300 hover:shadow-gold ${className}`}
+      className={`aspect-video bg-brown-dark rounded-2xl border-2 border-transparent
+                  overflow-hidden transition-all duration-300
+                  hover:border-purple-playful hover:shadow-[0_0_20px_rgba(216,150,255,0.5)] ${className}`}
     >
       {!isLoaded ? (
         // Placeholder with YouTube thumbnail and play button overlay
