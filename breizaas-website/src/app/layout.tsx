@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Trade_Winds, Montserrat } from "next/font/google";
 import { Navigation } from "@/components/navigation";
+import { Footer } from "@/components/footer";
 import { getArtistSocialLinks } from "@/lib/queries/artistInfo";
 import "./globals.css";
 
@@ -95,6 +96,7 @@ export default async function RootLayout({
       >
         <Navigation socialLinks={socialLinks} />
         {children}
+        <Footer socialLinks={socialLinks} />
       </body>
     </html>
   );
