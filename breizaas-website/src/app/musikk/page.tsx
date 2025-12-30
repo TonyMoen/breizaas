@@ -1,9 +1,10 @@
 import { Metadata } from 'next'
 import { SpotifyEmbed } from '@/components/spotify-embed'
-import { AlbumGrid } from '@/components/album-grid'
+import { SingleGrid } from '@/components/single-grid'
 import { VideoGrid } from '@/components/video-grid'
 import { SpotifyCtaButton } from '@/components/spotify-cta-button'
-import { getDiscography, getVideos } from '@/lib/sanity'
+import { PageHero } from '@/components/page-hero'
+import { getSingles, getVideos, getHeroSection } from '@/lib/sanity'
 
 export const metadata: Metadata = {
   title: 'Musikk - Breizaas',
@@ -22,21 +23,24 @@ export const metadata: Metadata = {
 }
 
 export default async function MusikkPage() {
-  // Fetch discography and videos data from Sanity CMS
-  const albums = await getDiscography();
-  const videos = await getVideos();
+  // Fetch singles, videos, and hero data from Sanity CMS
+  const [singles, videos, heroData] = await Promise.all([
+    getSingles(),
+    getVideos(),
+    getHeroSection('musikk'),
+  ]);
 
   return (
     <main id="main-content" className="min-h-screen bg-brown-dark text-text-primary">
+      {/* Hero Section with Background Image */}
+      <PageHero
+        headline={heroData?.headline || 'Musikk'}
+        subtitle={heroData?.subtitle}
+        backgroundImage={heroData?.heroImage}
+      />
+
       <div className="container mx-auto px-6 py-24 max-w-7xl">
-        {/* Hero Section */}
-        <h1 className="text-4xl md:text-5xl font-bold text-gold-champagne mb-8 text-center">
-          Musikk
-        </h1>
-        <p className="text-lg text-text-secondary mb-4 text-center max-w-2xl mx-auto">
-          Lytt til Breizaas sin musikk på Spotify. Opplev norsk AI-generert bygdemusikk.
-        </p>
-        <p className="text-xl font-semibold text-purple-playful text-center">
+        <p className="text-xl font-semibold text-purple-playful text-center mb-12">
           125 000+ månedlige lyttere på Spotify
         </p>
 
@@ -54,8 +58,8 @@ export default async function MusikkPage() {
           <SpotifyCtaButton artistId="3sMoefLp287FEWJF6Ue7oc" />
         </div>
 
-        {/* Discography Section (Story 2.2) */}
-        <AlbumGrid albums={albums} className="mt-16" />
+        {/* Singles Section (Story 2.2) */}
+        <SingleGrid singles={singles} className="mt-16" />
 
         {/* YouTube Videos Section (Story 2.3) */}
         <VideoGrid videos={videos} className="mt-24" />

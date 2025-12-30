@@ -2,6 +2,7 @@ import { createClient, type QueryParams } from 'next-sanity';
 import { createImageUrlBuilder } from '@sanity/image-url';
 import type { SanityImageSource } from '@sanity/image-url';
 import type { Album } from '@/types/Album.types';
+import type { Single } from '@/types/Single.types';
 import type { Video } from '@/types/Video.types';
 import type { HeroSection, ArtistInfo } from '@/types/Sanity.types';
 import { HeroSectionSchema, ArtistInfoSchema } from '@/types/Sanity.types';
@@ -102,6 +103,72 @@ export async function getDiscography(): Promise<Album[]> {
   } catch (error) {
     console.error('Failed to fetch discography from Sanity:', error);
     return []; // Graceful degradation - return empty array if Sanity unavailable
+  }
+}
+
+/**
+ * Fetch all singles from Sanity CMS
+ * Ordered by release date (newest first)
+ *
+ * @returns Promise resolving to array of Single documents
+ * @returns Empty array if fetch fails (graceful degradation)
+ *
+ * @example
+ * ```ts
+ * const singles = await getSingles();
+ * ```
+ */
+export async function getSingles(): Promise<Single[]> {
+  try {
+    const query = `*[_type == "single"] | order(releaseDate desc) {
+      _id,
+      title,
+      releaseDate,
+      coverImage,
+      spotifyUrl,
+      appleMusicUrl,
+      youtubeUrl,
+      featured
+    }`;
+
+    const singles = await client.fetch<Single[]>(query);
+    return singles;
+  } catch (error) {
+    console.error('Failed to fetch singles from Sanity:', error);
+    return []; // Graceful degradation - return empty array if Sanity unavailable
+  }
+}
+
+/**
+ * Fetch the featured single from Sanity CMS
+ * Returns the first single with featured=true
+ *
+ * @returns Promise resolving to Single or null if no featured single
+ * @returns null if fetch fails (graceful degradation)
+ *
+ * @example
+ * ```ts
+ * const featuredSingle = await getFeaturedSingle();
+ * ```
+ */
+export async function getFeaturedSingle(): Promise<Single | null> {
+  try {
+    const query = `*[_type == "single" && featured == true][0] {
+      _id,
+      title,
+      releaseDate,
+      coverImage,
+      spotifyUrl,
+      appleMusicUrl,
+      youtubeUrl,
+      featured
+    }`;
+
+    const single = await client.fetch<Single | null>(query);
+    return single;
+  } catch (error) {
+    console.error('Failed to fetch featured single from Sanity:', error);
+    return null; // Graceful degradation
   }
 }
 
@@ -287,40 +354,6 @@ export async function getHeroSection(
 }
 
 /**
- * Fetch artist information (singleton document)
- * Returns core artist data including stats and social links
- *
- * @returns Promise resolving to ArtistInfo or null if not found
- *
- * @example
- * ```ts
- * const artist = await getArtistInfo();
- * if (artist) {
- *   console.log(`${artist.monthlyListeners} monthly listeners`);
- * }
- * ```
+ * @deprecated Use getArtistInfo from @/lib/queries/artistInfo instead
+ * This function is kept for backward compatibility but will be removed
  */
-export async function getArtistInfo(): Promise<ArtistInfo | null> {
-  try {
-    const query = `*[_type == "artistInfo"][0] {
-      _id,
-      _type,
-      artistName,
-      tagline,
-      biography,
-      shortBio,
-      monthlyListeners,
-      totalStreams,
-      numberOfReleases,
-      notableAchievements,
-      genreTags,
-      socialMediaLinks
-    }`;
-
-    const artist = await client.fetch<ArtistInfo | null>(query);
-    return artist;
-  } catch (error) {
-    console.error('Failed to fetch artist info:', error);
-    return null;
-  }
-}

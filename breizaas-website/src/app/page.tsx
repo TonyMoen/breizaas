@@ -1,11 +1,12 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Hero } from '@/components/hero'
+import { FeaturedSingleBanner } from '@/components/featured-single-banner'
 import { SpotifyEmbed } from '@/components/spotify-embed'
 import { ProductCard } from '@/components/product-card'
 import { TourDateCard } from '@/components/tour-date-card'
 import { YouTubeEmbed } from '@/components/youtube-embed'
-import { getHeroSection } from '@/lib/sanity'
+import { getHeroSection, getFeaturedSingle } from '@/lib/sanity'
 import { getArtistInfo } from '@/lib/queries/artistInfo'
 import { getBandsinownEvents } from '@/lib/bandsintown'
 import { getProducts } from '@/lib/shopify'
@@ -59,13 +60,14 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function HomePage() {
   // Fetch all data in parallel
-  const [heroData, artistInfoResult, eventsResult, productsResult, featuredVideoResult] =
+  const [heroData, artistInfoResult, eventsResult, productsResult, featuredVideoResult, featuredSingle] =
     await Promise.all([
       getHeroSection('home'),
       getArtistInfo(),
       getBandsinownEvents(),
       getProducts(),
       getFeaturedVideo(),
+      getFeaturedSingle(),
     ])
 
   // Handle error states gracefully with fallback data
@@ -124,14 +126,21 @@ export default async function HomePage() {
 
   return (
     <main id="main-content">
-      {/* Hero Section */}
-      <Hero
-        brandName={brandName}
-        headline={headline}
-        subtitle={subtitle}
-        stat={monthlyListeners}
-        backgroundImage={heroData?.heroImage}
-      />
+      {/* Hero Section - Featured Single Banner overlays on background, or regular Hero if no featured single */}
+      {featuredSingle ? (
+        <FeaturedSingleBanner
+          single={featuredSingle}
+          backgroundImage={heroData?.heroImage}
+        />
+      ) : (
+        <Hero
+          brandName={brandName}
+          headline={headline}
+          subtitle={subtitle}
+          stat={monthlyListeners}
+          backgroundImage={heroData?.heroImage}
+        />
+      )}
 
       {/* Concerts & Spotify Section */}
       <section className="py-12 md:py-16 bg-brown-warm">
