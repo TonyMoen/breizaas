@@ -50,10 +50,10 @@ export function FeaturedSingleBanner({ single, backgroundImage }: FeaturedSingle
             src={urlFor(backgroundImage.asset as never).width(1920).height(1080).url()}
             alt={backgroundImage.alt}
             fill
-            className="object-cover opacity-30"
+            className="object-cover opacity-50"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-brown-dark/80 to-black/90" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-brown-dark/50 to-black/60" />
         </div>
       ) : (
         <div className="absolute inset-0 bg-gradient-to-b from-black via-brown-dark to-black" />

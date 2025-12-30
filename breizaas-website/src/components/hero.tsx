@@ -26,10 +26,10 @@ export function Hero({ brandName, headline, subtitle, stat, backgroundImage }: H
             src={urlFor(backgroundImage.asset as never).width(1920).height(1080).url()}
             alt={backgroundImage.alt}
             fill
-            className="object-cover opacity-30"
+            className="object-cover opacity-50"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-brown-dark/70 to-brown-base/90" />
+          <div className="absolute inset-0 bg-gradient-to-b from-brown-dark/40 to-brown-base/60" />
         </div>
       ) : null}
 
