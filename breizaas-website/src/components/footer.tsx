@@ -26,8 +26,8 @@ const TikTokIcon = () => (
 )
 
 const footerLinks = [
-  { href: '/om-oss', label: 'Bandet' },
-  { href: '/musikk', label: 'Diskografi' },
+  { href: '/om-oss', label: 'Om oss' },
+  { href: '/musikk', label: 'Musikk' },
   { href: '/konserter', label: 'Konserter' },
   { href: '/merch', label: 'Merch' },
 ]
@@ -36,7 +36,7 @@ export function Footer({ socialLinks }: FooterProps) {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="bg-brown-dark border-t border-brown-base/20 py-12">
+    <footer className="bg-brown-dark border-t-2 border-gold-champagne/20 py-12">
       <div className="container mx-auto px-6">
         {/* Top Row: Logo | Nav Links | CTA Button */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center mb-8">
