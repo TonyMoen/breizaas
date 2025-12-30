@@ -1,59 +1,49 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Music, Instagram, Facebook, Youtube } from 'lucide-react'
+import { getArtistInfo } from '@/lib/queries/artistInfo'
+import { PortableText } from '@/components/PortableText'
 
-export const metadata: Metadata = {
-  title: 'Om Breizaas - AI møter norsk bygdemusikk',
-  description:
-    'Breizaas er en AI-generert artist som skaper autentisk norsk bygdemusikk og festmusikk. Med 125 000+ månedlige lyttere på Spotify beviser vi at AI kan skape musikk som berører hjerter.',
-  openGraph: {
-    title: 'Om Breizaas - AI møter norsk bygdemusikk',
-    description: 'AI-generert bygdemusikk med 125k+ månedlige lyttere',
-    type: 'profile',
-    url: 'https://breizaas.no/om-oss',
-  },
-  alternates: {
-    canonical: 'https://breizaas.no/om-oss',
-  },
+/**
+ * Generate dynamic metadata from Sanity CMS artist info
+ */
+export async function generateMetadata(): Promise<Metadata> {
+  const artistInfo = await getArtistInfo()
+
+  // Fallback metadata if Sanity fetch fails
+  if ('code' in artistInfo) {
+    return {
+      title: 'Om Breizaas - AI møter norsk bygdemusikk',
+      description:
+        'Breizaas er en AI-generert artist som skaper autentisk norsk bygdemusikk og festmusikk. Med 125 000+ månedlige lyttere på Spotify beviser vi at AI kan skape musikk som berører hjerter.',
+      openGraph: {
+        title: 'Om Breizaas - AI møter norsk bygdemusikk',
+        description: 'AI-generert bygdemusikk med 125k+ månedlige lyttere',
+        type: 'profile',
+        url: 'https://breizaas.no/om-oss',
+      },
+      alternates: {
+        canonical: 'https://breizaas.no/om-oss',
+      },
+    }
+  }
+
+  // Dynamic metadata from Sanity CMS
+  return {
+    title: `Om ${artistInfo.artistName} - ${artistInfo.tagline}`,
+    description: artistInfo.shortBio,
+    keywords: artistInfo.genreTags.join(', '),
+    openGraph: {
+      title: `Om ${artistInfo.artistName}`,
+      description: artistInfo.shortBio,
+      type: 'profile',
+      url: 'https://breizaas.no/om-oss',
+    },
+    alternates: {
+      canonical: 'https://breizaas.no/om-oss',
+    },
+  }
 }
-
-const socialLinks = [
-  {
-    name: 'Spotify',
-    href: 'https://open.spotify.com/artist/...',
-    label: 'Lytt på Spotify',
-    icon: Music,
-    color: 'spotify', // Spotify green background
-  },
-  {
-    name: 'Instagram',
-    href: 'https://instagram.com/breizaas',
-    label: 'Følg på Instagram',
-    icon: Instagram,
-    color: 'gold',
-  },
-  {
-    name: 'TikTok',
-    href: 'https://tiktok.com/@breizaas',
-    label: 'Se på TikTok',
-    icon: null, // Custom SVG below
-    color: 'gold',
-  },
-  {
-    name: 'Facebook',
-    href: 'https://facebook.com/breizaas',
-    label: 'Besøk Facebook',
-    icon: Facebook,
-    color: 'gold',
-  },
-  {
-    name: 'YouTube',
-    href: 'https://youtube.com/@breizaas',
-    label: 'Se videoer på YouTube',
-    icon: Youtube,
-    color: 'gold',
-  },
-]
 
 // TikTok custom icon (simple music note)
 const TikTokIcon = () => (
@@ -73,143 +63,223 @@ const TikTokIcon = () => (
   </svg>
 )
 
-export default function OmOssPage() {
+export default async function OmOssPage() {
+  const artistInfoResult = await getArtistInfo()
+
+  // Handle error state gracefully
+  if ('code' in artistInfoResult) {
+    return (
+      <main id="main-content" className="min-h-screen bg-brown-dark py-16 md:py-24">
+        <div className="container mx-auto max-w-4xl px-6 md:px-8">
+          <div className="flex items-center justify-center min-h-[50vh]">
+            <p className="text-text-secondary text-lg">
+              Kunne ikke laste artistinformasjon. Prøv igjen senere.
+            </p>
+          </div>
+        </div>
+      </main>
+    )
+  }
+
+  const artistInfo = artistInfoResult
+
+  // Build social links from Sanity data
+  const socialLinksConfig = [
+    {
+      name: 'Spotify',
+      href: artistInfo.socialMediaLinks.spotify,
+      label: 'Lytt på Spotify',
+      icon: Music,
+      color: 'spotify',
+    },
+    {
+      name: 'Instagram',
+      href: artistInfo.socialMediaLinks.instagram,
+      label: 'Følg på Instagram',
+      icon: Instagram,
+      color: 'gold',
+    },
+    {
+      name: 'TikTok',
+      href: artistInfo.socialMediaLinks.tiktok,
+      label: 'Se på TikTok',
+      icon: null,
+      color: 'gold',
+    },
+    {
+      name: 'Facebook',
+      href: artistInfo.socialMediaLinks.facebook,
+      label: 'Besøk Facebook',
+      icon: Facebook,
+      color: 'gold',
+    },
+    {
+      name: 'YouTube',
+      href: artistInfo.socialMediaLinks.youtube,
+      label: 'Se videoer på YouTube',
+      icon: Youtube,
+      color: 'gold',
+    },
+  ].filter((link) => link.href) as Array<{
+    name: string
+    href: string
+    label: string
+    icon: any
+    color: string
+  }> // Only show links that exist
+
   return (
     <main id="main-content" className="min-h-screen bg-brown-dark py-16 md:py-24">
       <div className="container mx-auto max-w-4xl px-6 md:px-8">
         {/* Hero Section */}
         <section className="mb-16 md:mb-24 text-center">
           <h1 className="font-montserrat font-bold text-4xl md:text-5xl lg:text-6xl text-text-primary mb-6">
-            Om Breizaas
+            Om {artistInfo.artistName}
           </h1>
           <p className="text-xl md:text-2xl text-gold-champagne font-semibold">
-            AI møter norsk bygdemusikk
+            {artistInfo.tagline}
           </p>
         </section>
 
-        {/* Main Bio Content */}
+        {/* Stats Panel */}
         <section className="mb-16 md:mb-24">
-          <article className="prose prose-lg md:prose-xl prose-invert max-w-none">
-            <p className="text-lg md:text-xl text-text-secondary leading-relaxed mb-6">
-              Breizaas er en AI-generert artist som skaper autentisk norsk bygdemusikk og festmusikk.
-              Med{' '}
-              <span className="text-purple-playful font-bold text-2xl md:text-3xl">
-                125 000+ månedlige lyttere
-              </span>{' '}
-              på Spotify beviser vi at kunstig intelligens kan skape musikk som berører hjerter og
-              får folk til å danse.
-            </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-brown-base p-8 rounded-lg border border-gold-champagne/20">
+            <div className="text-center">
+              <p className="text-4xl md:text-5xl font-bold text-gold-champagne mb-2 font-montserrat">
+                {artistInfo.monthlyListeners.toLocaleString('nb-NO')}+
+              </p>
+              <p className="text-text-secondary text-sm md:text-base">Månedlige lyttere</p>
+            </div>
+            {artistInfo.totalStreams && (
+              <div className="text-center">
+                <p className="text-4xl md:text-5xl font-bold text-gold-champagne mb-2 font-montserrat">
+                  {artistInfo.totalStreams.toLocaleString('nb-NO')}+
+                </p>
+                <p className="text-text-secondary text-sm md:text-base">Totale avspillinger</p>
+              </div>
+            )}
+            {artistInfo.numberOfReleases && (
+              <div className="text-center">
+                <p className="text-4xl md:text-5xl font-bold text-gold-champagne mb-2 font-montserrat">
+                  {artistInfo.numberOfReleases}
+                </p>
+                <p className="text-text-secondary text-sm md:text-base">Utgivelser</p>
+              </div>
+            )}
+          </div>
+        </section>
 
-            <p className="text-lg md:text-xl text-text-secondary leading-relaxed mb-6">
-              Prosjektet Breizaas representerer et banebrytende møte mellom moderne teknologi og norsk
-              kulturarv. Gjennom avansert AI-teknologi skaper vi musikk som føles ekte, troverdig og
-              dypt forankret i den norske bygdemusikktradisjonen - samtidig som vi utforsker nye
-              kreative muligheter.
-            </p>
+        {/* Biography Section - Portable Text from Sanity */}
+        <section className="mb-16 md:mb-24">
+          <PortableText
+            value={artistInfo.biography as never[]}
+            className="prose prose-lg md:prose-xl prose-invert max-w-none"
+          />
+        </section>
 
-            <h2 className="font-montserrat font-bold text-3xl md:text-4xl text-gold-champagne mt-12 mb-6">
-              Musikalsk identitet
+        {/* Achievements Section */}
+        {artistInfo.notableAchievements && artistInfo.notableAchievements.length > 0 && (
+          <section className="mb-16 md:mb-24">
+            <h2 className="font-montserrat font-bold text-3xl md:text-4xl text-gold-champagne mb-8">
+              Prestasjoner
             </h2>
+            <ul className="space-y-4">
+              {artistInfo.notableAchievements.map((achievement, index) => (
+                <li key={index} className="flex items-start gap-4">
+                  <span className="text-gold-champagne text-2xl mt-1 flex-shrink-0">✓</span>
+                  <span className="text-text-secondary text-lg leading-relaxed">{achievement}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
-            <p className="text-lg md:text-xl text-text-secondary leading-relaxed mb-6">
-              <strong className="text-text-primary">Bygdemusikk</strong> og{' '}
-              <strong className="text-text-primary">festmusikk</strong> er hjørnesteiner i norsk
-              kulturhistorie - en musikkstil som har samlet folk til fest, dans og fellesskap i
-              generasjoner. Breizaas ærer denne tradisjonen ved å skape låter som fanger den samme
-              energien, gleden og samhørigheten som kjennetegner den beste norske festmusikken.
-            </p>
-
-            <p className="text-lg md:text-xl text-text-secondary leading-relaxed mb-6">
-              Musikken vår kombinerer tradisjonelle bygdemusikkelementer med moderne produksjon, og
-              resultatet er låter som både føles kjente og friske. Fra opptempopartylåter til
-              melankolske ballader - hver sang er designet for å skape følelser og minner.
-            </p>
-
-            <h2 className="font-montserrat font-bold text-3xl md:text-4xl text-gold-champagne mt-12 mb-6">
-              Suksessen som beviser konseptet
-            </h2>
-
-            <p className="text-lg md:text-xl text-text-secondary leading-relaxed mb-6">
-              Med over 125 000 månedlige lyttere på Spotify har Breizaas bevist at AI-generert musikk
-              ikke bare er et teknisk eksperiment - det er musikk som folk virkelig ønsker å høre på.
-              Lytterne våre strekker seg fra bygdefester i innlandet til storbyunge i Oslo, og musikken
-              vår spilles på alt fra private fester til offentlige arrangementer.
-            </p>
-
-            <p className="text-lg md:text-xl text-text-secondary leading-relaxed mb-6">
-              Dette er ikke bare tall - det er bevis på at teknologi og tradisjon kan forenes på
-              meningsfulle måter. Hver avspilling representerer et øyeblikk der en lytter føler noe,
-              danser til noe, eller deler noe med venner.
-            </p>
-
-            <h2 className="font-montserrat font-bold text-3xl md:text-4xl text-gold-champagne mt-12 mb-6">
-              For arrangører
-            </h2>
-
-            <p className="text-lg md:text-xl text-text-secondary leading-relaxed mb-6">
-              Breizaas er tilgjengelig for festivaler, konserter, bedriftsarrangementer og private
-              fester. Musikken vår passer perfekt til norske arrangementer der gjestene ønsker ekte
-              festmusikk med et moderne twist.
-            </p>
-
-            <p className="text-lg md:text-xl text-text-secondary leading-relaxed">
-              Interessert i booking? Besøk vår{' '}
-              <Link
-                href="/arrangor"
-                className="text-gold-champagne hover:opacity-80 transition-opacity underline decoration-2 underline-offset-4"
+        {/* Genre Tags Section */}
+        <section className="mb-16 md:mb-24">
+          <h2 className="font-montserrat font-bold text-3xl md:text-4xl text-gold-champagne mb-8">
+            Sjanger
+          </h2>
+          <div className="flex flex-wrap gap-3">
+            {artistInfo.genreTags.map((tag, index) => (
+              <span
+                key={index}
+                className="bg-gold-champagne text-brown-dark px-5 py-2 rounded-full text-sm md:text-base font-medium font-inter"
               >
-                pressekit-side for arrangører
-              </Link>
-              , eller ta{' '}
-              <Link
-                href="/kontakt"
-                className="text-gold-champagne hover:opacity-80 transition-opacity underline decoration-2 underline-offset-4"
-              >
-                kontakt direkte
-              </Link>
-              .
-            </p>
-          </article>
+                {tag}
+              </span>
+            ))}
+          </div>
+        </section>
+
+        {/* Booking CTA */}
+        <section className="mb-16 md:mb-24 bg-brown-base p-8 md:p-12 rounded-lg border border-gold-champagne/20">
+          <h2 className="font-montserrat font-bold text-3xl md:text-4xl text-gold-champagne mb-6">
+            For arrangører
+          </h2>
+          <p className="text-lg md:text-xl text-text-secondary leading-relaxed mb-6">
+            {artistInfo.artistName} er tilgjengelig for festivaler, konserter, bedriftsarrangementer
+            og private fester. Musikken vår passer perfekt til norske arrangementer der gjestene
+            ønsker ekte festmusikk med et moderne twist.
+          </p>
+          <p className="text-lg md:text-xl text-text-secondary leading-relaxed">
+            Interessert i booking? Besøk vår{' '}
+            <Link
+              href="/arrangor"
+              className="text-gold-champagne hover:opacity-80 transition-opacity underline decoration-2 underline-offset-4"
+            >
+              pressekit-side for arrangører
+            </Link>
+            , eller ta{' '}
+            <Link
+              href="/kontakt"
+              className="text-gold-champagne hover:opacity-80 transition-opacity underline decoration-2 underline-offset-4"
+            >
+              kontakt direkte
+            </Link>
+            .
+          </p>
         </section>
 
         {/* Social Links Section */}
-        <section className="mb-16 md:mb-24">
-          <h2 className="font-montserrat font-bold text-3xl md:text-4xl text-gold-champagne text-center mb-8">
-            Følg Breizaas
-          </h2>
+        {socialLinksConfig.length > 0 && (
+          <section className="mb-16 md:mb-24">
+            <h2 className="font-montserrat font-bold text-3xl md:text-4xl text-gold-champagne text-center mb-8">
+              Følg {artistInfo.artistName}
+            </h2>
 
-          <div className="flex flex-row items-center justify-center gap-4 md:gap-6">
-            {socialLinks.map((link) => {
-              const Icon = link.icon
-              return (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`
-                    inline-flex items-center justify-center
-                    w-11 h-11 rounded-full
-                    transition-all duration-300
-                    hover:scale-110 hover:shadow-lg
-                    ${
-                      link.color === 'spotify'
-                        ? 'bg-[#1db954] text-white hover:bg-[#1ed760]'
-                        : 'bg-gold-champagne text-brown-dark hover:bg-[#f4e4c1]'
-                    }
-                  `}
-                  aria-label={`${link.label} (åpnes i ny fane)`}
-                >
-                  {link.name === 'TikTok' ? (
-                    <TikTokIcon />
-                  ) : Icon ? (
-                    <Icon className="w-6 h-6" />
-                  ) : null}
-                </a>
-              )
-            })}
-          </div>
-        </section>
+            <div className="flex flex-row items-center justify-center gap-4 md:gap-6">
+              {socialLinksConfig.map((link) => {
+                const Icon = link.icon
+                return (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`
+                      inline-flex items-center justify-center
+                      w-11 h-11 rounded-full
+                      transition-all duration-300
+                      hover:scale-110 hover:shadow-lg
+                      ${
+                        link.color === 'spotify'
+                          ? 'bg-[#1db954] text-white hover:bg-[#1ed760]'
+                          : 'bg-gold-champagne text-brown-dark hover:bg-[#f4e4c1]'
+                      }
+                    `}
+                    aria-label={`${link.label} (åpnes i ny fane)`}
+                  >
+                    {link.name === 'TikTok' ? (
+                      <TikTokIcon />
+                    ) : Icon ? (
+                      <Icon className="w-6 h-6" />
+                    ) : null}
+                  </a>
+                )
+              })}
+            </div>
+          </section>
+        )}
 
         {/* Structured Data for SEO */}
         <script
@@ -217,12 +287,18 @@ export default function OmOssPage() {
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               '@context': 'https://schema.org',
-              '@type': 'MusicGroup',
-              name: 'Breizaas',
-              genre: ['Bygdemusikk', 'Festmusikk', 'AI-generert musikk'],
-              description: 'AI-generert artist som skaper autentisk norsk bygdemusikk',
+              '@type': 'Person',
+              name: artistInfo.artistName,
+              description: artistInfo.shortBio,
               url: 'https://breizaas.no',
-              sameAs: socialLinks.map((link) => link.href),
+              genre: artistInfo.genreTags,
+              sameAs: Object.values(artistInfo.socialMediaLinks).filter(Boolean),
+              aggregateRating: artistInfo.monthlyListeners
+                ? {
+                    '@type': 'AggregateRating',
+                    ratingCount: artistInfo.monthlyListeners,
+                  }
+                : undefined,
             }),
           }}
         />

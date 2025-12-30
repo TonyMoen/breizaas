@@ -35,11 +35,25 @@ export const videoSchema = defineType({
       title: 'Published Date',
       type: 'datetime',
     }),
+    defineField({
+      name: 'featured',
+      title: 'Featured on Homepage',
+      type: 'boolean',
+      description: 'Toggle ON to display this video on the homepage. Only one video should be featured at a time.',
+      initialValue: false,
+    }),
   ],
   preview: {
     select: {
       title: 'title',
       subtitle: 'youtubeId',
+      featured: 'featured',
+    },
+    prepare({ title, subtitle, featured }) {
+      return {
+        title: featured ? `⭐ ${title}` : title,
+        subtitle: `YouTube ID: ${subtitle}`,
+      };
     },
   },
 });

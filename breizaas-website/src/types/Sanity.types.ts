@@ -22,11 +22,11 @@ export interface ArtistInfo {
   notableAchievements?: string[];
   genreTags: string[];
   socialMediaLinks: {
-    spotify?: string;
-    instagram?: string;
-    tiktok?: string;
-    facebook?: string;
-    youtube?: string;
+    spotify?: string | null;
+    instagram?: string | null;
+    tiktok?: string | null;
+    facebook?: string | null;
+    youtube?: string | null;
   };
 }
 
@@ -43,11 +43,11 @@ export const ArtistInfoSchema = z.object({
   notableAchievements: z.array(z.string()).optional(),
   genreTags: z.array(z.string()),
   socialMediaLinks: z.object({
-    spotify: z.string().optional(),
-    instagram: z.string().optional(),
-    tiktok: z.string().optional(),
-    facebook: z.string().optional(),
-    youtube: z.string().optional(),
+    spotify: z.string().nullish(),
+    instagram: z.string().nullish(),
+    tiktok: z.string().nullish(),
+    facebook: z.string().nullish(),
+    youtube: z.string().nullish(),
   }),
 });
 
@@ -176,6 +176,7 @@ export interface Video {
   youtubeId: string;
   description?: string;
   publishedAt?: string;
+  featured?: boolean;
 }
 
 export const VideoSchema = z.object({
@@ -185,4 +186,5 @@ export const VideoSchema = z.object({
   youtubeId: z.string().length(11),
   description: z.string().optional(),
   publishedAt: z.string().optional(),
+  featured: z.boolean().optional(),
 });
