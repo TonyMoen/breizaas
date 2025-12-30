@@ -233,4 +233,17 @@
   .animate-slide-in {
     animation: slide-in 300ms ease-in-out;
   }
+
+  /* Custom font utilities */
+  .font-tradewind {
+    font-family: var(--font-tradewind), cursive;
+  }
+
+  .font-montserrat {
+    font-family: var(--font-montserrat-bold), sans-serif;
+  }
+
+  .font-inter {
+    font-family: var(--font-inter), sans-serif;
+  }
 }
