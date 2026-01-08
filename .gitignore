@@ -71,3 +71,13 @@ Thumbs.db
 # Temporary files
 *.log
 *.tmp
+
+# BMAD Framework (development only)
+_bmad/
+_bmad-output/
+
+# Development test files
+test-*.mjs
+test-*.js
+dev-server.pid
+nul

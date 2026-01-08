@@ -1,0 +1,18 @@
+# BMAD Framework files
+_bmad/
+_bmad-output/
+
+# Development and testing files
+test-*.mjs
+test-*.js
+dev-server.pid
+nul
+
+# Development docs and screenshots
+breizaas-website/docs/Screenshot*.png
+
+# Test API endpoints
+breizaas-website/src/app/api/test-sanity/
+
+# Claude Code
+.claude/
