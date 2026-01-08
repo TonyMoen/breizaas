@@ -1,5 +1,3 @@
-import { albumSchema } from './album';
-import { trackSchema } from './track';
 import { videoSchema } from './video';
 import { singleSchema } from './single';
 import pressKit from './pressKit';
@@ -8,8 +6,6 @@ import heroSection from './heroSection';
 import bookingInfo from './bookingInfo';
 
 export const schemaTypes = [
-  albumSchema,
-  trackSchema,
   videoSchema,
   singleSchema,
   pressKit,
