@@ -20,7 +20,7 @@ export const bookingSchema = z.object({
     'Bedriftsarrangement',
     'Annet'
   ], {
-    errorMap: () => ({ message: 'Vennligst velg type arrangement' })
+    message: 'Vennligst velg type arrangement'
   }),
   date: z.string()
     .min(1, 'Dato er påkrevd')
