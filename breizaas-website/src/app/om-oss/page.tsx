@@ -99,9 +99,9 @@ export default async function OmOssPage() {
   const artistInfo = artistInfoResult
 
   // Handle stats data
-  const singlesCount = 'code' in singlesCountResult ? 0 : singlesCountResult;
+  const singlesCount = typeof singlesCountResult === 'number' ? singlesCountResult : 0;
   // Temporary hardcoded fallback: 100k followers (remove when Spotify API credentials are added)
-  const spotifyFollowers = 'code' in spotifyFollowersResult ? 100000 : spotifyFollowersResult;
+  const spotifyFollowers = typeof spotifyFollowersResult === 'number' ? spotifyFollowersResult : 100000;
 
   // Build social links from Sanity data
   const socialLinksConfig = [
