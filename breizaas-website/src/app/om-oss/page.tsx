@@ -264,12 +264,6 @@ export default async function OmOssPage() {
             description: artistInfo.tagline,
             url: 'https://breizaas.no',
             sameAs: Object.values(artistInfo.socialMediaLinks).filter(Boolean),
-            aggregateRating: artistInfo.monthlyListeners
-              ? {
-                  '@type': 'AggregateRating',
-                  ratingCount: artistInfo.monthlyListeners,
-                }
-              : undefined,
           }),
         }}
       />
