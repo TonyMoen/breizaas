@@ -3,17 +3,14 @@
  * Fetches real-time artist data from Spotify
  */
 
+import type { ApiError } from './sanity';
+
 export interface SpotifyArtist {
   followers: {
     total: number;
   };
   name: string;
   id: string;
-}
-
-export interface ApiError {
-  code: 'SPOTIFY_ERROR';
-  message: string;
 }
 
 /**
@@ -77,6 +74,7 @@ export async function getSpotifyFollowers(artistId: string): Promise<number | Ap
     return {
       code: 'SPOTIFY_ERROR',
       message: 'Kunne ikke hente Spotify data',
+      timestamp: new Date().toISOString(),
     };
   }
 
@@ -93,6 +91,7 @@ export async function getSpotifyFollowers(artistId: string): Promise<number | Ap
       return {
         code: 'SPOTIFY_ERROR',
         message: 'Kunne ikke hente Spotify data',
+        timestamp: new Date().toISOString(),
       };
     }
 
@@ -103,6 +102,7 @@ export async function getSpotifyFollowers(artistId: string): Promise<number | Ap
     return {
       code: 'SPOTIFY_ERROR',
       message: 'Kunne ikke hente Spotify data',
+      timestamp: new Date().toISOString(),
     };
   }
 }

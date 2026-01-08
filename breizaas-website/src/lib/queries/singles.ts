@@ -31,6 +31,7 @@ export async function getSinglesCount(): Promise<number | ApiError> {
     return {
       code: 'SANITY_FETCH_ERROR',
       message: 'Kunne ikke hente antall singler',
+      timestamp: new Date().toISOString(),
     };
   }
 }
