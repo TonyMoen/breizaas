@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Music, Instagram, Facebook, Youtube } from 'lucide-react'
 import { getArtistInfo } from '@/lib/queries/artistInfo'
+import { getSinglesCount } from '@/lib/queries/singles'
+import { getSpotifyFollowers } from '@/lib/spotify'
 import { getHeroSection } from '@/lib/sanity'
 import { PageHero } from '@/components/page-hero'
 import { PortableText } from '@/components/PortableText'
@@ -33,11 +35,10 @@ export async function generateMetadata(): Promise<Metadata> {
   // Dynamic metadata from Sanity CMS
   return {
     title: `Om ${artistInfo.artistName} - ${artistInfo.tagline}`,
-    description: artistInfo.shortBio,
-    keywords: artistInfo.genreTags.join(', '),
+    description: artistInfo.tagline,
     openGraph: {
       title: `Om ${artistInfo.artistName}`,
-      description: artistInfo.shortBio,
+      description: artistInfo.tagline,
       type: 'profile',
       url: 'https://breizaas.no/om-oss',
     },
@@ -66,9 +67,18 @@ const TikTokIcon = () => (
 )
 
 export default async function OmOssPage() {
-  const [artistInfoResult, heroData] = await Promise.all([
+  const [artistInfoResult, heroData, singlesCountResult, spotifyFollowersResult] = await Promise.all([
     getArtistInfo(),
     getHeroSection('om-oss'),
+    getSinglesCount(),
+    // Extract Spotify artist ID from artist info social links
+    getArtistInfo().then(async (info) => {
+      if ('code' in info) return { code: 'SPOTIFY_ERROR' as const, message: 'No artist info' };
+      const spotifyUrl = info.socialMediaLinks.spotify;
+      const artistId = spotifyUrl?.match(/artist\/([a-zA-Z0-9]+)/)?.[1];
+      if (!artistId) return { code: 'SPOTIFY_ERROR' as const, message: 'No artist ID' };
+      return getSpotifyFollowers(artistId);
+    }),
   ])
 
   // Handle error state gracefully
@@ -87,6 +97,11 @@ export default async function OmOssPage() {
   }
 
   const artistInfo = artistInfoResult
+
+  // Handle stats data
+  const singlesCount = 'code' in singlesCountResult ? 0 : singlesCountResult;
+  // Temporary hardcoded fallback: 100k followers (remove when Spotify API credentials are added)
+  const spotifyFollowers = 'code' in spotifyFollowersResult ? 100000 : spotifyFollowersResult;
 
   // Build social links from Sanity data
   const socialLinksConfig = [
@@ -146,27 +161,23 @@ export default async function OmOssPage() {
 
         {/* Stats Panel */}
         <section className="mb-16 md:mb-24">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-brown-base p-8 rounded-lg border-2 border-purple-playful/30">
-            <div className="text-center">
-              <p className="text-4xl md:text-5xl font-bold text-amber-warm mb-2 font-montserrat">
-                {artistInfo.monthlyListeners.toLocaleString('nb-NO')}+
-              </p>
-              <p className="text-white-warm text-sm md:text-base">Månedlige lyttere</p>
-            </div>
-            {artistInfo.totalStreams && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-brown-base p-8 rounded-lg border-2 border-purple-playful/30">
+            {spotifyFollowers > 0 && (
               <div className="text-center">
                 <p className="text-4xl md:text-5xl font-bold text-amber-warm mb-2 font-montserrat">
-                  {artistInfo.totalStreams.toLocaleString('nb-NO')}+
+                  {spotifyFollowers >= 1000
+                    ? `${Math.floor(spotifyFollowers / 1000)}k+`
+                    : spotifyFollowers.toLocaleString('nb-NO')}
                 </p>
-                <p className="text-white-warm text-sm md:text-base">Totale avspillinger</p>
+                <p className="text-white-warm text-sm md:text-base">Følgere på Spotify</p>
               </div>
             )}
-            {artistInfo.numberOfReleases && (
+            {singlesCount > 0 && (
               <div className="text-center">
                 <p className="text-4xl md:text-5xl font-bold text-amber-warm mb-2 font-montserrat">
-                  {artistInfo.numberOfReleases}
+                  {singlesCount}
                 </p>
-                <p className="text-white-warm text-sm md:text-base">Utgivelser</p>
+                <p className="text-white-warm text-sm md:text-base">Singler</p>
               </div>
             )}
           </div>
@@ -178,40 +189,6 @@ export default async function OmOssPage() {
             value={artistInfo.biography as never[]}
             className="prose prose-lg md:prose-xl prose-invert max-w-none"
           />
-        </section>
-
-        {/* Achievements Section */}
-        {artistInfo.notableAchievements && artistInfo.notableAchievements.length > 0 && (
-          <section className="mb-16 md:mb-24">
-            <h2 className="font-montserrat font-bold text-3xl md:text-4xl text-amber-warm mb-8">
-              Prestasjoner
-            </h2>
-            <ul className="space-y-4">
-              {artistInfo.notableAchievements.map((achievement, index) => (
-                <li key={index} className="flex items-start gap-4">
-                  <span className="text-purple-playful text-2xl mt-1 flex-shrink-0">✓</span>
-                  <span className="text-white-warm text-lg leading-relaxed">{achievement}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
-
-        {/* Genre Tags Section */}
-        <section className="mb-16 md:mb-24">
-          <h2 className="font-montserrat font-bold text-3xl md:text-4xl text-amber-warm mb-8">
-            Sjanger
-          </h2>
-          <div className="flex flex-wrap gap-3">
-            {artistInfo.genreTags.map((tag, index) => (
-              <span
-                key={index}
-                className="bg-purple-playful text-brown-dark px-5 py-2 rounded-full text-sm md:text-base font-medium font-inter hover:bg-purple-bright transition-colors"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
         </section>
 
         {/* Booking CTA */}
@@ -284,9 +261,8 @@ export default async function OmOssPage() {
             '@context': 'https://schema.org',
             '@type': 'Person',
             name: artistInfo.artistName,
-            description: artistInfo.shortBio,
+            description: artistInfo.tagline,
             url: 'https://breizaas.no',
-            genre: artistInfo.genreTags,
             sameAs: Object.values(artistInfo.socialMediaLinks).filter(Boolean),
             aggregateRating: artistInfo.monthlyListeners
               ? {

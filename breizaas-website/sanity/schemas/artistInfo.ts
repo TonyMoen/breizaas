@@ -92,58 +92,6 @@ export const artistInfoSchema = defineType({
           }),
     }),
     defineField({
-      name: 'shortBio',
-      title: 'Kort biografi',
-      type: 'text',
-      rows: 3,
-      description: 'Kort biografi mellom 150-200 tegn',
-      validation: (Rule) =>
-        Rule.required()
-          .min(150)
-          .max(200)
-          .error('Kort biografi må være mellom 150-200 tegn'),
-    }),
-    defineField({
-      name: 'monthlyListeners',
-      title: 'Månedlige lyttere',
-      type: 'number',
-      description: 'Antall månedlige lyttere på Spotify',
-      validation: (Rule) =>
-        Rule.required()
-          .positive()
-          .error('Månedlige lyttere må være et positivt tall'),
-    }),
-    defineField({
-      name: 'totalStreams',
-      title: 'Totale avspillinger',
-      type: 'number',
-      description: 'Totalt antall avspillinger på tvers av plattformer',
-      validation: (Rule) => Rule.positive(),
-    }),
-    defineField({
-      name: 'numberOfReleases',
-      title: 'Antall utgivelser',
-      type: 'number',
-      description: 'Totalt antall utgivelser (album, singler, EP)',
-      validation: (Rule) => Rule.positive(),
-    }),
-    defineField({
-      name: 'notableAchievements',
-      title: 'Prestasjoner',
-      type: 'array',
-      of: [{ type: 'string' }],
-      description: 'Liste over bemerkelsesverdige prestasjoner',
-    }),
-    defineField({
-      name: 'genreTags',
-      title: 'Sjanger',
-      type: 'array',
-      of: [{ type: 'string' }],
-      initialValue: ['Bygdemusikk', 'Festmusikk', 'AI-generert'],
-      description: 'Sjangre og stiler',
-      validation: (Rule) => Rule.required().min(1),
-    }),
-    defineField({
       name: 'socialMediaLinks',
       title: 'Sosiale medier',
       type: 'object',

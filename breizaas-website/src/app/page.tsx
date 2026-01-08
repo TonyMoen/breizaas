@@ -37,18 +37,12 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 
   // Dynamic metadata from Sanity CMS
-  const listenerCount =
-    artistInfo.monthlyListeners >= 1000
-      ? `${Math.floor(artistInfo.monthlyListeners / 1000)}k+`
-      : `${artistInfo.monthlyListeners}+`
-
   return {
-    title: `Breizaas - ${artistInfo.tagline} | ${listenerCount} lyttere`,
-    description: artistInfo.shortBio,
-    keywords: artistInfo.genreTags.join(', '),
+    title: `Breizaas - ${artistInfo.tagline}`,
+    description: artistInfo.tagline,
     openGraph: {
       title: `Breizaas - ${artistInfo.tagline}`,
-      description: artistInfo.shortBio,
+      description: artistInfo.tagline,
       url: 'https://breizaas.no',
       type: 'website',
     },
@@ -86,9 +80,6 @@ export default async function HomePage() {
   const brandName = artistInfo?.artistName || 'BREIZAAS'
   const headline = heroData?.headline || 'AI Møter Bygdemusikk'
   const subtitle = heroData?.subtitle
-  const monthlyListeners = artistInfo?.monthlyListeners
-    ? `${artistInfo.monthlyListeners.toLocaleString('nb-NO')} månedlige lyttere på Spotify`
-    : undefined
 
   // Dynamic structured data from Sanity
   const structuredData = {
@@ -96,15 +87,15 @@ export default async function HomePage() {
     '@type': 'MusicGroup',
     name: artistInfo?.artistName || 'Breizaas',
     alternateName: 'Breizaas AI',
-    genre: artistInfo?.genreTags || [
+    genre: [
       'Bygdemusikk',
       'Festmusikk',
       'AI-generert musikk',
       'Norsk musikk',
     ],
     description:
-      artistInfo?.shortBio ||
-      'AI-generert artist som skaper autentisk norsk bygdemusikk med 125 000+ månedlige lyttere',
+      artistInfo?.tagline ||
+      'AI møter norsk bygdemusikk',
     url: 'https://breizaas.no',
     image: 'https://breizaas.no/images/artist-photo.jpg',
     sameAs: artistInfo?.socialMediaLinks
@@ -137,7 +128,6 @@ export default async function HomePage() {
           brandName={brandName}
           headline={headline}
           subtitle={subtitle}
-          stat={monthlyListeners}
           backgroundImage={heroData?.heroImage}
         />
       )}
