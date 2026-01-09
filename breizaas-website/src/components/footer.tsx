@@ -26,9 +26,9 @@ const TikTokIcon = () => (
 )
 
 const footerLinks = [
-  { href: '/musikk', label: 'Musikk' },
-  { href: '/konserter', label: 'Konserter' },
   { href: '/merch', label: 'Merch' },
+  { href: '/konserter', label: 'Konserter' },
+  { href: '/musikk', label: 'Musikk' },
   { href: '/om-oss', label: 'Om' },
 ]
 

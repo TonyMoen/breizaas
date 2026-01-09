@@ -24,9 +24,9 @@ interface NavigationProps {
 
 const navigationLinks: NavigationLink[] = [
   { href: '/', label: 'Hjem' },
-  { href: '/musikk', label: 'Musikk' },
-  { href: '/konserter', label: 'Konserter' },
   { href: '/merch', label: 'Merch' },
+  { href: '/konserter', label: 'Konserter' },
+  { href: '/musikk', label: 'Musikk' },
   { href: '/om-oss', label: 'Om' },
   { href: '/kontakt', label: 'Kontakt' },
 ]
