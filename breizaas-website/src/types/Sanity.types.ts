@@ -15,6 +15,8 @@ export interface ArtistInfo {
   artistName: string;
   tagline: string;
   biography: unknown[]; // Portable Text blocks
+  monthlyListeners: number;
+  totalStreams?: number;
   socialMediaLinks: {
     spotify?: string | null;
     instagram?: string | null;
@@ -30,6 +32,8 @@ export const ArtistInfoSchema = z.object({
   artistName: z.string(),
   tagline: z.string(),
   biography: z.array(z.any()),
+  monthlyListeners: z.number(),
+  totalStreams: z.number().optional(),
   socialMediaLinks: z.object({
     spotify: z.string().nullish(),
     instagram: z.string().nullish(),

@@ -92,6 +92,23 @@ export const artistInfoSchema = defineType({
           }),
     }),
     defineField({
+      name: 'monthlyListeners',
+      title: 'Månedlige lyttere',
+      type: 'number',
+      description: 'Antall månedlige lyttere på Spotify',
+      validation: (Rule) =>
+        Rule.required()
+          .positive()
+          .error('Månedlige lyttere må være et positivt tall'),
+    }),
+    defineField({
+      name: 'totalStreams',
+      title: 'Totale avspillinger',
+      type: 'number',
+      description: 'Totalt antall avspillinger på tvers av plattformer',
+      validation: (Rule) => Rule.positive(),
+    }),
+    defineField({
       name: 'socialMediaLinks',
       title: 'Sosiale medier',
       type: 'object',

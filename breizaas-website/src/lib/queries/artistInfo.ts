@@ -30,6 +30,8 @@ export async function getArtistInfo(): Promise<ArtistInfo | ApiError> {
     artistName,
     tagline,
     biography,
+    monthlyListeners,
+    totalStreams,
     socialMediaLinks {
       spotify,
       instagram,

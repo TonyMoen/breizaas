@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { Music, Instagram, Facebook, Youtube } from 'lucide-react'
 import { getArtistInfo } from '@/lib/queries/artistInfo'
 import { getSinglesCount } from '@/lib/queries/singles'
-import { getSpotifyFollowers } from '@/lib/spotify'
 import { getHeroSection } from '@/lib/sanity'
 import { PageHero } from '@/components/page-hero'
 import { PortableText } from '@/components/PortableText'
@@ -67,18 +66,10 @@ const TikTokIcon = () => (
 )
 
 export default async function OmOssPage() {
-  const [artistInfoResult, heroData, singlesCountResult, spotifyFollowersResult] = await Promise.all([
+  const [artistInfoResult, heroData, singlesCountResult] = await Promise.all([
     getArtistInfo(),
     getHeroSection('om-oss'),
     getSinglesCount(),
-    // Extract Spotify artist ID from artist info social links
-    getArtistInfo().then(async (info) => {
-      if ('code' in info) return { code: 'SPOTIFY_ERROR' as const, message: 'No artist info' };
-      const spotifyUrl = info.socialMediaLinks.spotify;
-      const artistId = spotifyUrl?.match(/artist\/([a-zA-Z0-9]+)/)?.[1];
-      if (!artistId) return { code: 'SPOTIFY_ERROR' as const, message: 'No artist ID' };
-      return getSpotifyFollowers(artistId);
-    }),
   ])
 
   // Handle error state gracefully
@@ -100,8 +91,6 @@ export default async function OmOssPage() {
 
   // Handle stats data
   const singlesCount = typeof singlesCountResult === 'number' ? singlesCountResult : 0;
-  // Temporary hardcoded fallback: 100k followers (remove when Spotify API credentials are added)
-  const spotifyFollowers = typeof spotifyFollowersResult === 'number' ? spotifyFollowersResult : 100000;
 
   // Build social links from Sanity data
   const socialLinksConfig = [
@@ -161,15 +150,19 @@ export default async function OmOssPage() {
 
         {/* Stats Panel */}
         <section className="mb-16 md:mb-24">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-brown-base p-8 rounded-lg border-2 border-purple-playful/30">
-            {spotifyFollowers > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-brown-base p-8 rounded-lg border-2 border-purple-playful/30">
+            <div className="text-center">
+              <p className="text-4xl md:text-5xl font-bold text-amber-warm mb-2 font-montserrat">
+                {artistInfo.monthlyListeners.toLocaleString('nb-NO')}+
+              </p>
+              <p className="text-white-warm text-sm md:text-base">Månedlige lyttere</p>
+            </div>
+            {artistInfo.totalStreams && (
               <div className="text-center">
                 <p className="text-4xl md:text-5xl font-bold text-amber-warm mb-2 font-montserrat">
-                  {spotifyFollowers >= 1000
-                    ? `${Math.floor(spotifyFollowers / 1000)}k+`
-                    : spotifyFollowers.toLocaleString('nb-NO')}
+                  {artistInfo.totalStreams.toLocaleString('nb-NO')}+
                 </p>
-                <p className="text-white-warm text-sm md:text-base">Følgere på Spotify</p>
+                <p className="text-white-warm text-sm md:text-base">Totale avspillinger</p>
               </div>
             )}
             {singlesCount > 0 && (
