@@ -1,7 +1,6 @@
 import { createClient, type QueryParams } from 'next-sanity';
 import { createImageUrlBuilder } from '@sanity/image-url';
 import type { SanityImageSource } from '@sanity/image-url';
-import type { Album } from '@/types/Album.types';
 import type { Single } from '@/types/Single.types';
 import type { Video } from '@/types/Video.types';
 import type { HeroSection, ArtistInfo } from '@/types/Sanity.types';
@@ -67,43 +66,6 @@ const builder = createImageUrlBuilder(client);
  */
 export function urlFor(source: SanityImageSource) {
   return builder.image(source);
-}
-
-/**
- * Fetch all albums from Sanity CMS
- * Ordered by release year (newest first)
- *
- * @returns Promise resolving to array of Album documents
- * @returns Empty array if fetch fails (graceful degradation)
- *
- * @example
- * ```ts
- * const albums = await getDiscography();
- * ```
- */
-export async function getDiscography(): Promise<Album[]> {
-  try {
-    const query = `*[_type == "album"] | order(releaseYear desc) {
-      _id,
-      title,
-      releaseYear,
-      artwork,
-      spotifyAlbumUrl,
-      "tracks": tracks[] {
-        _key,
-        number,
-        title,
-        duration,
-        spotifyTrackUrl
-      }
-    }`;
-
-    const albums = await client.fetch<Album[]>(query);
-    return albums;
-  } catch (error) {
-    console.error('Failed to fetch discography from Sanity:', error);
-    return []; // Graceful degradation - return empty array if Sanity unavailable
-  }
 }
 
 /**
