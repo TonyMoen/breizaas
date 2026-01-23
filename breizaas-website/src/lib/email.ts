@@ -12,9 +12,9 @@ const resend = new Resend(process.env.RESEND_API_KEY || 're_placeholder_for_buil
 export async function sendBookingConfirmation(data: BookingFormData): Promise<void> {
   const { email, contactPerson, eventType, date, venue, city } = data;
 
-  await resend.emails.send({
+  const { error } = await resend.emails.send({
     from: 'Breizaas Booking <booking@breizaas.no>',
-    to: email,
+    to: [email],
     subject: 'Booking confirmation - Breizaas',
     html: `
       <!DOCTYPE html>
@@ -61,6 +61,10 @@ export async function sendBookingConfirmation(data: BookingFormData): Promise<vo
       </html>
     `,
   });
+
+  if (error) {
+    throw new Error(`Booking confirmation email failed: ${error.message}`);
+  }
 }
 
 /**
@@ -84,9 +88,9 @@ export async function sendBookingNotification(data: BookingFormData): Promise<vo
 
   const artistEmail = process.env.ARTIST_EMAIL || 'breizaas@gmail.com';
 
-  await resend.emails.send({
+  const { error } = await resend.emails.send({
     from: 'Breizaas Booking System <booking@breizaas.no>',
-    to: artistEmail,
+    to: [artistEmail],
     subject: `Ny bookingforespørsel: ${eventType} - ${city}`,
     html: `
       <!DOCTYPE html>
@@ -172,6 +176,10 @@ export async function sendBookingNotification(data: BookingFormData): Promise<vo
       </html>
     `,
   });
+
+  if (error) {
+    throw new Error(`Booking notification email failed: ${error.message}`);
+  }
 }
 
 /**
@@ -190,9 +198,9 @@ export async function sendContactMessage(data: ContactFormData): Promise<void> {
     other: 'Annet',
   };
 
-  await resend.emails.send({
+  const { error } = await resend.emails.send({
     from: 'Breizaas Kontaktskjema <kontakt@breizaas.no>',
-    to: artistEmail,
+    to: [artistEmail],
     replyTo: email,
     subject: `Ny kontaktmelding: ${subjectMap[subject as keyof typeof subjectMap]}`,
     html: `
@@ -240,4 +248,8 @@ export async function sendContactMessage(data: ContactFormData): Promise<void> {
       </html>
     `,
   });
+
+  if (error) {
+    throw new Error(`Contact email failed: ${error.message}`);
+  }
 }
