@@ -30,7 +30,7 @@ const SHOPIFY_STOREFRONT_TOKEN = process.env.SHOPIFY_STOREFRONT_TOKEN;
 // GraphQL query to fetch products filtered by "Breizaas" in title
 const PRODUCTS_QUERY = `
   query GetBreizaasProducts {
-    products(first: 50, query: "title:*Breizaas*") {
+    products(first: 50, query: "title:BREIZAAS") {
       edges {
         node {
           id
