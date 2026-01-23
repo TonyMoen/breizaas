@@ -82,7 +82,7 @@ export async function sendBookingNotification(data: BookingFormData): Promise<vo
     requestTechnicalRider,
   } = data;
 
-  const artistEmail = process.env.ARTIST_EMAIL || 'booking@breizaas.no';
+  const artistEmail = process.env.ARTIST_EMAIL || 'breizaas@gmail.com';
 
   await resend.emails.send({
     from: 'Breizaas Booking System <booking@breizaas.no>',
@@ -181,7 +181,7 @@ export async function sendBookingNotification(data: BookingFormData): Promise<vo
 export async function sendContactMessage(data: ContactFormData): Promise<void> {
   const { name, email, subject, message } = data;
 
-  const artistEmail = process.env.ARTIST_EMAIL || 'booking@breizaas.no';
+  const artistEmail = process.env.ARTIST_EMAIL || 'breizaas@gmail.com';
 
   const subjectMap = {
     booking: 'Booking',

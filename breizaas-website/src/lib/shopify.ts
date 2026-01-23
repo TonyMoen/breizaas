@@ -27,10 +27,10 @@ export function formatPrice(amount: string, currency: string): string {
 const SHOPIFY_DOMAIN = process.env.SHOPIFY_DOMAIN;
 const SHOPIFY_STOREFRONT_TOKEN = process.env.SHOPIFY_STOREFRONT_TOKEN;
 
-// GraphQL query to fetch products (filter temporarily disabled for testing)
+// GraphQL query to fetch products filtered by "Breizaas" in title
 const PRODUCTS_QUERY = `
   query GetBreizaasProducts {
-    products(first: 50) {
+    products(first: 50, query: "title:*Breizaas*") {
       edges {
         node {
           id
