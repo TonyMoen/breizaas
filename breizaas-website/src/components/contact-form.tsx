@@ -69,7 +69,8 @@ export function ContactForm({ className = '' }: ContactFormProps) {
         } else if (response.status === 400) {
           setErrorMessage(MESSAGES.contact.validationError);
         } else {
-          setErrorMessage(MESSAGES.contact.serverError);
+          const errorData = await response.json().catch(() => null);
+          setErrorMessage(errorData?.debug || MESSAGES.contact.serverError);
         }
         setSubmitStatus('error');
         return;
