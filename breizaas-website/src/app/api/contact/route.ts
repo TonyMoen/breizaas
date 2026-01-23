@@ -56,6 +56,7 @@ export async function POST(request: NextRequest) {
       {
         success: false,
         message: MESSAGES.contact.serverError,
+        debug: error instanceof Error ? error.message : 'Unknown error',
       },
       { status: 500 }
     );
