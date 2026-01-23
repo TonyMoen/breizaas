@@ -2,8 +2,7 @@ import { Resend } from 'resend';
 import type { BookingFormData } from '@/schemas/booking.schema';
 import type { ContactFormData } from '@/schemas/contact.schema';
 
-// Initialize Resend client (use placeholder for build time)
-const resend = new Resend(process.env.RESEND_API_KEY || 're_placeholder_for_build');
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 /**
  * Send booking confirmation email to the event organizer
