@@ -72,7 +72,7 @@ export function Footer({ socialLinks }: FooterProps) {
               href="/kontakt"
               className="border-2 border-purple-playful text-purple-playful bg-transparent hover:bg-purple-playful hover:text-brown-dark font-bold px-6 py-3 rounded-md transition-all text-sm"
             >
-              Kontakt oss
+              Ta kontakt
             </Link>
           </div>
         </div>

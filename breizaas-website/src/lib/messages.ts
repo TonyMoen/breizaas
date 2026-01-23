@@ -117,11 +117,11 @@ export const MESSAGES = {
    */
   contact: {
     // Page headings
-    pageHeading: 'Kontakt oss',
-    formHeading: 'Send oss en melding',
+    pageHeading: 'Kontakt',
+    formHeading: 'Send en melding',
     formDescription: 'Fyll ut skjemaet så tar vi kontakt så snart som mulig.',
     bookingHeading: 'Booking',
-    bookingDescription: 'For booking og forespørsler, kontakt vår bookingagent:',
+    bookingDescription: 'Ta kontakt for booking eller andre forespørsler',
 
     // Field labels
     name: 'Navn',

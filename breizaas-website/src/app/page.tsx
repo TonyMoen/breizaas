@@ -167,7 +167,7 @@ export default async function HomePage() {
             </div>
 
             {/* Right: Spotify Player */}
-            <div className="flex items-center justify-center">
+            <div className="w-full flex items-center justify-center">
               <SpotifyEmbed artistId={spotifyArtistId} height={380} lazyLoad={true} />
             </div>
           </div>
@@ -182,8 +182,8 @@ export default async function HomePage() {
               OFFISIELL BREIZAAS MERCH
             </h2>
 
-            {/* 4-column grid on desktop, 2-column on mobile */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+            {/* 4-column grid on desktop, 1-column on mobile */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
               {featuredProducts.map((product, index) => (
                 <ProductCard key={product.id} product={product} priority={index < 2} />
               ))}

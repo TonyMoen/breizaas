@@ -29,7 +29,7 @@ interface TourDateCardProps {
  */
 function formatNorwegianFullDate(datetime: string): string {
   const date = new Date(datetime);
-  const day = date.toLocaleDateString('nb-NO', { day: 'numeric' });
+  const day = date.getDate();
   const month = date.toLocaleDateString('nb-NO', { month: 'long' });
   const year = date.toLocaleDateString('nb-NO', { year: 'numeric' });
 

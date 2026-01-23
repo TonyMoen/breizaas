@@ -34,7 +34,7 @@ export default async function KontaktPage() {
     <main id="main-content" className="min-h-screen bg-brown-dark text-white-warm">
       {/* Hero Section with Background Image */}
       <PageHero
-        headline={heroData?.headline || 'Kontakt Oss'}
+        headline={heroData?.headline || 'Kontakt'}
         subtitle={heroData?.subtitle}
         backgroundImage={heroData?.heroImage}
       />

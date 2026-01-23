@@ -46,7 +46,7 @@ export default async function MusikkPage() {
 
       <div className="container mx-auto px-6 py-24 max-w-7xl">
         {/* Spotify Embed (Story 2.1) */}
-        <div className="mt-12 max-w-[70%] mx-auto">
+        <div className="mt-12 max-w-full md:max-w-[70%] mx-auto">
           <SpotifyEmbed
             artistId="3sMoefLp287FEWJF6Ue7oc"
             theme="dark"
