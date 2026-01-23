@@ -2,7 +2,7 @@ import Image from 'next/image'
 import { urlFor } from '@/lib/sanity'
 
 interface PageHeroProps {
-  headline: string
+  headline?: string
   subtitle?: string
   backgroundImage?: {
     asset: unknown
@@ -11,6 +11,11 @@ interface PageHeroProps {
 }
 
 export function PageHero({ headline, subtitle, backgroundImage }: PageHeroProps) {
+  // Don't render hero if no content from CMS
+  if (!headline && !subtitle && !backgroundImage?.asset) {
+    return null
+  }
+
   const hasBackgroundImage = backgroundImage?.asset !== undefined
 
   return (
@@ -36,14 +41,16 @@ export function PageHero({ headline, subtitle, backgroundImage }: PageHeroProps)
 
       {/* Hero Content */}
       <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
-        <h1
-          className="text-4xl md:text-5xl lg:text-6xl font-bold text-gold-champagne uppercase mb-4 tracking-wide"
-          style={{
-            textShadow: '-2px -2px 0 #d4a574, 2px -2px 0 #d4a574, -2px 2px 0 #d4a574, 2px 2px 0 #d4a574, 0 0 40px rgba(212, 165, 116, 0.6)'
-          }}
-        >
-          {headline}
-        </h1>
+        {headline && (
+          <h1
+            className="text-4xl md:text-5xl lg:text-6xl font-bold text-gold-champagne uppercase mb-4 tracking-wide"
+            style={{
+              textShadow: '-2px -2px 0 #d4a574, 2px -2px 0 #d4a574, -2px 2px 0 #d4a574, 2px 2px 0 #d4a574, 0 0 40px rgba(212, 165, 116, 0.6)'
+            }}
+          >
+            {headline}
+          </h1>
+        )}
         {subtitle && (
           <p className="text-lg md:text-xl text-text-secondary">
             {subtitle}

@@ -39,7 +39,7 @@ export default async function MusikkPage() {
     >
       {/* Hero Section with Background Image */}
       <PageHero
-        headline={heroData?.headline || "Musikk"}
+        headline={heroData?.headline}
         subtitle={heroData?.subtitle}
         backgroundImage={heroData?.heroImage}
       />

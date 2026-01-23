@@ -102,8 +102,8 @@ export default async function MerchPage() {
     >
       {/* Hero Section with Background Image */}
       <PageHero
-        headline={heroData?.headline || 'Merch'}
-        subtitle={heroData?.subtitle || 'Støtt Breizaas med offisiell merchandise'}
+        headline={heroData?.headline}
+        subtitle={heroData?.subtitle}
         backgroundImage={heroData?.heroImage}
       />
 

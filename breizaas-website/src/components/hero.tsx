@@ -3,7 +3,7 @@ import { urlFor } from '@/lib/sanity'
 
 interface HeroProps {
   brandName: string
-  headline: string
+  headline?: string
   subtitle?: string
   stat?: string
   backgroundImage?: {
@@ -52,14 +52,16 @@ export function Hero({ brandName, headline, subtitle, stat, backgroundImage }: H
         </h1>
 
         {/* Norwegian headline */}
-        <p
-          className="font-montserrat-bold text-3xl leading-tight text-gold-champagne md:text-4xl lg:text-5xl"
-          style={{
-            textShadow: '-2px -2px 0 #d4a574, 2px -2px 0 #d4a574, -2px 2px 0 #d4a574, 2px 2px 0 #d4a574, 0 0 40px rgba(212, 165, 116, 0.6)'
-          }}
-        >
-          {headline}
-        </p>
+        {headline && (
+          <p
+            className="font-montserrat-bold text-3xl leading-tight text-gold-champagne md:text-4xl lg:text-5xl"
+            style={{
+              textShadow: '-2px -2px 0 #d4a574, 2px -2px 0 #d4a574, -2px 2px 0 #d4a574, 2px 2px 0 #d4a574, 0 0 40px rgba(212, 165, 116, 0.6)'
+            }}
+          >
+            {headline}
+          </p>
+        )}
 
         {/* Subtitle (optional) */}
         {subtitle && (

@@ -78,7 +78,7 @@ export default async function HomePage() {
 
   // Fallback values if Sanity data not yet available
   const brandName = artistInfo?.artistName || 'BREIZAAS'
-  const headline = heroData?.headline || 'AI Møter Bygdemusikk'
+  const headline = heroData?.headline
   const subtitle = heroData?.subtitle
 
   // Dynamic structured data from Sanity

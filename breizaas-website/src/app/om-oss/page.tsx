@@ -145,8 +145,8 @@ export default async function OmOssPage() {
     <main id="main-content" className="min-h-screen bg-brown-dark">
       {/* Hero Section with Background Image */}
       <PageHero
-        headline={heroData?.headline || `Om ${artistInfo.artistName}`}
-        subtitle={heroData?.subtitle || artistInfo.tagline}
+        headline={heroData?.headline}
+        subtitle={heroData?.subtitle}
         backgroundImage={heroData?.heroImage}
       />
 

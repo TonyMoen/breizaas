@@ -95,7 +95,7 @@ export default async function KonserterPage() {
     <div className="min-h-screen bg-brown-medium">
       {/* Tour Page Hero with Background Image */}
       <PageHero
-        headline={heroData?.headline || MESSAGES.tour.pageTitle}
+        headline={heroData?.headline}
         subtitle={heroData?.subtitle}
         backgroundImage={heroData?.heroImage}
       />
