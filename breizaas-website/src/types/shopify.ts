@@ -40,11 +40,13 @@ export const ShopifyProductNodeSchema = z.object({
 
 export const ShopifyProductsResponseSchema = z.object({
   data: z.object({
-    products: z.object({
-      edges: z.array(z.object({
-        node: ShopifyProductNodeSchema,
-      })),
-    }),
+    collection: z.object({
+      products: z.object({
+        edges: z.array(z.object({
+          node: ShopifyProductNodeSchema,
+        })),
+      }),
+    }).nullable(),
   }),
 });
 

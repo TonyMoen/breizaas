@@ -27,40 +27,42 @@ export function formatPrice(amount: string, currency: string): string {
 const SHOPIFY_DOMAIN = process.env.SHOPIFY_DOMAIN;
 const SHOPIFY_STOREFRONT_TOKEN = process.env.SHOPIFY_STOREFRONT_TOKEN;
 
-// GraphQL query to fetch products filtered by "Breizaas" in title
+// GraphQL query to fetch products from Breizaas collection with manual sort order
 const PRODUCTS_QUERY = `
   query GetBreizaasProducts {
-    products(first: 50, query: "title:BREIZAAS") {
-      edges {
-        node {
-          id
-          title
-          description
-          onlineStoreUrl
-          priceRange {
-            minVariantPrice {
-              amount
-              currencyCode
-            }
-          }
-          images(first: 5) {
-            edges {
-              node {
-                url
-                altText
+    collection(handle: "breizaas") {
+      products(first: 50, sortKey: MANUAL) {
+        edges {
+          node {
+            id
+            title
+            description
+            onlineStoreUrl
+            priceRange {
+              minVariantPrice {
+                amount
+                currencyCode
               }
             }
-          }
-          variants(first: 10) {
-            edges {
-              node {
-                id
-                title
-                priceV2 {
-                  amount
-                  currencyCode
+            images(first: 5) {
+              edges {
+                node {
+                  url
+                  altText
                 }
-                availableForSale
+              }
+            }
+            variants(first: 10) {
+              edges {
+                node {
+                  id
+                  title
+                  priceV2 {
+                    amount
+                    currencyCode
+                  }
+                  availableForSale
+                }
               }
             }
           }
@@ -118,8 +120,17 @@ export async function getProducts(): Promise<ShopifyProduct[] | ApiError> {
     // Validate response with Zod schema
     const validatedData = ShopifyProductsResponseSchema.parse(data);
 
+    // Handle case where collection doesn't exist
+    if (!validatedData.data.collection) {
+      return {
+        code: 'UNKNOWN_ERROR',
+        message: 'Kunne ikke laste inn produkter. Prøv igjen senere.',
+        originalError: new Error('Collection not found'),
+      };
+    }
+
     // Transform to simplified ShopifyProduct format
-    const products: ShopifyProduct[] = validatedData.data.products.edges.map(
+    const products: ShopifyProduct[] = validatedData.data.collection.products.edges.map(
       (edge) => {
         const node = edge.node;
         return {
