@@ -63,7 +63,7 @@ const nextConfig: NextConfig = {
               "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.sanity.io", // Next.js + Sanity Studio
               "style-src 'self' 'unsafe-inline'", // Tailwind requires unsafe-inline
               "img-src 'self' data: https:",
-              "connect-src 'self' https://api.resend.com https://rest.bandsintown.com https://*.api.sanity.io https://cdn.sanity.io https://registry.npmjs.org",
+              "connect-src 'self' https://api.web3forms.com https://rest.bandsintown.com https://*.api.sanity.io https://cdn.sanity.io https://registry.npmjs.org",
               "frame-src https://open.spotify.com https://www.youtube.com https://cdn.sanity.io",
               "font-src 'self' data:",
               "object-src 'none'",
