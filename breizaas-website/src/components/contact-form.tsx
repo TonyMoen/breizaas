@@ -32,19 +32,17 @@ export function ContactForm({ className = '' }: ContactFormProps) {
     setErrorMessage('');
 
     try {
+      const formData = new FormData();
+      formData.append('access_key', WEB3FORMS_ACCESS_KEY);
+      formData.append('name', data.name);
+      formData.append('email', data.email);
+      formData.append('message', data.message);
+      formData.append('subject', `Ny kontaktmelding fra ${data.name}`);
+      formData.append('from_name', 'Breizaas Kontaktskjema');
+
       const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify({
-          access_key: WEB3FORMS_ACCESS_KEY,
-          from_name: data.name,
-          email: data.email,
-          message: data.message,
-          subject: `Ny kontaktmelding fra ${data.name}`,
-        }),
+        body: formData,
       });
 
       const result = await response.json();
@@ -56,7 +54,8 @@ export function ContactForm({ className = '' }: ContactFormProps) {
         setErrorMessage(result.message || MESSAGES.contact.serverError);
         setSubmitStatus('error');
       }
-    } catch {
+    } catch (error) {
+      console.error('Contact form error:', error);
       setErrorMessage(MESSAGES.contact.networkError);
       setSubmitStatus('error');
     }
