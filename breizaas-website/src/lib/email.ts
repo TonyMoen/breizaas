@@ -24,6 +24,13 @@ async function sendToWeb3Forms(data: Record<string, string>): Promise<void> {
     }),
   });
 
+  // Check if response is JSON
+  const contentType = response.headers.get('content-type');
+  if (!contentType || !contentType.includes('application/json')) {
+    const text = await response.text();
+    throw new Error(`Web3Forms returned non-JSON response: ${text.substring(0, 100)}`);
+  }
+
   const result = await response.json();
 
   if (!result.success) {
