@@ -19,7 +19,6 @@ import { getBandsinownEvents, getPastBandsinownEvents } from '@/lib/bandsintown'
 import { getHeroSection } from '@/lib/sanity';
 import { MESSAGES } from '@/lib/messages';
 import { PageHero } from '@/components/page-hero';
-import { FeaturedTourDates } from '@/components/featured-tour-dates';
 import { TourDateCard } from '@/components/tour-date-card';
 import { PastTourHistory } from '@/components/past-tour-history';
 
@@ -109,14 +108,6 @@ export default async function KonserterPage() {
             </p>
           </div>
         </div>
-      )}
-
-      {/* Featured Shows Section - Next 3 events */}
-      {!hasUpcomingError && upcomingEvents.length >= 3 && (
-        <FeaturedTourDates
-          events={upcomingEvents}
-          heading={MESSAGES.tour.featuredHeading}
-        />
       )}
 
       {/* All Upcoming Tour Dates Section */}

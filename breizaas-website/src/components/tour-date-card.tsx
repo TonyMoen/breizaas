@@ -75,7 +75,7 @@ export function TourDateCard({ event, isPastEvent = false, featured = false }: T
           className="block mb-3 hover:text-purple-playful transition-colors"
         >
           <h3
-            className="text-purple-bright text-2xl font-bold"
+            className="text-purple-bright text-2xl font-bold break-words"
             style={{
               textShadow: '0 0 15px rgba(224, 163, 255, 0.4)'
             }}
@@ -85,7 +85,7 @@ export function TourDateCard({ event, isPastEvent = false, featured = false }: T
         </a>
       ) : (
         <h3
-          className="text-purple-bright text-2xl font-bold mb-3"
+          className="text-purple-bright text-2xl font-bold mb-3 break-words"
           style={{
             textShadow: '0 0 15px rgba(224, 163, 255, 0.4)'
           }}
