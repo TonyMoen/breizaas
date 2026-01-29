@@ -138,19 +138,10 @@ Denne forespørselen ble mottatt via breizaas.no/arrangor
  * @param data Contact form data
  */
 export async function sendContactMessage(data: ContactFormData): Promise<void> {
-  const { name, email, subject, message } = data;
-
-  const subjectMap: Record<string, string> = {
-    booking: 'Booking',
-    press: 'Presse',
-    general: 'Generell henvendelse',
-    other: 'Annet',
-  };
-
-  const subjectText = subjectMap[subject] || subject;
+  const { name, email, message } = data;
 
   await sendToWeb3Forms({
-    subject: `Ny kontaktmelding: ${subjectText}`,
+    subject: `Ny kontaktmelding fra ${name}`,
     from_name: name,
     replyto: email,
     message: `
@@ -158,7 +149,6 @@ NY KONTAKTMELDING
 
 Fra: ${name}
 E-post: ${email}
-Emne: ${subjectText}
 
 MELDING
 ${message}
