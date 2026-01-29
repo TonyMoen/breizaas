@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AlertCircle, Check } from 'lucide-react';
 import { contactSchema, type ContactFormData } from '@/schemas/contact.schema';
 import { MESSAGES } from '@/lib/messages';
+
+const WEB3FORMS_ACCESS_KEY = 'e316dc75-0d7f-420a-b35c-511d722428bd';
 
 interface ContactFormProps {
   className?: string;
@@ -14,7 +16,6 @@ interface ContactFormProps {
 export function ContactForm({ className = '' }: ContactFormProps) {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const [csrfToken, setCSRFToken] = useState<string>('');
 
   const {
     register,
@@ -26,58 +27,35 @@ export function ContactForm({ className = '' }: ContactFormProps) {
     mode: 'onBlur',
   });
 
-  // Fetch CSRF token on component mount (Story 5.5)
-  useEffect(() => {
-    async function fetchCSRFToken() {
-      try {
-        const response = await fetch('/api/csrf');
-        const data = await response.json();
-        setCSRFToken(data.token);
-      } catch (error) {
-        console.error('Failed to fetch CSRF token:', error);
-        setErrorMessage(MESSAGES.security.tokenFetchError);
-        setSubmitStatus('error');
-      }
-    }
-    fetchCSRFToken();
-  }, []);
-
   const onSubmit = async (data: ContactFormData) => {
     setSubmitStatus('submitting');
     setErrorMessage('');
 
     try {
-      const response = await fetch('/api/contact', {
+      const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-CSRF-Token': csrfToken, // Include CSRF token (Story 5.5)
+          'Accept': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          from_name: data.name,
+          email: data.email,
+          message: data.message,
+          subject: `Ny kontaktmelding fra ${data.name}`,
+        }),
       });
 
-      if (!response.ok) {
-        if (response.status === 403) {
-          // CSRF error - refresh token and show error
-          setErrorMessage(MESSAGES.security.csrfError);
-          // Refresh CSRF token for next attempt
-          const tokenResponse = await fetch('/api/csrf');
-          const tokenData = await tokenResponse.json();
-          setCSRFToken(tokenData.token);
-        } else if (response.status === 429) {
-          setErrorMessage(MESSAGES.security.rateLimitError);
-        } else if (response.status === 400) {
-          setErrorMessage(MESSAGES.contact.validationError);
-        } else {
-          const errorData = await response.json().catch(() => null);
-          setErrorMessage(errorData?.debug || MESSAGES.contact.serverError);
-        }
-        setSubmitStatus('error');
-        return;
-      }
+      const result = await response.json();
 
-      setSubmitStatus('success');
-      reset();
+      if (result.success) {
+        setSubmitStatus('success');
+        reset();
+      } else {
+        setErrorMessage(result.message || MESSAGES.contact.serverError);
+        setSubmitStatus('error');
+      }
     } catch {
       setErrorMessage(MESSAGES.contact.networkError);
       setSubmitStatus('error');
@@ -161,39 +139,6 @@ export function ContactForm({ className = '' }: ContactFormProps) {
             <p id="email-error" className="text-amber text-sm mt-1 flex items-center gap-1">
               <AlertCircle className="h-4 w-4" />
               {errors.email.message}
-            </p>
-          )}
-        </div>
-
-        {/* Subject */}
-        <div>
-          <label htmlFor="subject" className="text-white-warm font-medium mb-2 block">
-            {MESSAGES.contact.subject}
-          </label>
-          <select
-            id="subject"
-            {...register('subject')}
-            className={`
-              w-full h-12 bg-brown-medium text-white-warm border-2
-              ${errors.subject ? 'border-amber' : 'border-brown-light'}
-              focus:border-purple-playful focus:ring-2 focus:ring-purple-playful/20
-              text-base px-4 rounded-md outline-none transition-colors
-              [&>option]:bg-brown-dark [&>option]:text-white-warm
-            `}
-            aria-invalid={errors.subject ? 'true' : 'false'}
-            aria-describedby={errors.subject ? 'subject-error' : undefined}
-            aria-required="true"
-          >
-            <option value="">{MESSAGES.contact.subjectSelectDefault}</option>
-            <option value="booking">{MESSAGES.contact.subjectBooking}</option>
-            <option value="press">{MESSAGES.contact.subjectPress}</option>
-            <option value="general">{MESSAGES.contact.subjectGeneral}</option>
-            <option value="other">{MESSAGES.contact.subjectOther}</option>
-          </select>
-          {errors.subject && (
-            <p id="subject-error" className="text-amber text-sm mt-1 flex items-center gap-1">
-              <AlertCircle className="h-4 w-4" />
-              {errors.subject.message}
             </p>
           )}
         </div>
