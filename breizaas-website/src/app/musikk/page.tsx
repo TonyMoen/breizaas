@@ -5,24 +5,49 @@ import { VideoGrid } from "@/components/video-grid";
 import { SpotifyCtaButton } from "@/components/spotify-cta-button";
 import { PageHero } from "@/components/page-hero";
 import { getSingles, getVideos, getHeroSection } from "@/lib/sanity";
+import { SITE_URL, SPOTIFY_ARTIST_ID, OG_IMAGE } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Musikk - Breizaas",
-  description:
-    "Lytt til Breizaas sin musikk på Spotify med over 125 000 månedlige lyttere. Opplev norsk AI-generert bygdemusikk, se diskografi og videoer.",
-  openGraph: {
-    title: "Musikk - Breizaas",
-    description:
-      "Lytt til Breizaas sin musikk på Spotify med over 125 000 månedlige lyttere. Opplev norsk AI-generert bygdemusikk, se diskografi og videoer.",
-    url: "https://breizaas.no/musikk",
-    siteName: "Breizaas",
-    locale: "nb_NO",
-    type: "music.song",
-  },
-  alternates: {
-    canonical: "https://breizaas.no/musikk",
-  },
-};
+/** Revalidate every 5 minutes so new CMS content and concerts appear without a redeploy */
+export const revalidate = 300
+
+const MUSIKK_TITLE = "Musikk - Festcountry, festlåter og musikkvideoer";
+
+/**
+ * Metadata with the latest single titles, since fans search by song name.
+ */
+export async function generateMetadata(): Promise<Metadata> {
+  const singles = await getSingles();
+  const latestTitles = singles
+    .slice(0, 3)
+    .map((single) => single.title)
+    .filter(Boolean);
+
+  const songPart =
+    latestTitles.length > 0
+      ? ` Hør singler som ${latestTitles.join(", ")} og se alle musikkvideoene.`
+      : " Se hele diskografien og alle musikkvideoene.";
+
+  const description = `Hør Breizaas på Spotify: festcountry, festmusikk og allsanglåter fra det norske countrybandet.${songPart}`;
+
+  return {
+    title: MUSIKK_TITLE,
+    description,
+    openGraph: {
+      title: `${MUSIKK_TITLE} | Breizaas`,
+      description,
+      url: `${SITE_URL}/musikk`,
+      type: "website",
+      images: [OG_IMAGE],
+    },
+    twitter: {
+      title: `${MUSIKK_TITLE} | Breizaas`,
+      description,
+    },
+    alternates: {
+      canonical: `${SITE_URL}/musikk`,
+    },
+  };
+}
 
 export default async function MusikkPage() {
   // Fetch singles, videos, and hero data from Sanity CMS
@@ -48,7 +73,7 @@ export default async function MusikkPage() {
         {/* Spotify Embed (Story 2.1) */}
         <div className="mt-12 max-w-full md:max-w-[70%] mx-auto">
           <SpotifyEmbed
-            artistId="3sMoefLp287FEWJF6Ue7oc"
+            artistId={SPOTIFY_ARTIST_ID}
             theme="dark"
             lazyLoad={false}
             height={458}
@@ -57,7 +82,7 @@ export default async function MusikkPage() {
 
         {/* "Lytt på Spotify" CTA (Story 2.4) */}
         <div className="flex justify-center mt-12 mb-16">
-          <SpotifyCtaButton artistId="3sMoefLp287FEWJF6Ue7oc" />
+          <SpotifyCtaButton artistId={SPOTIFY_ARTIST_ID} />
         </div>
 
         {/* Singles Section (Story 2.2) */}

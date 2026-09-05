@@ -3,6 +3,14 @@ import { Inter, Trade_Winds, Montserrat } from "next/font/google";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { getArtistSocialLinks } from "@/lib/queries/artistInfo";
+import {
+  SITE_URL,
+  SITE_NAME,
+  DEFAULT_TITLE,
+  DEFAULT_DESCRIPTION,
+  SEO_KEYWORDS,
+  OG_IMAGE,
+} from "@/lib/seo";
 import "./globals.css";
 
 const inter = Inter({
@@ -26,46 +34,36 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://breizaas.no'),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Breizaas - AI møter norsk bygdemusikk',
-    template: '%s | Breizaas',
+    default: DEFAULT_TITLE,
+    template: `%s | ${SITE_NAME}`,
   },
-  description:
-    'Breizaas er en AI-generert artist som skaper autentisk norsk bygdemusikk med 125 000+ månedlige lyttere på Spotify.',
-  keywords: [
-    'Breizaas',
-    'AI musikk',
-    'bygdemusikk',
-    'festmusikk',
-    'norsk musikk',
-    'AI artist Norge',
-    'kunstig intelligens musikk',
-    'norsk festmusikk',
-    'AI-generert musikk',
-  ],
-  authors: [{ name: 'Breizaas' }],
-  creator: 'Breizaas',
-  publisher: 'Breizaas',
+  description: DEFAULT_DESCRIPTION,
+  keywords: SEO_KEYWORDS,
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  category: 'music',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   openGraph: {
     type: 'website',
     locale: 'nb_NO',
-    url: 'https://breizaas.no',
-    siteName: 'Breizaas',
-    images: [
-      {
-        url: '/images/og-image-default.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Breizaas - AI møter norsk bygdemusikk',
-      },
-    ],
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+    images: [OG_IMAGE],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Breizaas - AI møter norsk bygdemusikk',
-    description: 'AI-generert bygdemusikk med 125k+ lyttere',
-    images: ['/images/og-image-default.jpg'],
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+    images: [OG_IMAGE.url],
   },
   robots: {
     index: true,

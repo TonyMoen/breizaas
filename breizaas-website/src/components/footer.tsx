@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Music, Instagram, Facebook, Youtube } from 'lucide-react'
+import { FEATURES } from '@/lib/features'
 
 interface SocialMediaLinks {
   spotify?: string | null
@@ -30,7 +31,9 @@ const footerLinks = [
   { href: '/konserter', label: 'Konserter' },
   { href: '/musikk', label: 'Musikk' },
   { href: '/om-oss', label: 'Om' },
-]
+  { href: '/arrangor', label: 'For arrangører' },
+  { href: '/kontakt', label: 'Kontakt' },
+].filter((link) => link.href !== '/merch' || FEATURES.merch)
 
 export function Footer({ socialLinks }: FooterProps) {
   const currentYear = new Date().getFullYear()

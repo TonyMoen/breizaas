@@ -5,7 +5,7 @@ import { Hero } from './hero'
 describe('Hero Component', () => {
   const defaultProps = {
     brandName: 'BREIZAAS',
-    headline: 'AI Møter Bygdemusikk',
+    headline: 'Spell Høgt, Spell Breizaas',
     stat: '125 000 månedlige lyttere på Spotify',
   }
 
@@ -21,7 +21,7 @@ describe('Hero Component', () => {
 
     it('should render Norwegian headline with Montserrat Bold and warm white color', () => {
       render(<Hero {...defaultProps} />)
-      const headline = screen.getByText('AI Møter Bygdemusikk')
+      const headline = screen.getByText('Spell Høgt, Spell Breizaas')
       expect(headline).toBeInTheDocument()
       expect(headline).toHaveClass('font-montserrat-bold')
       expect(headline).toHaveClass('text-text-primary')
@@ -67,7 +67,7 @@ describe('Hero Component', () => {
 
     it('should have responsive classes for headline', () => {
       render(<Hero {...defaultProps} />)
-      const headline = screen.getByText('AI Møter Bygdemusikk')
+      const headline = screen.getByText('Spell Høgt, Spell Breizaas')
       expect(headline).toHaveClass('text-3xl') // mobile
       expect(headline).toHaveClass('md:text-4xl') // tablet
       expect(headline).toHaveClass('lg:text-5xl') // desktop

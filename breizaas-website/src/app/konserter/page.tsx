@@ -18,43 +18,41 @@ import type { Metadata } from 'next';
 import { getBandsinownEvents, getPastBandsinownEvents } from '@/lib/bandsintown';
 import { getHeroSection } from '@/lib/sanity';
 import { MESSAGES } from '@/lib/messages';
+import { SITE_URL, OG_IMAGE, buildMusicEventsJsonLd } from '@/lib/seo';
+import { JsonLd } from '@/components/json-ld';
 import { PageHero } from '@/components/page-hero';
 import { TourDateCard } from '@/components/tour-date-card';
 import { PastTourHistory } from '@/components/past-tour-history';
+
+/** Revalidate every 5 minutes so new CMS content and concerts appear without a redeploy */
+export const revalidate = 300
 
 /**
  * Metadata for SEO and social sharing
  * Includes Open Graph and Twitter Card tags for rich social previews
  */
+const KONSERTER_TITLE = 'Konserter - Kommende show, festivaler og billetter';
+const KONSERTER_DESCRIPTION =
+  'Se hvor Breizaas spiller live. Kommende konserter, festivaler og bygdefester med datoer og billetter. Book countrybandet som live band eller DJ til ditt arrangement.';
+
 export const metadata: Metadata = {
-  title: 'Breizaas Konserter - Kommende og Tidligere Show | Breizaas',
-  description:
-    'Se alle kommende Breizaas konserter og tidligere show. Finn billetter, datoer, og steder for Norges AI-genererte bygdemusikk artist.',
+  title: KONSERTER_TITLE,
+  description: KONSERTER_DESCRIPTION,
   openGraph: {
-    title: 'Breizaas Konserter - Alle Show',
-    description:
-      'Se alle kommende Breizaas konserter og tidligere show. Finn billetter, datoer, og steder for Norges AI-genererte bygdemusikk artist.',
-    url: 'https://breizaas.com/konserter',
-    images: [
-      {
-        url: '/images/tour-og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Breizaas Konserter',
-      },
-    ],
-    locale: 'nb_NO',
+    title: `${KONSERTER_TITLE} | Breizaas`,
+    description: KONSERTER_DESCRIPTION,
+    url: `${SITE_URL}/konserter`,
+    images: [OG_IMAGE],
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Breizaas Konserter - Alle Show',
-    description:
-      'Se alle kommende Breizaas konserter og tidligere show. Finn billetter, datoer, og steder for Norges AI-genererte bygdemusikk artist.',
-    images: ['/images/tour-og-image.jpg'],
+    title: `${KONSERTER_TITLE} | Breizaas`,
+    description: KONSERTER_DESCRIPTION,
+    images: [OG_IMAGE.url],
   },
   alternates: {
-    canonical: 'https://breizaas.com/konserter',
+    canonical: `${SITE_URL}/konserter`,
   },
 };
 
@@ -92,6 +90,11 @@ export default async function KonserterPage() {
 
   return (
     <div className="min-h-screen bg-brown-medium">
+      {/* Structured Data - MusicEvent list for rich results */}
+      {upcomingEvents.length > 0 && (
+        <JsonLd data={buildMusicEventsJsonLd(upcomingEvents)} />
+      )}
+
       {/* Tour Page Hero with Background Image */}
       <PageHero
         headline={heroData?.headline}
@@ -136,7 +139,7 @@ export default async function KonserterPage() {
               </p>
               <div className="flex gap-4 justify-center flex-wrap">
                 <a
-                  href="https://open.spotify.com/artist/YOUR_ARTIST_ID"
+                  href="https://open.spotify.com/artist/3sMoefLp287FEWJF6Ue7oc"
                   className="bg-gold-vintage text-brown-dark font-semibold px-6 py-3 rounded-full hover:bg-gold-champagne transition-colors duration-300"
                   target="_blank"
                   rel="noopener noreferrer"

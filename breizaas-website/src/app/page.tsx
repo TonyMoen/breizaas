@@ -11,43 +11,49 @@ import { getArtistInfo } from '@/lib/queries/artistInfo'
 import { getBandsinownEvents } from '@/lib/bandsintown'
 import { getProducts } from '@/lib/shopify'
 import { getFeaturedVideo } from '@/lib/queries/video'
+import { FEATURES } from '@/lib/features'
+import { JsonLd } from '@/components/json-ld'
+import {
+  SITE_URL,
+  SPOTIFY_ARTIST_ID,
+  DEFAULT_DESCRIPTION,
+  OG_IMAGE,
+  buildMusicGroupJsonLd,
+  formatCount,
+} from '@/lib/seo'
+
+/** Revalidate every 5 minutes so new CMS content and concerts appear without a redeploy */
+export const revalidate = 300
+
+const HOME_TITLE = 'Breizaas - Festcountry, festmusikk og live band'
 
 /**
- * Generate dynamic metadata from Sanity CMS artist info
+ * Generate metadata. The listener count comes from Sanity so it never goes stale.
  */
 export async function generateMetadata(): Promise<Metadata> {
   const artistInfo = await getArtistInfo()
 
-  // Fallback metadata if Sanity fetch fails
-  if ('code' in artistInfo) {
-    return {
-      title: 'Breizaas - AI møter norsk bygdemusikk | 125k+ lyttere',
-      description:
-        'Opplev Breizaas - den AI-genererte artisten som beviser at kunstig intelligens kan skape autentisk norsk bygdemusikk. Med 125 000+ månedlige lyttere på Spotify.',
-      openGraph: {
-        title: 'Breizaas - AI møter norsk bygdemusikk',
-        description: 'AI-generert bygdemusikk med 125k+ månedlige lyttere',
-        url: 'https://breizaas.no',
-        type: 'website',
-      },
-      alternates: {
-        canonical: 'https://breizaas.no',
-      },
-    }
-  }
+  const description =
+    'code' in artistInfo
+      ? DEFAULT_DESCRIPTION
+      : `Breizaas er et norsk countryband med festcountry og festmusikk laget for allsang. ${formatCount(artistInfo.monthlyListeners)}+ månedlige lyttere på Spotify. Book live band eller DJ til festival, bygdefest, bryllup og firmafest.`
 
-  // Dynamic metadata from Sanity CMS
   return {
-    title: `Breizaas - ${artistInfo.tagline}`,
-    description: artistInfo.tagline,
+    title: { absolute: HOME_TITLE },
+    description,
     openGraph: {
-      title: `Breizaas - ${artistInfo.tagline}`,
-      description: artistInfo.tagline,
-      url: 'https://breizaas.no',
+      title: HOME_TITLE,
+      description,
+      url: SITE_URL,
       type: 'website',
+      images: [OG_IMAGE],
+    },
+    twitter: {
+      title: HOME_TITLE,
+      description,
     },
     alternates: {
-      canonical: 'https://breizaas.no',
+      canonical: SITE_URL,
     },
   }
 }
@@ -59,7 +65,8 @@ export default async function HomePage() {
       getHeroSection('home'),
       getArtistInfo(),
       getBandsinownEvents(),
-      getProducts(),
+      // Skip the Shopify request entirely while merch is disabled
+      FEATURES.merch ? getProducts() : Promise.resolve([]),
       getFeaturedVideo(),
       getFeaturedSingle(),
     ])
@@ -74,46 +81,22 @@ export default async function HomePage() {
 
   // Extract Spotify Artist ID from URL
   const spotifyUrl = artistInfo?.socialMediaLinks?.spotify
-  const spotifyArtistId = spotifyUrl?.match(/artist\/([a-zA-Z0-9]+)/)?.[1] || '3sMoefLp287FEWJF6Ue7oc'
+  const spotifyArtistId = spotifyUrl?.match(/artist\/([a-zA-Z0-9]+)/)?.[1] || SPOTIFY_ARTIST_ID
 
   // Fallback values if Sanity data not yet available
   const brandName = artistInfo?.artistName || 'BREIZAAS'
   const headline = heroData?.headline
   const subtitle = heroData?.subtitle
+  const listenerCount = artistInfo ? formatCount(artistInfo.monthlyListeners) : null
 
-  // Dynamic structured data from Sanity
-  const structuredData = {
-    '@context': 'https://schema.org',
-    '@type': 'MusicGroup',
-    name: artistInfo?.artistName || 'Breizaas',
-    alternateName: 'Breizaas AI',
-    genre: [
-      'Bygdemusikk',
-      'Festmusikk',
-      'AI-generert musikk',
-      'Norsk musikk',
-    ],
-    description:
-      artistInfo?.tagline ||
-      'AI møter norsk bygdemusikk',
-    url: 'https://breizaas.no',
-    image: 'https://breizaas.no/images/artist-photo.jpg',
-    sameAs: artistInfo?.socialMediaLinks
-      ? Object.values(artistInfo.socialMediaLinks).filter(Boolean)
-      : [
-          'https://open.spotify.com/artist/...',
-          'https://instagram.com/breizaas',
-          'https://tiktok.com/@breizaas',
-          'https://facebook.com/breizaas',
-          'https://youtube.com/@breizaas',
-        ],
-  }
+  // Structured data (MusicGroup) shared with the about page via @id
+  const structuredData = buildMusicGroupJsonLd(artistInfo)
 
   // Get first 5 concerts for left column
   const upcomingConcerts = events.slice(0, 5)
 
   // Get first 4 products for merch section
-  const featuredProducts = products.slice(0, 4)
+  const featuredProducts = FEATURES.merch ? products.slice(0, 4) : []
 
   return (
     <main id="main-content">
@@ -131,6 +114,46 @@ export default async function HomePage() {
           backgroundImage={heroData?.heroImage}
         />
       )}
+
+      {/* Intro Section - descriptive, crawlable copy about the band */}
+      <section
+        className="py-12 md:py-16 bg-brown-dark"
+        aria-labelledby="intro-heading"
+      >
+        <div className="container mx-auto px-4 max-w-4xl text-center">
+          <h2
+            id="intro-heading"
+            className="text-3xl md:text-4xl font-bold text-gold-champagne mb-6"
+          >
+            NORSK FESTCOUNTRY OG FESTMUSIKK
+          </h2>
+          <p className="text-lg md:text-xl text-white-warm leading-relaxed mb-4">
+            {brandName} er et norsk countryband som lager festcountry og
+            festmusikk laget for allsang.
+            {listenerCount
+              ? ` Med over ${listenerCount} månedlige lyttere på Spotify har låtene blitt lydsporet til bygdefester, festivaler og fester over hele landet.`
+              : ' Låtene har blitt lydsporet til bygdefester, festivaler og fester over hele landet.'}
+          </p>
+          <p className="text-lg md:text-xl text-white-warm leading-relaxed mb-8">
+            {brandName} kan bookes som live band eller DJ til festival,
+            bygdefest, bryllup, firmafest og private arrangementer.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link
+              href="/kontakt"
+              className="bg-gold-champagne text-brown-dark px-6 py-3 rounded-md font-bold hover:bg-gold-light transition-colors"
+            >
+              Book {brandName}
+            </Link>
+            <Link
+              href="/arrangor"
+              className="text-gold-champagne hover:text-gold-vintage transition-colors inline-flex items-center px-6 py-3 text-lg font-semibold"
+            >
+              For arrangører →
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* Concerts & Spotify Section */}
       <section className="py-12 md:py-16 bg-brown-warm">
@@ -220,12 +243,7 @@ export default async function HomePage() {
       )}
 
       {/* Structured Data for SEO */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(structuredData),
-        }}
-      />
+      <JsonLd data={structuredData} />
     </main>
   )
 }

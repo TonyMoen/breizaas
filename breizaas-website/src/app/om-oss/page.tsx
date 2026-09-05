@@ -1,48 +1,44 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Music, Instagram, Facebook, Youtube } from "lucide-react";
+import { Music, Instagram, Facebook, Youtube, type LucideIcon } from "lucide-react";
 import { getArtistInfo } from "@/lib/queries/artistInfo";
 import { getSinglesCount } from "@/lib/queries/singles";
 import { getHeroSection } from "@/lib/sanity";
 import { PageHero } from "@/components/page-hero";
 import { PortableText } from "@/components/PortableText";
+import { JsonLd } from "@/components/json-ld";
+import { SITE_URL, OG_IMAGE, buildMusicGroupJsonLd, formatCount } from "@/lib/seo";
 
 /**
  * Generate dynamic metadata from Sanity CMS artist info
  */
 export async function generateMetadata(): Promise<Metadata> {
   const artistInfo = await getArtistInfo();
+  const name = "code" in artistInfo ? "Breizaas" : artistInfo.artistName;
+  const listeners =
+    "code" in artistInfo ? null : formatCount(artistInfo.monthlyListeners);
 
-  // Fallback metadata if Sanity fetch fails
-  if ("code" in artistInfo) {
-    return {
-      title: "Om Breizaas - AI møter norsk bygdemusikk",
-      description:
-        "Breizaas er en AI-generert artist som skaper autentisk norsk bygdemusikk og festmusikk. Med 125 000+ månedlige lyttere på Spotify beviser vi at AI kan skape musikk som berører hjerter.",
-      openGraph: {
-        title: "Om Breizaas - AI møter norsk bygdemusikk",
-        description: "AI-generert bygdemusikk med 125k+ månedlige lyttere",
-        type: "profile",
-        url: "https://breizaas.no/om-oss",
-      },
-      alternates: {
-        canonical: "https://breizaas.no/om-oss",
-      },
-    };
-  }
+  const title = `Om ${name} - Norsk countryband med festcountry`;
+  const description = `Historien om ${name}, det norske countrybandet bak festcountry og festmusikk for allsang. Grunnlagt i 2025${
+    listeners ? `, ${listeners}+ månedlige lyttere på Spotify` : ""
+  }. Bookes som live band eller DJ.`;
 
-  // Dynamic metadata from Sanity CMS
   return {
-    title: `Om ${artistInfo.artistName} - ${artistInfo.tagline}`,
-    description: artistInfo.tagline,
+    title,
+    description,
     openGraph: {
-      title: `Om ${artistInfo.artistName}`,
-      description: artistInfo.tagline,
+      title: `${title} | Breizaas`,
+      description,
       type: "profile",
-      url: "https://breizaas.no/om-oss",
+      url: `${SITE_URL}/om-oss`,
+      images: [OG_IMAGE],
+    },
+    twitter: {
+      title: `${title} | Breizaas`,
+      description,
     },
     alternates: {
-      canonical: "https://breizaas.no/om-oss",
+      canonical: `${SITE_URL}/om-oss`,
     },
   };
 }
@@ -137,7 +133,7 @@ export default async function OmOssPage() {
     name: string;
     href: string;
     label: string;
-    icon: any;
+    icon: LucideIcon | null;
     color: string;
   }>; // Only show links that exist
 
@@ -197,10 +193,10 @@ export default async function OmOssPage() {
             For arrangører
           </h2>
           <p className="text-lg md:text-xl text-white-warm leading-relaxed mb-6">
-            {artistInfo.artistName} er tilgjengelig som DJ for festivaler,
-            konserter, bedriftsarrangementer og private fester. Musikken passer
-            perfekt til arrangementer der gjestene ønsker festmusikk med en
-            moderne twist.
+            {artistInfo.artistName} kan bookes som live band eller DJ til
+            festivaler, bygdefester, konserter, bryllup, firmafester og private
+            fester. Festcountry og festmusikk som får gjestene til å synge med
+            fra første refreng.
           </p>
           <p>
             Interessert i booking? Ta{" "}
@@ -246,20 +242,8 @@ export default async function OmOssPage() {
         )}
       </div>
 
-      {/* Structured Data for SEO */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Person",
-            name: artistInfo.artistName,
-            description: artistInfo.tagline,
-            url: "https://breizaas.no",
-            sameAs: Object.values(artistInfo.socialMediaLinks).filter(Boolean),
-          }),
-        }}
-      />
+      {/* Structured Data for SEO - same MusicGroup entity as the homepage */}
+      <JsonLd data={buildMusicGroupJsonLd(artistInfo)} />
     </main>
   );
 }

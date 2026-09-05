@@ -9,16 +9,32 @@ import { ArtistBio } from '@/components/artist-bio'
 import { PressPhotosGrid } from '@/components/press-photos-grid'
 import { LogoFiles } from '@/components/logo-files'
 import { BookingContact } from '@/components/booking-contact'
+import { SITE_URL, OG_IMAGE } from '@/lib/seo'
+import { FEATURES } from '@/lib/features'
+
+const ARRANGOR_TITLE = FEATURES.pressKit
+  ? 'For arrangører - Booking, pressepakke og rider'
+  : 'For arrangører - Booking av live band og DJ'
+const ARRANGOR_DESCRIPTION = FEATURES.pressKit
+  ? 'Book Breizaas som live band eller DJ til festival, bygdefest, bryllup og firmafest. Pressepakke med pressebilder, logoer, teknisk rider og hospitality rider.'
+  : 'Book Breizaas som live band eller DJ til festival, bygdefest, bryllup og firmafest. Les om bandet og ta kontakt for booking.'
 
 export const metadata: Metadata = {
-  title: 'For Arrangører - Breizaas Pressepakke',
-  description: 'Pressepakke, teknisk rider og bookinginfo for Breizaas. Høyoppløselige bilder, logoer og rider informasjon for arrangører.',
-  robots: {
-    index: true,
-    follow: true,
+  title: ARRANGOR_TITLE,
+  description: ARRANGOR_DESCRIPTION,
+  openGraph: {
+    title: `${ARRANGOR_TITLE} | Breizaas`,
+    description: ARRANGOR_DESCRIPTION,
+    url: `${SITE_URL}/arrangor`,
+    type: 'website',
+    images: [OG_IMAGE],
+  },
+  twitter: {
+    title: `${ARRANGOR_TITLE} | Breizaas`,
+    description: ARRANGOR_DESCRIPTION,
   },
   alternates: {
-    canonical: 'https://breizaas.no/arrangor',
+    canonical: `${SITE_URL}/arrangor`,
   },
 }
 
@@ -50,7 +66,7 @@ export default async function ArrangorPage() {
       />
 
       {/* Technical Rider Section */}
-      {pressKit.technicalRiderPdf && (
+      {FEATURES.pressKit && pressKit.technicalRiderPdf && (
         <TechnicalRider
           description={pressKit.technicalRiderDescription}
           pdfUrl={pressKit.technicalRiderPdf.asset.url}
@@ -59,12 +75,12 @@ export default async function ArrangorPage() {
       )}
 
       {/* Hospitality Rider Section */}
-      {pressKit.hospitalityRider && pressKit.hospitalityRider.length > 0 && (
+      {FEATURES.pressKit && pressKit.hospitalityRider && pressKit.hospitalityRider.length > 0 && (
         <HospitalityRider content={pressKit.hospitalityRider} />
       )}
 
       {/* Press Kit Download Section */}
-      {pressKit.pressKitDriveUrl && (
+      {FEATURES.pressKit && pressKit.pressKitDriveUrl && (
         <PressKitDownload
           description={pressKit.pressKitDescription}
           driveUrl={pressKit.pressKitDriveUrl}
@@ -76,11 +92,11 @@ export default async function ArrangorPage() {
       <ArtistBio shortBio={pressKit.shortBio} fullBio={pressKit.fullBio} />
 
       {/* Press Photos Grid */}
-      {pressKit.pressPhotos && pressKit.pressPhotos.length > 0 && (
+      {FEATURES.pressKit && pressKit.pressPhotos && pressKit.pressPhotos.length > 0 && (
         <PressPhotosGrid
           photos={pressKit.pressPhotos.map((photo) => ({
             imageUrl: photo.asset.url,
-            alt: photo.alt,
+            alt: photo.alt ?? '',
             caption: photo.caption ?? undefined,
           }))}
           description={MESSAGES.pressKit.pressPhotosDescription}
@@ -88,7 +104,7 @@ export default async function ArrangorPage() {
       )}
 
       {/* Logo Files Section */}
-      {pressKit.logoFiles && pressKit.logoFiles.length > 0 && (
+      {FEATURES.pressKit && pressKit.logoFiles && pressKit.logoFiles.length > 0 && (
         <LogoFiles
           logos={pressKit.logoFiles.map((logo) => ({
             name: logo.name,

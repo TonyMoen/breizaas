@@ -6,19 +6,27 @@ import { ProductGridSkeleton } from '@/components/product-skeleton';
 import { PageHero } from '@/components/page-hero';
 import { MESSAGES } from '@/lib/messages';
 import { Suspense } from 'react';
+import { redirect } from 'next/navigation';
+import { FEATURES } from '@/lib/features';
+import { SITE_URL, OG_IMAGE } from '@/lib/seo';
+
+const MERCH_DESCRIPTION =
+  'Kjøp offisiell Breizaas merch. T-skjorter, hettegensere og mer fra det norske countrybandet.';
 
 export const metadata: Metadata = {
-  title: 'Merch - Breizaas',
-  description:
-    'Kjøp offisiell Breizaas merchandise. T-skjorter, hettegensere og mer fra den norske AI-genererte bygdemusikkartisten.',
+  title: 'Merch',
+  description: MERCH_DESCRIPTION,
+  // While the store is disabled the route redirects; keep it out of the index
+  robots: FEATURES.merch ? undefined : { index: false, follow: true },
   alternates: {
-    canonical: 'https://breizaas.no/merch',
+    canonical: `${SITE_URL}/merch`,
   },
   openGraph: {
-    title: 'Merch - Breizaas',
-    description:
-      'Kjøp offisiell Breizaas merchandise. T-skjorter, hettegensere og mer.',
+    title: 'Merch | Breizaas',
+    description: MERCH_DESCRIPTION,
+    url: `${SITE_URL}/merch`,
     type: 'website',
+    images: [OG_IMAGE],
   },
 };
 
@@ -93,6 +101,11 @@ async function ProductGrid() {
  * Merch Page - Server Component
  */
 export default async function MerchPage() {
+  // Temporarily disabled until a new merch system is in place (see FEATURES.merch)
+  if (!FEATURES.merch) {
+    redirect('/');
+  }
+
   const heroData = await getHeroSection('merch');
 
   return (

@@ -9,7 +9,7 @@ const PressPhotoSchema = z.object({
     _ref: z.string().nullable(),
     url: z.string(),
   }),
-  alt: z.string(),
+  alt: z.string().nullable().optional(),
   caption: z.string().optional().nullable(),
 })
 

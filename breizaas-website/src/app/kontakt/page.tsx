@@ -4,20 +4,31 @@ import { getHeroSection } from '@/lib/sanity'
 import { getBookingInfo } from '@/lib/queries/bookingInfo'
 import { PageHero } from '@/components/page-hero'
 import { MESSAGES } from '@/lib/messages'
+import { SITE_URL, OG_IMAGE } from '@/lib/seo'
+
+/** Revalidate every 5 minutes so new CMS content and concerts appear without a redeploy */
+export const revalidate = 300
+
+const KONTAKT_TITLE = 'Kontakt og booking'
+const KONTAKT_DESCRIPTION =
+  'Kontakt Breizaas for booking av live band eller DJ til festival, bryllup, firmafest og bygdefest, samt mediehenvendelser og andre spørsmål.'
 
 export const metadata: Metadata = {
-  title: 'Kontakt - Breizaas',
-  description: 'Kontakt Breizaas for bookingforespørsler, mediaspørsmål eller generelle henvendelser.',
+  title: KONTAKT_TITLE,
+  description: KONTAKT_DESCRIPTION,
   alternates: {
-    canonical: 'https://breizaas.no/kontakt',
+    canonical: `${SITE_URL}/kontakt`,
   },
   openGraph: {
-    title: 'Kontakt - Breizaas',
-    description: 'Kontakt Breizaas for bookingforespørsler, mediaspørsmål eller generelle henvendelser.',
-    url: 'https://breizaas.no/kontakt',
-    siteName: 'Breizaas',
-    locale: 'nb_NO',
+    title: `${KONTAKT_TITLE} | Breizaas`,
+    description: KONTAKT_DESCRIPTION,
+    url: `${SITE_URL}/kontakt`,
     type: 'website',
+    images: [OG_IMAGE],
+  },
+  twitter: {
+    title: `${KONTAKT_TITLE} | Breizaas`,
+    description: KONTAKT_DESCRIPTION,
   },
 }
 

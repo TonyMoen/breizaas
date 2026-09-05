@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { Music, Instagram, Facebook, Youtube } from 'lucide-react'
+import { FEATURES } from '@/lib/features'
 
 interface NavigationLink {
   href: string
@@ -29,7 +30,7 @@ const navigationLinks: NavigationLink[] = [
   { href: '/musikk', label: 'Musikk' },
   { href: '/om-oss', label: 'Om' },
   { href: '/kontakt', label: 'Kontakt' },
-]
+].filter((link) => link.href !== '/merch' || FEATURES.merch)
 
 // TikTok custom icon
 const TikTokIcon = () => (
