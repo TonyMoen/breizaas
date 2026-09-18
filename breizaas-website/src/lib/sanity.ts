@@ -129,16 +129,7 @@ export async function getSingles(): Promise<Single[]> {
  */
 export async function getLatestSingles(limit: number): Promise<Single[]> {
   try {
-    const query = `*[_type == "single"] | order(releaseDate desc)[0...$limit] {
-      _id,
-      title,
-      releaseDate,
-      coverImage,
-      spotifyUrl,
-      appleMusicUrl,
-      youtubeUrl,
-      featured
-    }`;
+    const query = `*[_type == "single"] | order(releaseDate desc)[0...$limit] ${SINGLE_PROJECTION}`;
 
     const singles = await client.fetch<Single[]>(query, { limit });
     return singles;
