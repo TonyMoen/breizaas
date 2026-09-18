@@ -102,6 +102,40 @@ export async function getSingles(): Promise<Single[]> {
 }
 
 /**
+ * Fetch the newest singles from Sanity CMS
+ * Ordered by release date (newest first)
+ *
+ * @param limit - Number of singles to return
+ * @returns Promise resolving to array of Single documents
+ * @returns Empty array if fetch fails (graceful degradation)
+ *
+ * @example
+ * ```ts
+ * const latest = await getLatestSingles(5);
+ * ```
+ */
+export async function getLatestSingles(limit: number): Promise<Single[]> {
+  try {
+    const query = `*[_type == "single"] | order(releaseDate desc)[0...$limit] {
+      _id,
+      title,
+      releaseDate,
+      coverImage,
+      spotifyUrl,
+      appleMusicUrl,
+      youtubeUrl,
+      featured
+    }`;
+
+    const singles = await client.fetch<Single[]>(query, { limit });
+    return singles;
+  } catch (error) {
+    console.error('Failed to fetch latest singles from Sanity:', error);
+    return []; // Graceful degradation
+  }
+}
+
+/**
  * Fetch the featured single from Sanity CMS
  * Returns the first single with featured=true
  *

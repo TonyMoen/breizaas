@@ -6,15 +6,17 @@ import { SpotifyEmbed } from '@/components/spotify-embed'
 import { ProductCard } from '@/components/product-card'
 import { TourDateCard } from '@/components/tour-date-card'
 import { YouTubeEmbed } from '@/components/youtube-embed'
-import { getHeroSection, getFeaturedSingle } from '@/lib/sanity'
+import { MobileHome } from '@/components/mobile-home/mobile-home'
+import { getHeroSection, getFeaturedSingle, getLatestSingles } from '@/lib/sanity'
 import { getArtistInfo } from '@/lib/queries/artistInfo'
-import { getBandsinownEvents } from '@/lib/bandsintown'
+import { getBandsinownEvents, getPastBandsinownEvents } from '@/lib/bandsintown'
 import { getProducts } from '@/lib/shopify'
 import { getFeaturedVideo } from '@/lib/queries/video'
 import { FEATURES } from '@/lib/features'
 import { JsonLd } from '@/components/json-ld'
 import {
   SITE_URL,
+  SITE_NAME,
   SPOTIFY_ARTIST_ID,
   DEFAULT_DESCRIPTION,
   OG_IMAGE,
@@ -60,28 +62,41 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function HomePage() {
   // Fetch all data in parallel
-  const [heroData, artistInfoResult, eventsResult, productsResult, featuredVideoResult, featuredSingle] =
-    await Promise.all([
-      getHeroSection('home'),
-      getArtistInfo(),
-      getBandsinownEvents(),
-      // Skip the Shopify request entirely while merch is disabled
-      FEATURES.merch ? getProducts() : Promise.resolve([]),
-      getFeaturedVideo(),
-      getFeaturedSingle(),
-    ])
+  const [
+    heroData,
+    artistInfoResult,
+    eventsResult,
+    productsResult,
+    featuredVideoResult,
+    featuredSingle,
+    latestSingles,
+    pastEventsResult,
+  ] = await Promise.all([
+    getHeroSection('home'),
+    getArtistInfo(),
+    getBandsinownEvents(),
+    // Skip the Shopify request entirely while merch is disabled
+    FEATURES.merch ? getProducts() : Promise.resolve([]),
+    getFeaturedVideo(),
+    getFeaturedSingle(),
+    // Setlist and "Har spilt" on the mobile front page
+    getLatestSingles(5),
+    getPastBandsinownEvents(),
+  ])
 
   // Handle error states gracefully with fallback data
   const hasArtistInfo = !('code' in artistInfoResult)
   const artistInfo = hasArtistInfo ? artistInfoResult : null
 
   const events = 'code' in eventsResult ? [] : eventsResult
+  const pastEvents = 'code' in pastEventsResult ? [] : pastEventsResult
   const products = 'code' in productsResult ? [] : productsResult
   const featuredVideo = 'code' in featuredVideoResult ? null : featuredVideoResult
 
   // Extract Spotify Artist ID from URL
   const spotifyUrl = artistInfo?.socialMediaLinks?.spotify
   const spotifyArtistId = spotifyUrl?.match(/artist\/([a-zA-Z0-9]+)/)?.[1] || SPOTIFY_ARTIST_ID
+  const spotifyArtistUrl = spotifyUrl || `https://open.spotify.com/artist/${SPOTIFY_ARTIST_ID}`
 
   // Fallback values if Sanity data not yet available
   const brandName = artistInfo?.artistName || 'BREIZAAS'
@@ -100,22 +115,39 @@ export default async function HomePage() {
 
   return (
     <main id="main-content">
-      {/* Hero Section - Featured Single Banner overlays on background, or regular Hero if no featured single */}
-      {featuredSingle ? (
-        <FeaturedSingleBanner
-          single={featuredSingle}
-          backgroundImage={heroData?.heroImage}
-        />
-      ) : (
-        <Hero
-          brandName={brandName}
-          headline={headline}
-          subtitle={subtitle}
-          backgroundImage={heroData?.heroImage}
-        />
-      )}
+      {/* Phones and tablets: the "Tre scener" front page. Desktop (lg and up) keeps the sections below. */}
+      <MobileHome
+        className="lg:hidden"
+        artistName={artistInfo?.artistName || SITE_NAME}
+        spotifyArtistUrl={spotifyArtistUrl}
+        events={events}
+        pastEvents={pastEvents}
+        featuredSingle={featuredSingle}
+        latestSingles={latestSingles}
+        featuredVideo={featuredVideo}
+        now={new Date()}
+      />
 
-      {/* Intro Section - descriptive, crawlable copy about the band */}
+      {/* Hero Section - Featured Single Banner overlays on background, or regular Hero if no featured single */}
+      <div className="hidden lg:block">
+        {featuredSingle ? (
+          <FeaturedSingleBanner
+            single={featuredSingle}
+            backgroundImage={heroData?.heroImage}
+            desktopOnly
+          />
+        ) : (
+          <Hero
+            brandName={brandName}
+            headline={headline}
+            subtitle={subtitle}
+            backgroundImage={heroData?.heroImage}
+            desktopOnly
+          />
+        )}
+      </div>
+
+      {/* Intro Section - descriptive, crawlable copy about the band (all screen sizes) */}
       <section
         className="py-12 md:py-16 bg-brown-dark"
         aria-labelledby="intro-heading"
@@ -155,8 +187,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Concerts & Spotify Section */}
-      <section className="py-12 md:py-16 bg-brown-warm">
+      {/* Concerts & Spotify Section (desktop; phones have the Konserter and Musikk scenes) */}
+      <section className="hidden lg:block py-12 md:py-16 bg-brown-warm">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-gold-champagne mb-8 text-center">
             SPELL HØGT, SPELL BREIZAAS
@@ -199,7 +231,7 @@ export default async function HomePage() {
 
       {/* Merch Section */}
       {featuredProducts.length > 0 && (
-        <section className="py-12 md:py-16 bg-brown-dark">
+        <section className="hidden lg:block py-12 md:py-16 bg-brown-dark">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl md:text-4xl font-bold text-gold-champagne mb-8 text-center">
               OFFISIELL BREIZAAS MERCH
@@ -224,9 +256,9 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* Featured Video Section */}
+      {/* Featured Video Section (desktop; phones have it in the Musikk scene) */}
       {featuredVideo && (
-        <section className="py-12 md:py-16 bg-brown-warm">
+        <section className="hidden lg:block py-12 md:py-16 bg-brown-warm">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl md:text-4xl font-bold text-gold-champagne mb-8 text-center">
               MUSIKKVIDEO

@@ -10,9 +10,11 @@ interface HeroProps {
     asset: unknown
     alt: string
   }
+  /** Set when the hero is hidden below lg, so phones do not download the preloaded background at full size */
+  desktopOnly?: boolean
 }
 
-export function Hero({ brandName, headline, subtitle, stat, backgroundImage }: HeroProps) {
+export function Hero({ brandName, headline, subtitle, stat, backgroundImage, desktopOnly = false }: HeroProps) {
   const hasBackgroundImage = backgroundImage?.asset !== undefined
 
   return (
@@ -26,6 +28,7 @@ export function Hero({ brandName, headline, subtitle, stat, backgroundImage }: H
             src={urlFor(backgroundImage.asset as never).width(1920).height(1080).url()}
             alt={backgroundImage.alt}
             fill
+            sizes={desktopOnly ? '(max-width: 1023px) 1px, 100vw' : undefined}
             className="object-cover opacity-50"
             priority
           />

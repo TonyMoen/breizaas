@@ -27,7 +27,8 @@ const tradewind = Trade_Winds({
 });
 
 const montserrat = Montserrat({
-  weight: '700',
+  // 900 carries the poster-style dates and titles on the mobile front page
+  weight: ['700', '900'],
   subsets: ['latin'],
   variable: '--font-montserrat-bold',
   display: 'swap',

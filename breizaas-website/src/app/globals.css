@@ -234,6 +234,35 @@
     animation: slide-in 300ms ease-in-out;
   }
 
+  /* Mobile front page: the scrolling concert line (two identical halves, moved one half-width) */
+  @keyframes ticker {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-ticker {
+    animation: ticker 24s linear infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-ticker {
+      animation: none;
+    }
+  }
+
+  /* Neon sign glow for the BREIZAAS wordmark in the mobile top bar */
+  .neon-sign {
+    color: #fff4e6;
+    text-shadow:
+      0 0 6px #ffd2e9,
+      0 0 14px #ff1493,
+      0 0 30px #ff1493,
+      0 0 60px rgba(255, 20, 147, 0.6),
+      -1px -1px 0 #d4a574,
+      1px 1px 0 #d4a574;
+  }
+
   /* Custom font utilities */
   .font-tradewind {
     font-family: var(--font-tradewind), cursive;

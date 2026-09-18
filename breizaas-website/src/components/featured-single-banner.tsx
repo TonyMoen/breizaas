@@ -10,6 +10,12 @@ interface FeaturedSingleBannerProps {
     asset: unknown;
     alt: string;
   };
+  /**
+   * Set when the banner is hidden below lg. The images are preloaded, so
+   * without this phones would download them at full size for nothing;
+   * "1px" makes the browser pick the smallest file there instead.
+   */
+  desktopOnly?: boolean;
 }
 
 /**
@@ -24,8 +30,9 @@ interface FeaturedSingleBannerProps {
  *
  * @param single - Featured Single document from Sanity CMS
  * @param backgroundImage - Optional hero background image
+ * @param desktopOnly - The banner is hidden on phones and tablets
  */
-export function FeaturedSingleBanner({ single, backgroundImage }: FeaturedSingleBannerProps) {
+export function FeaturedSingleBanner({ single, backgroundImage, desktopOnly = false }: FeaturedSingleBannerProps) {
   // Generate optimized image URL from Sanity CDN
   const imageUrl = urlFor(single.coverImage)
     .width(800)
@@ -50,6 +57,7 @@ export function FeaturedSingleBanner({ single, backgroundImage }: FeaturedSingle
             src={urlFor(backgroundImage.asset as never).width(1920).height(1080).url()}
             alt={backgroundImage.alt}
             fill
+            sizes={desktopOnly ? '(max-width: 1023px) 1px, 100vw' : undefined}
             className="object-cover opacity-50"
             priority
           />
@@ -86,6 +94,7 @@ export function FeaturedSingleBanner({ single, backgroundImage }: FeaturedSingle
             alt={single.coverImage.alt}
             width={800}
             height={800}
+            sizes={desktopOnly ? '(max-width: 1023px) 1px, 448px' : undefined}
             className="w-full aspect-square object-cover rounded-lg"
             priority
           />

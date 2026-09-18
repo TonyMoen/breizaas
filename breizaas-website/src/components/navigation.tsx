@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { Music, Instagram, Facebook, Youtube } from 'lucide-react'
 import { FEATURES } from '@/lib/features'
+import { SpotifyIcon } from '@/components/spotify-icon'
 
 interface NavigationLink {
   href: string
@@ -126,10 +127,10 @@ export function Navigation({ socialLinks }: NavigationProps) {
 
       {/* Sticky navigation header */}
       <nav
-        className="sticky top-0 z-50 bg-brown-dark/95 backdrop-blur-md border-b-2 border-gold-champagne/20"
+        className="sticky top-0 z-50 bg-brown-dark/95 backdrop-blur-md border-b border-gold-champagne/10 lg:border-b-2 lg:border-gold-champagne/20"
         aria-label="Hovednavigasjon"
       >
-        <div className="container mx-auto px-6 py-4">
+        <div className="container mx-auto px-[18px] lg:px-6 lg:py-4">
           {/* Desktop: Three-column layout */}
           <div className="hidden lg:grid lg:grid-cols-3 lg:items-center lg:gap-8">
             {/* Left: Brand Name */}
@@ -227,41 +228,54 @@ export function Navigation({ socialLinks }: NavigationProps) {
             </div>
           </div>
 
-          {/* Mobile: Logo and hamburger */}
-          <div className="flex lg:hidden items-center justify-between">
+          {/* Mobile: neon sign, Spotify and hamburger. The front page's sticky concert line sits right under this row (h-14 + 1px border = top-[57px]). */}
+          <div className="flex lg:hidden h-14 items-center justify-between">
             <Link
               href="/"
-              className="font-tradewind text-2xl text-gold-champagne transition-opacity hover:opacity-80 focus:outline focus:outline-2 focus:outline-offset-4 focus:outline-gold-champagne focus:rounded"
-              style={{
-                textShadow: '-1px -1px 0 #d4a574, 1px -1px 0 #d4a574, -1px 1px 0 #d4a574, 1px 1px 0 #d4a574, 0 0 30px rgba(212, 165, 116, 0.5)'
-              }}
+              className="neon-sign font-tradewind text-[22px] whitespace-nowrap transition-opacity hover:opacity-80 focus:outline focus:outline-2 focus:outline-offset-4 focus:outline-gold-champagne focus:rounded"
             >
               BREIZAAS
             </Link>
 
-            <button
-              onClick={() => setIsMobileMenuOpen(true)}
-              className="flex items-center justify-center w-11 h-11 text-gold-champagne hover:opacity-80 transition-opacity focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-gold-champagne rounded"
-              aria-label="Åpne navigasjonsmeny"
-              aria-expanded={isMobileMenuOpen}
-              aria-controls="mobile-navigation-menu"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-                className="w-6 h-6"
-                aria-hidden="true"
+            <div className="flex items-center gap-1">
+              {socialLinks?.spotify && (
+                <a
+                  href={socialLinks.spotify}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center w-11 h-11 transition-opacity hover:opacity-90 rounded-full"
+                  aria-label="Lytt på Spotify (åpnes i ny fane)"
+                >
+                  <span className="flex items-center justify-center w-9 h-9 rounded-full bg-spotify-green text-[#05230f]">
+                    <SpotifyIcon className="w-5 h-5" />
+                  </span>
+                </a>
+              )}
+
+              <button
+                onClick={() => setIsMobileMenuOpen(true)}
+                className="flex items-center justify-center w-11 h-11 text-gold-champagne hover:opacity-80 transition-opacity focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-gold-champagne rounded"
+                aria-label="Åpne navigasjonsmeny"
+                aria-expanded={isMobileMenuOpen}
+                aria-controls="mobile-navigation-menu"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                />
-              </svg>
-            </button>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                  />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       </nav>
