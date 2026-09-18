@@ -1,7 +1,9 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { urlFor } from '@/lib/sanity';
+import { songPath } from '@/lib/songs';
 import type { Single } from '@/types/Single.types';
 
 interface SingleCardProps {
@@ -48,23 +50,30 @@ export function SingleCard({ single, className }: SingleCardProps) {
                   hover:border-purple-playful hover:shadow-[0_0_20px_rgba(216,150,255,0.5)]
                   ${className || ''}`}
     >
-      {/* Cover Image */}
-      <Image
-        src={imageUrl}
-        alt={single.coverImage.alt}
-        width={500}
-        height={500}
-        className="aspect-square w-full object-cover"
-        placeholder="blur"
-        blurDataURL={blurDataUrl}
-        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-      />
+      {/* Cover Image, links to the song page (breizaas.no/<slug>) */}
+      <Link href={songPath(single)} aria-label={`${single.title}: alle strømmetjenester`} className="block">
+        <Image
+          src={imageUrl}
+          alt={single.coverImage.alt}
+          width={500}
+          height={500}
+          className="aspect-square w-full object-cover"
+          placeholder="blur"
+          blurDataURL={blurDataUrl}
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        />
+      </Link>
 
       {/* Content Section */}
       <div className="p-6">
         {/* Title */}
         <h3 className="text-purple-bright font-montserrat font-bold text-xl mb-2">
-          {single.title}
+          <Link
+            href={songPath(single)}
+            className="inline-flex min-h-[44px] items-center transition-colors hover:text-purple-playful"
+          >
+            {single.title}
+          </Link>
         </h3>
 
         {/* Release Date */}

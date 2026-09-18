@@ -1,5 +1,7 @@
-import { client } from '@/lib/sanity';
+import { cache } from 'react';
+import { client, SINGLE_PROJECTION } from '@/lib/sanity';
 import type { ApiError } from '@/lib/sanity';
+import type { Single } from '@/types/Single.types';
 
 /**
  * Get total count of published singles in Sanity
@@ -35,3 +37,16 @@ export async function getSinglesCount(): Promise<number | ApiError> {
     };
   }
 }
+
+/**
+ * All singles for the song pages (/<slug>), newest first.
+ *
+ * Unlike getSingles this one throws when Sanity is unreachable. A song page
+ * that cannot load its data must fail the revalidation, so the last good
+ * version stays online instead of being replaced by a 404.
+ * Wrapped in cache() so metadata, page and share image share one request.
+ */
+export const getSinglesForSongPages = cache(async (): Promise<Single[]> => {
+  const query = `*[_type == "single"] | order(releaseDate desc) ${SINGLE_PROJECTION}`;
+  return client.fetch<Single[]>(query, {}, { next: { revalidate: 300, tags: ['singles'] } });
+});

@@ -149,3 +149,54 @@ export function buildMusicEventsJsonLd(events: BandsinownEvent[], artistName = S
     })),
   };
 }
+
+interface SongJsonLdInput {
+  /** Path of the song page, e.g. "/liggi" */
+  path: string;
+  title: string;
+  /** Artist names in credit order */
+  artists: string[];
+  /** YYYY-MM-DD */
+  releaseDate: string;
+  /** Absolute cover image URL */
+  image?: string;
+  /** Links to the song on the streaming services */
+  sameAs: string[];
+}
+
+/**
+ * schema.org MusicRecording plus breadcrumbs for a song page. The band refers
+ * to the same MusicGroup entity as the homepage via @id.
+ */
+export function buildSongJsonLd({ path, title, artists, releaseDate, image, sameAs }: SongJsonLdInput) {
+  const url = absoluteUrl(path);
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'MusicRecording',
+        '@id': `${url}#recording`,
+        url,
+        name: title,
+        byArtist: artists.map((name) =>
+          name === SITE_NAME
+            ? { '@type': 'MusicGroup', '@id': BAND_ID, name, url: SITE_URL }
+            : { '@type': 'MusicGroup', name }
+        ),
+        datePublished: releaseDate,
+        genre: GENRES,
+        inLanguage: 'nb-NO',
+        ...(image ? { image } : {}),
+        sameAs,
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Hjem', item: SITE_URL },
+          { '@type': 'ListItem', position: 2, name: 'Musikk', item: `${SITE_URL}/musikk` },
+          { '@type': 'ListItem', position: 3, name: title, item: url },
+        ],
+      },
+    ],
+  };
+}

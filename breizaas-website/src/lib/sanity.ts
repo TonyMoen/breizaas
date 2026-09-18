@@ -69,6 +69,28 @@ export function urlFor(source: SanityImageSource) {
 }
 
 /**
+ * Fields every single query returns. The song pages (/<slug>) need the same
+ * shape as the cards, so the projection lives in one place.
+ */
+export const SINGLE_PROJECTION = `{
+  _id,
+  title,
+  slug,
+  artistLine,
+  releaseDate,
+  coverImage,
+  description,
+  presaveUrl,
+  spotifyUrl,
+  appleMusicUrl,
+  youtubeUrl,
+  tidalUrl,
+  deezerUrl,
+  amazonMusicUrl,
+  featured
+}`;
+
+/**
  * Fetch all singles from Sanity CMS
  * Ordered by release date (newest first)
  *
@@ -82,16 +104,7 @@ export function urlFor(source: SanityImageSource) {
  */
 export async function getSingles(): Promise<Single[]> {
   try {
-    const query = `*[_type == "single"] | order(releaseDate desc) {
-      _id,
-      title,
-      releaseDate,
-      coverImage,
-      spotifyUrl,
-      appleMusicUrl,
-      youtubeUrl,
-      featured
-    }`;
+    const query = `*[_type == "single"] | order(releaseDate desc) ${SINGLE_PROJECTION}`;
 
     const singles = await client.fetch<Single[]>(query);
     return singles;
@@ -149,16 +162,7 @@ export async function getLatestSingles(limit: number): Promise<Single[]> {
  */
 export async function getFeaturedSingle(): Promise<Single | null> {
   try {
-    const query = `*[_type == "single" && featured == true][0] {
-      _id,
-      title,
-      releaseDate,
-      coverImage,
-      spotifyUrl,
-      appleMusicUrl,
-      youtubeUrl,
-      featured
-    }`;
+    const query = `*[_type == "single" && featured == true][0] ${SINGLE_PROJECTION}`;
 
     const single = await client.fetch<Single | null>(query);
     return single;
