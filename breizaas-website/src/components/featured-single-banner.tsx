@@ -1,5 +1,7 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { urlFor } from '@/lib/sanity';
+import { songPath } from '@/lib/songs';
 import type { Single } from '@/types/Single.types';
 
 interface FeaturedSingleBannerProps {
@@ -77,10 +79,14 @@ export function FeaturedSingleBanner({ single, backgroundImage }: FeaturedSingle
           {single.title} - <span className="text-amber-warm">UTE NÅ!</span>
         </h1>
 
-        {/* Cover image */}
-        <div className="shadow-2xl transform hover:scale-105 transition-all duration-300 max-w-md w-full
+        {/* Cover image, links to the song page with every streaming service */}
+        <Link
+          href={songPath(single)}
+          aria-label={`${single.title}: alle strømmetjenester`}
+          className="block shadow-2xl transform hover:scale-105 transition-all duration-300 max-w-md w-full
                         border-2 border-transparent rounded-lg
-                        hover:border-purple-playful hover:shadow-[0_0_20px_rgba(216,150,255,0.5)]">
+                        hover:border-purple-playful hover:shadow-[0_0_20px_rgba(216,150,255,0.5)]"
+        >
           <Image
             src={imageUrl}
             alt={single.coverImage.alt}
@@ -89,7 +95,7 @@ export function FeaturedSingleBanner({ single, backgroundImage }: FeaturedSingle
             className="w-full aspect-square object-cover rounded-lg"
             priority
           />
-        </div>
+        </Link>
 
         {/* Listen button */}
         {listenUrl && (
@@ -113,6 +119,14 @@ export function FeaturedSingleBanner({ single, backgroundImage }: FeaturedSingle
             Lytt nå
           </a>
         )}
+
+        {/* Song page: Apple Music, YouTube and the rest */}
+        <Link
+          href={songPath(single)}
+          className="mt-4 inline-flex min-h-[44px] items-center text-base font-semibold text-gold-champagne transition-colors hover:text-gold-vintage"
+        >
+          Alle strømmetjenester →
+        </Link>
       </div>
     </section>
   );
